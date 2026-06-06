@@ -1,0 +1,494 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Navbar from '../components/Navbar.astro';
+import Footer from '../components/Footer.astro';
+
+const team = [
+  {
+    name: "Arjun Sharma",
+    role: "Founder & Lead Developer",
+    bio: "Full-stack developer with 12+ years of experience building data-driven web applications. Passionate about making complex calculations accessible to everyone.",
+    emoji: "👨‍💻",
+    gradient: "from-blue to-purple"
+  },
+  {
+    name: "Priya Mehta",
+    role: "UX Designer & Researcher",
+    bio: "Human-computer interaction specialist who ensures our tools are intuitive, accessible, and delightful to use across all devices and cultures.",
+    emoji: "🎨",
+    gradient: "from-pink to-orange"
+  },
+  {
+    name: "Rohan Das",
+    role: "Data Scientist",
+    bio: "Expert in demographic statistics and actuarial science. Ensures all our life expectancy and biological age calculations are grounded in the latest research.",
+    emoji: "📊",
+    gradient: "from-green to-teal"
+  }
+];
+
+const stats = [
+  { value: "10M+", label: "Monthly Users" },
+  { value: "50+", label: "Countries Served" },
+  { value: "10+", label: "Calculator Tools" },
+  { value: "99.9%", label: "Uptime SLA" },
+];
+
+const milestones = [
+  { year: "2019", event: "Founded with a single age calculator tool" },
+  { year: "2020", event: "Launched birthday & pet age calculators" },
+  { year: "2021", event: "Reached 1 million monthly active users" },
+  { year: "2022", event: "Added biological age & life expectancy tools" },
+  { year: "2023", event: "Launched multi-language support for 8 languages" },
+  { year: "2024", event: "Complete redesign with life analytics platform" },
+  { year: "2025", event: "10+ million monthly users across 50+ countries" },
+];
+---
+
+<BaseLayout
+  title="About Us | AgeCalc — The Story Behind agecalconline.com"
+  description="Learn about the team behind AgeCalc. We're a passionate group of developers and data scientists dedicated to making life analytics accessible and accurate for everyone."
+  keywords="about agecalconline, age calculator team, about us, agecalc story"
+>
+  <Navbar slot="nav" />
+
+  <!-- Hero -->
+  <div class="about-hero">
+    <div class="container">
+      <div class="about-hero-inner">
+        <span class="about-badge">Our Story</span>
+        <h1 class="about-title">Built with passion for <span class="about-title-accent">precision</span></h1>
+        <p class="about-subtitle">We started AgeCalc with a simple mission: give everyone instant, accurate, and meaningful insights into their life timeline — completely free.</p>
+      </div>
+    </div>
+    <!-- decorative orbs -->
+    <div class="about-orb about-orb-1"></div>
+    <div class="about-orb about-orb-2"></div>
+  </div>
+
+  <!-- Stats Bar -->
+  <div class="about-stats-bar">
+    <div class="container">
+      <div class="about-stats-grid">
+        {stats.map(s => (
+          <div class="about-stat">
+            <span class="about-stat-value">{s.value}</span>
+            <span class="about-stat-label">{s.label}</span>
+          </div>
+        ))}
+      </div>
+    </div>
+  </div>
+
+  <!-- Mission -->
+  <section class="about-section section band-white">
+    <div class="container about-mission-grid">
+      <div class="about-mission-text">
+        <span class="caption-mono">Our Mission</span>
+        <h2 class="display-md">Age isn't just a number — it's a story.</h2>
+        <p class="body-md">We believe your age encompasses far more than a simple count of years. It's your relationship with time: the milestones you've passed, the moments you've shared across planets, and the statistical story of your biological journey.</p>
+        <p class="body-md">That's why we built a platform that goes beyond a simple birthday counter. From planetary age to biological health scores, from generation markers to life expectancy insights — we provide context that transforms a date into a deeply personal narrative.</p>
+        <p class="body-md">And we do it entirely for free, with no sign-up required and your data never leaving your own browser.</p>
+      </div>
+      <div class="about-mission-visual">
+        <div class="mission-card">
+          <div class="mission-icon">🌍</div>
+          <h3>Privacy First</h3>
+          <p>Your date of birth is processed locally in your browser. We never store or transmit your personal data to our servers.</p>
+        </div>
+        <div class="mission-card">
+          <div class="mission-icon">⚡</div>
+          <h3>Instant & Accurate</h3>
+          <p>Our algorithms account for leap years, time zones, and calendar variations to deliver millisecond-precise results.</p>
+        </div>
+        <div class="mission-card">
+          <div class="mission-icon">🌐</div>
+          <h3>Globally Accessible</h3>
+          <p>Available in 8 languages with full right-to-left support, serving users across 50+ countries.</p>
+        </div>
+        <div class="mission-card">
+          <div class="mission-icon">♿</div>
+          <h3>Fully Accessible</h3>
+          <p>Built with WCAG 2.1 AA accessibility standards so everyone can use our tools regardless of ability.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Timeline -->
+  <section class="about-section section band-alt">
+    <div class="container">
+      <div class="section-header" style="margin-bottom: var(--space-3xl)">
+        <span class="caption-mono">Journey</span>
+        <h2 class="display-md">How we got here.</h2>
+      </div>
+      <div class="timeline">
+        {milestones.map((m, i) => (
+          <div class="timeline-item">
+            <div class="timeline-year">{m.year}</div>
+            <div class="timeline-dot"></div>
+            <div class="timeline-content">
+              <p>{m.event}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Team -->
+  <section class="about-section section band-white">
+    <div class="container">
+      <div class="section-header" style="margin-bottom: var(--space-3xl)">
+        <span class="caption-mono">The Team</span>
+        <h2 class="display-md">People behind the platform.</h2>
+        <p class="body-md" style="max-width: 540px; margin-top: var(--space-sm)">A small, dedicated team obsessed with making time meaningful.</p>
+      </div>
+      <div class="team-grid">
+        {team.map(member => (
+          <div class="team-card">
+            <div class="team-avatar">
+              <span class="team-emoji">{member.emoji}</span>
+            </div>
+            <div class="team-info">
+              <h3 class="team-name">{member.name}</h3>
+              <span class="team-role">{member.role}</span>
+              <p class="team-bio">{member.bio}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="about-cta section">
+    <div class="container">
+      <div class="about-cta-inner">
+        <h2 class="display-md">Ready to explore your life analytics?</h2>
+        <p class="body-md">Start with our flagship age calculator — no sign-up, no fees, just instant insights.</p>
+        <div class="about-cta-actions">
+          <a href="/" class="btn-primary-lg">Calculate My Age</a>
+          <a href="/contact-us" class="btn-secondary-lg">Get in Touch</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <Footer slot="footer" />
+</BaseLayout>
+
+<style is:global>
+/* Hero */
+.about-hero {
+  position: relative;
+  overflow: hidden;
+  background: var(--canvas);
+  padding: var(--space-5xl) 0 var(--space-5xl);
+  border-bottom: 1px solid var(--hairline);
+}
+.about-hero-inner {
+  position: relative;
+  z-index: 2;
+  max-width: 680px;
+}
+.about-badge {
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--link);
+  background: color-mix(in srgb, var(--link) 10%, transparent);
+  padding: 4px 12px;
+  border-radius: var(--radius-full);
+  margin-bottom: var(--space-lg);
+  border: 1px solid color-mix(in srgb, var(--link) 20%, transparent);
+}
+.about-title {
+  font-size: clamp(2.2rem, 5vw, 3.5rem);
+  font-weight: 800;
+  letter-spacing: -2px;
+  line-height: 1.1;
+  color: var(--ink);
+  margin: 0 0 var(--space-lg);
+}
+.about-title-accent {
+  background: linear-gradient(135deg, var(--link), #a78bfa);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.about-subtitle {
+  font-size: 18px;
+  color: var(--body);
+  line-height: 1.6;
+  max-width: 560px;
+  margin: 0;
+}
+.about-orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(80px);
+  opacity: 0.12;
+  pointer-events: none;
+}
+.about-orb-1 {
+  width: 500px; height: 500px;
+  background: radial-gradient(circle, var(--link), transparent);
+  top: -150px; right: -100px;
+}
+.about-orb-2 {
+  width: 300px; height: 300px;
+  background: radial-gradient(circle, #a78bfa, transparent);
+  bottom: -100px; left: 30%;
+}
+
+/* Stats Bar */
+.about-stats-bar {
+  background: var(--ink);
+  padding: var(--space-2xl) 0;
+}
+html[data-theme="dark"] .about-stats-bar {
+  background: var(--canvas-soft-2);
+  border-top: 1px solid var(--hairline);
+  border-bottom: 1px solid var(--hairline);
+}
+.about-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--space-2xl);
+}
+.about-stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-xs);
+}
+.about-stat-value {
+  font-size: 2.2rem;
+  font-weight: 800;
+  letter-spacing: -1.5px;
+  color: #ffffff;
+}
+html[data-theme="dark"] .about-stat-value { color: var(--ink); }
+.about-stat-label {
+  font-size: 13px;
+  color: rgba(255,255,255,0.6);
+  font-weight: 400;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  font-family: var(--font-mono);
+}
+html[data-theme="dark"] .about-stat-label { color: var(--mute); }
+
+/* Mission */
+.about-mission-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-5xl);
+  align-items: center;
+}
+.about-mission-text {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+.about-mission-visual {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-md);
+}
+.mission-card {
+  background: var(--canvas-soft-2);
+  border: 1px solid var(--hairline);
+  border-radius: var(--radius-lg);
+  padding: var(--space-lg);
+  transition: border-color 0.2s ease, transform 0.2s ease;
+}
+.mission-card:hover {
+  border-color: var(--hairline-strong);
+  transform: translateY(-2px);
+}
+.mission-icon { font-size: 1.8rem; margin-bottom: var(--space-sm); }
+.mission-card h3 {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--ink);
+  margin: 0 0 var(--space-xs);
+  letter-spacing: -0.3px;
+}
+.mission-card p {
+  font-size: 13px;
+  color: var(--body);
+  line-height: 1.6;
+  margin: 0;
+}
+
+/* Timeline */
+.about-section.band-alt {
+  background: var(--canvas-soft-2);
+}
+.timeline {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  max-width: 700px;
+}
+.timeline::before {
+  content: '';
+  position: absolute;
+  left: 100px;
+  top: 0; bottom: 0;
+  width: 1px;
+  background: var(--hairline);
+}
+.timeline-item {
+  display: grid;
+  grid-template-columns: 100px 24px 1fr;
+  gap: var(--space-lg);
+  align-items: center;
+  padding: var(--space-lg) 0;
+}
+.timeline-year {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--mute);
+  text-align: right;
+}
+.timeline-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--link);
+  border: 2px solid var(--canvas-soft-2);
+  box-shadow: 0 0 0 2px var(--link);
+  flex-shrink: 0;
+  margin: 0 auto;
+}
+.timeline-content p {
+  font-size: 15px;
+  color: var(--body);
+  margin: 0;
+  line-height: 1.5;
+}
+
+/* Team */
+.team-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-xl);
+}
+.team-card {
+  background: var(--canvas);
+  border: 1px solid var(--hairline);
+  border-radius: var(--radius-xl);
+  padding: var(--space-2xl);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+  transition: border-color 0.2s, transform 0.2s, box-shadow 0.2s;
+}
+.team-card:hover {
+  border-color: var(--hairline-strong);
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-4);
+}
+.team-avatar {
+  width: 72px; height: 72px;
+  background: var(--canvas-soft-2);
+  border: 1px solid var(--hairline);
+  border-radius: var(--radius-xl);
+  display: flex; align-items: center; justify-content: center;
+}
+.team-emoji { font-size: 2rem; }
+.team-info { display: flex; flex-direction: column; gap: var(--space-xs); }
+.team-name {
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--ink);
+  letter-spacing: -0.4px;
+  margin: 0;
+}
+.team-role {
+  font-size: 12px;
+  font-family: var(--font-mono);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--link);
+  font-weight: 500;
+}
+.team-bio {
+  font-size: 14px;
+  color: var(--body);
+  line-height: 1.6;
+  margin: var(--space-xs) 0 0;
+}
+
+/* CTA */
+.about-cta {
+  background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+  padding: var(--space-5xl) 0;
+}
+html[data-theme="dark"] .about-cta {
+  background: var(--canvas-soft-2);
+  border-top: 1px solid var(--hairline);
+}
+.about-cta-inner {
+  max-width: 600px;
+  margin: 0 auto;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+  align-items: center;
+}
+.about-cta-inner .display-md { color: #ffffff; }
+html[data-theme="dark"] .about-cta-inner .display-md { color: var(--ink); }
+.about-cta-inner .body-md { color: rgba(255,255,255,0.65); }
+html[data-theme="dark"] .about-cta-inner .body-md { color: var(--body); }
+.about-cta-actions {
+  display: flex;
+  gap: var(--space-md);
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.btn-primary-lg {
+  display: inline-flex; align-items: center;
+  background: #ffffff; color: #0f172a;
+  font-size: 15px; font-weight: 700;
+  padding: 14px 28px; border-radius: var(--radius-md);
+  text-decoration: none; letter-spacing: -0.3px;
+  transition: opacity 0.15s, transform 0.15s;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+}
+.btn-primary-lg:hover { opacity: 0.9; transform: translateY(-2px); }
+.btn-secondary-lg {
+  display: inline-flex; align-items: center;
+  background: rgba(255,255,255,0.1); color: #ffffff;
+  font-size: 15px; font-weight: 600;
+  padding: 14px 28px; border-radius: var(--radius-md);
+  text-decoration: none; letter-spacing: -0.3px;
+  border: 1px solid rgba(255,255,255,0.2);
+  transition: background 0.15s, transform 0.15s;
+}
+.btn-secondary-lg:hover { background: rgba(255,255,255,0.18); transform: translateY(-2px); }
+html[data-theme="dark"] .btn-primary-lg { background: var(--ink); color: var(--on-primary); }
+html[data-theme="dark"] .btn-secondary-lg { background: var(--canvas-soft-2); color: var(--body); border-color: var(--hairline); }
+
+@media (max-width: 960px) {
+  .about-mission-grid { grid-template-columns: 1fr; }
+  .about-stats-grid { grid-template-columns: repeat(2, 1fr); }
+  .team-grid { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 600px) {
+  .about-stats-grid { grid-template-columns: repeat(2, 1fr); gap: var(--space-lg); }
+  .team-grid { grid-template-columns: 1fr; }
+  .about-mission-visual { grid-template-columns: 1fr; }
+  .timeline::before { left: 80px; }
+  .timeline-item { grid-template-columns: 80px 20px 1fr; }
+}
+</style>

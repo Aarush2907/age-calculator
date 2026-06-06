@@ -1,0 +1,242 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Navbar from '../components/Navbar.astro';
+import Footer from '../components/Footer.astro';
+
+const lastUpdated = "June 6, 2025";
+
+const keyTerms = [
+  { term: "Service", def: "The agecalconline.com website and all age/life calculator tools provided therein." },
+  { term: "User", def: "Any individual who accesses or uses our Service." },
+  { term: "Content", def: "All text, calculations, data, graphics, and information provided on our Service." },
+  { term: "We / Us / Our", def: "agecalconline.com and its operators." },
+];
+---
+
+<BaseLayout
+  title="Terms & Conditions | AgeCalc — agecalconline.com"
+  description="Read the Terms and Conditions for using agecalconline.com. Understand the rules, disclaimers, and limitations for our free age calculator and life analytics tools."
+  keywords="terms and conditions, agecalconline terms, age calculator terms of service, legal"
+>
+  <Navbar slot="nav" />
+
+  <div class="policy-hero">
+    <div class="container">
+      <div class="policy-hero-inner">
+        <span class="policy-badge">Legal</span>
+        <h1 class="policy-title">Terms & Conditions</h1>
+        <p class="policy-subtitle">Please read these terms carefully before using our service. By using AgeCalc, you agree to be bound by these terms.</p>
+        <p class="policy-updated">Last updated: <strong>{lastUpdated}</strong></p>
+      </div>
+    </div>
+  </div>
+
+  <div class="policy-body">
+    <div class="container">
+      <div class="policy-layout">
+
+        <!-- Table of Contents -->
+        <aside class="policy-toc">
+          <div class="toc-card">
+            <h2 class="toc-title">Contents</h2>
+            <nav>
+              <ol class="toc-list">
+                <li><a href="#acceptance" class="toc-link">Acceptance of Terms</a></li>
+                <li><a href="#definitions" class="toc-link">Definitions</a></li>
+                <li><a href="#use-of-service" class="toc-link">Use of Service</a></li>
+                <li><a href="#disclaimer" class="toc-link">Disclaimer</a></li>
+                <li><a href="#accuracy" class="toc-link">Accuracy of Information</a></li>
+                <li><a href="#intellectual-property" class="toc-link">Intellectual Property</a></li>
+                <li><a href="#third-party-links" class="toc-link">Third-Party Links</a></li>
+                <li><a href="#advertising" class="toc-link">Advertising</a></li>
+                <li><a href="#limitation" class="toc-link">Limitation of Liability</a></li>
+                <li><a href="#indemnification" class="toc-link">Indemnification</a></li>
+                <li><a href="#governing-law" class="toc-link">Governing Law</a></li>
+                <li><a href="#termination" class="toc-link">Termination</a></li>
+                <li><a href="#changes-terms" class="toc-link">Changes to Terms</a></li>
+                <li><a href="#contact-terms" class="toc-link">Contact Us</a></li>
+              </ol>
+            </nav>
+          </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="policy-content">
+
+          <section id="acceptance" class="policy-section">
+            <h2>1. Acceptance of Terms</h2>
+            <p>By accessing or using <strong>agecalconline.com</strong> (the "Service"), you confirm that you are at least 13 years of age, have read and understood these Terms and Conditions, and agree to be bound by them. If you do not agree with any part of these terms, please discontinue using our Service immediately.</p>
+            <div class="policy-highlight">
+              <p>⚠️ <strong>Important:</strong> These terms constitute a legally binding agreement between you and agecalconline.com. Continued use of the Service signifies your acceptance.</p>
+            </div>
+          </section>
+
+          <section id="definitions" class="policy-section">
+            <h2>2. Definitions</h2>
+            <p>For the purposes of these Terms and Conditions, the following definitions apply:</p>
+            <div class="terms-definitions">
+              {keyTerms.map(item => (
+                <div class="term-item">
+                  <dt class="term-name">"{item.term}"</dt>
+                  <dd class="term-def">{item.def}</dd>
+                </div>
+              ))}
+            </div>
+          </section>
+
+          <section id="use-of-service" class="policy-section">
+            <h2>3. Use of Service</h2>
+            <p>You agree to use our Service only for lawful purposes. You must not:</p>
+            <ul>
+              <li>Use the Service in any way that violates applicable local, national, or international laws or regulations</li>
+              <li>Transmit any unsolicited or unauthorized advertising or promotional material (spam)</li>
+              <li>Attempt to gain unauthorized access to any portion of the Service or its related systems</li>
+              <li>Reverse engineer, decompile, or disassemble any part of the Service</li>
+              <li>Use automated scripts, bots, or scrapers to access the Service without prior written consent</li>
+              <li>Introduce viruses, Trojans, or other malicious or harmful material</li>
+              <li>Engage in any data mining, harvesting, or extraction activities</li>
+              <li>Impersonate or attempt to impersonate AgeCalc, an AgeCalc employee, or another user</li>
+            </ul>
+          </section>
+
+          <section id="disclaimer" class="policy-section">
+            <h2>4. Disclaimer</h2>
+            <p>The Service is provided on an <strong>"AS IS" and "AS AVAILABLE"</strong> basis without any warranties of any kind, either express or implied. We make no warranties or representations about the accuracy, reliability, completeness, or timeliness of any content on the Service.</p>
+            <div class="disclaimer-box">
+              <h3>⚕️ Medical Disclaimer</h3>
+              <p>The biological age, life expectancy, and health-related calculators on our Service are provided for <strong>informational and entertainment purposes only</strong>. They are not medical advice, diagnosis, or treatment. Always consult with a qualified healthcare professional for health-related decisions.</p>
+            </div>
+            <div class="disclaimer-box">
+              <h3>💰 Financial Disclaimer</h3>
+              <p>Our retirement age calculator and related financial tools are for <strong>informational purposes only</strong> and should not be treated as financial advice. Consult a qualified financial advisor before making retirement or investment decisions.</p>
+            </div>
+          </section>
+
+          <section id="accuracy" class="policy-section">
+            <h2>5. Accuracy of Information</h2>
+            <p>While we strive to ensure the accuracy of our calculators, we make no guarantee that the calculations produced are error-free or suitable for any specific purpose. Our chronological age calculations account for leap years and calendar variations, but:</p>
+            <ul>
+              <li>Life expectancy estimates are based on statistical demographic averages and may not reflect individual circumstances</li>
+              <li>Biological age results are estimates based on self-reported data and research models</li>
+              <li>Planetary age calculations are approximate and based on average orbital periods</li>
+              <li>Generation classifications are based on commonly cited demographic definitions which may vary by source</li>
+            </ul>
+          </section>
+
+          <section id="intellectual-property" class="policy-section">
+            <h2>6. Intellectual Property</h2>
+            <p>All content on the Service — including but not limited to text, graphics, logos, icons, images, audio clips, software, and the overall design — is the property of agecalconline.com or its content suppliers and is protected by applicable intellectual property laws.</p>
+            <p>You are granted a limited, non-exclusive, non-transferable license to access and use the Service for personal, non-commercial purposes only. This license does not include:</p>
+            <ul>
+              <li>Resale or commercial use of the Service or its content</li>
+              <li>Collection and use of any product listings, descriptions, or prices</li>
+              <li>Any derivative use of the Service or its content</li>
+              <li>Downloading or copying of account information for the benefit of another merchant</li>
+            </ul>
+          </section>
+
+          <section id="third-party-links" class="policy-section">
+            <h2>7. Third-Party Links</h2>
+            <p>Our Service may contain links to third-party websites. These links are provided for your convenience only. We have no control over the content of those sites and accept no responsibility for them or for any loss or damage that may arise from your use of them. When you access third-party websites, you do so at your own risk.</p>
+          </section>
+
+          <section id="advertising" class="policy-section">
+            <h2>8. Advertising</h2>
+            <p>Our Service may display advertisements delivered by third-party advertising companies, including Google AdSense. These advertisers may use cookies and similar tracking technologies to serve ads based on your prior visits to our website or other websites. You may opt out of personalized advertising by visiting <a href="https://www.google.com/settings/ads" target="_blank" rel="noopener">Google's Ad Settings</a>.</p>
+          </section>
+
+          <section id="limitation" class="policy-section">
+            <h2>9. Limitation of Liability</h2>
+            <p>To the maximum extent permitted by applicable law, agecalconline.com and its operators, directors, employees, and agents shall not be liable for any indirect, incidental, special, consequential, or punitive damages arising from:</p>
+            <ul>
+              <li>Your use of or inability to use the Service</li>
+              <li>Any decisions made based on calculations or information from the Service</li>
+              <li>Unauthorized access to or alteration of your data</li>
+              <li>Statements or conduct of any third party on the Service</li>
+              <li>Any other matter relating to the Service</li>
+            </ul>
+          </section>
+
+          <section id="indemnification" class="policy-section">
+            <h2>10. Indemnification</h2>
+            <p>You agree to defend, indemnify, and hold harmless agecalconline.com and its operators from and against any claims, actions, or demands, including reasonable legal and accounting fees, arising from your use of the Service, your violation of these Terms, or your violation of any third-party rights.</p>
+          </section>
+
+          <section id="governing-law" class="policy-section">
+            <h2>11. Governing Law</h2>
+            <p>These Terms and Conditions shall be governed by and construed in accordance with the laws applicable to online services, without regard to conflict of law principles. Any disputes arising under these Terms shall be subject to the exclusive jurisdiction of the appropriate courts.</p>
+          </section>
+
+          <section id="termination" class="policy-section">
+            <h2>12. Termination</h2>
+            <p>We reserve the right to terminate or suspend access to our Service immediately, without prior notice or liability, for any reason, including if you breach these Terms and Conditions. Upon termination, your right to use the Service will immediately cease.</p>
+          </section>
+
+          <section id="changes-terms" class="policy-section">
+            <h2>13. Changes to Terms</h2>
+            <p>We reserve the right to modify these Terms and Conditions at any time. We will provide notice of significant changes by updating the "Last updated" date at the top of this page. Your continued use of the Service after any changes constitutes your acceptance of the new Terms and Conditions.</p>
+          </section>
+
+          <section id="contact-terms" class="policy-section">
+            <h2>14. Contact Us</h2>
+            <p>If you have any questions about these Terms and Conditions, please contact us:</p>
+            <div class="contact-card">
+              <p>📧 <strong>Email:</strong> <a href="mailto:legal@agecalconline.com">legal@agecalconline.com</a></p>
+              <p>📍 <strong>Website:</strong> <a href="/contact-us">agecalconline.com/contact-us</a></p>
+            </div>
+          </section>
+
+        </main>
+      </div>
+    </div>
+  </div>
+
+  <Footer slot="footer" />
+</BaseLayout>
+
+<style is:global>
+.terms-definitions {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+  margin-top: var(--space-md);
+}
+.term-item {
+  background: var(--canvas-soft-2);
+  border: 1px solid var(--hairline);
+  border-radius: var(--radius-md);
+  padding: var(--space-md) var(--space-lg);
+}
+.term-name {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--ink);
+  display: block;
+  margin-bottom: 4px;
+}
+.term-def {
+  font-size: 14px;
+  color: var(--body);
+  line-height: 1.6;
+}
+.disclaimer-box {
+  background: var(--canvas-soft-2);
+  border: 1px solid var(--hairline);
+  border-left: 4px solid var(--link);
+  border-radius: 0 var(--radius-md) var(--radius-md) 0;
+  padding: var(--space-lg);
+  margin: var(--space-lg) 0;
+}
+.disclaimer-box h3 {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--ink);
+  margin: 0 0 var(--space-sm);
+}
+.disclaimer-box p {
+  font-size: 14px;
+  color: var(--body);
+  line-height: 1.6;
+  margin: 0;
+}
+</style>

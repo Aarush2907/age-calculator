@@ -13,6 +13,12 @@ const tools = [
   { href: '/biological-age-calculator', label: 'Biological Age' },
   { href: '/generation-calculator', label: 'Generation Calculator' },
 ];
+const companyLinks = [
+  { href: '/about-us', label: 'About Us' },
+  { href: '/contact-us', label: 'Contact Us' },
+  { href: '/privacy-policy', label: 'Privacy Policy' },
+  { href: '/terms-and-conditions', label: 'Terms & Conditions' },
+];
 ---
 <footer class="footer">
   <div class="divider"></div>
@@ -57,6 +63,15 @@ const tools = [
         <li><a href="/#historical" class="footer-link">Historical Timeline</a></li>
       </ul>
     </div>
+
+    <div class="footer-col">
+      <h3 class="footer-col-title">Company</h3>
+      <ul class="footer-links">
+        {companyLinks.map(l => (
+          <li><a href={l.href} class="footer-link">{l.label}</a></li>
+        ))}
+      </ul>
+    </div>
   </div>
 
   <div class="footer-bottom">
@@ -64,7 +79,9 @@ const tools = [
       <div class="footer-bottom-inner">
         <p class="caption text-body">&copy; {year} agecalconline.com — All rights reserved.</p>
         <div class="footer-bottom-links">
-          <a href="/privacy" class="footer-bottom-link">Privacy</a>
+          <a href="/privacy-policy" class="footer-bottom-link">Privacy</a>
+          <a href="/terms-and-conditions" class="footer-bottom-link">Terms</a>
+          <a href="/contact-us" class="footer-bottom-link">Contact</a>
           <a href="/sitemap.xml" class="footer-bottom-link">Sitemap</a>
         </div>
       </div>
@@ -76,8 +93,8 @@ const tools = [
 .footer { background: var(--canvas); border-top: 1px solid var(--hairline); margin-top: var(--space-5xl); }
 .footer-inner {
   display: grid;
-  grid-template-columns: 2fr 1fr 1fr 1fr;
-  gap: var(--space-4xl);
+  grid-template-columns: 2fr 1fr 1fr 1fr 1fr;
+  gap: var(--space-3xl);
   padding-top: var(--space-4xl);
   padding-bottom: var(--space-4xl);
 }
@@ -97,6 +114,10 @@ const tools = [
 .footer-bottom-links { display: flex; gap: var(--space-lg); }
 .footer-bottom-link { font-size: 13px; color: var(--body); text-decoration: none; transition: color .15s ease; }
 .footer-bottom-link:hover { color: var(--ink); }
+@media (max-width: 1100px) {
+  .footer-inner { grid-template-columns: 2fr 1fr 1fr; }
+  .footer-brand { grid-column: 1 / -1; }
+}
 @media (max-width: 960px) {
   .footer-inner { grid-template-columns: 1fr 1fr; }
   .footer-brand { grid-column: 1 / -1; }

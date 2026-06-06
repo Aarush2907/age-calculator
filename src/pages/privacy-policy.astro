@@ -1,0 +1,392 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Navbar from '../components/Navbar.astro';
+import Footer from '../components/Footer.astro';
+
+const lastUpdated = "June 6, 2025";
+---
+
+<BaseLayout
+  title="Privacy Policy | AgeCalc — agecalconline.com"
+  description="Read the Privacy Policy for agecalconline.com. Learn how we collect, use, and protect your personal information when you use our age calculator tools."
+  keywords="privacy policy, agecalconline privacy, age calculator data policy"
+>
+  <Navbar slot="nav" />
+
+  <div class="policy-hero">
+    <div class="container">
+      <div class="policy-hero-inner">
+        <span class="policy-badge">Legal</span>
+        <h1 class="policy-title">Privacy Policy</h1>
+        <p class="policy-subtitle">We are committed to protecting your privacy. This policy explains how we handle your information.</p>
+        <p class="policy-updated">Last updated: <strong>{lastUpdated}</strong></p>
+      </div>
+    </div>
+  </div>
+
+  <div class="policy-body">
+    <div class="container">
+      <div class="policy-layout">
+
+        <!-- Table of Contents -->
+        <aside class="policy-toc">
+          <div class="toc-card">
+            <h2 class="toc-title">Contents</h2>
+            <nav>
+              <ol class="toc-list">
+                <li><a href="#information-we-collect" class="toc-link">Information We Collect</a></li>
+                <li><a href="#how-we-use" class="toc-link">How We Use Information</a></li>
+                <li><a href="#cookies" class="toc-link">Cookies & Tracking</a></li>
+                <li><a href="#third-parties" class="toc-link">Third-Party Services</a></li>
+                <li><a href="#data-retention" class="toc-link">Data Retention</a></li>
+                <li><a href="#your-rights" class="toc-link">Your Rights</a></li>
+                <li><a href="#security" class="toc-link">Security</a></li>
+                <li><a href="#children" class="toc-link">Children's Privacy</a></li>
+                <li><a href="#changes" class="toc-link">Changes to Policy</a></li>
+                <li><a href="#contact-privacy" class="toc-link">Contact Us</a></li>
+              </ol>
+            </nav>
+          </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="policy-content">
+
+          <section id="information-we-collect" class="policy-section">
+            <h2>1. Information We Collect</h2>
+            <p>At <strong>agecalconline.com</strong>, we believe in minimal data collection. Our age calculators operate primarily client-side, meaning your date of birth and other inputs are <strong>processed locally in your browser</strong> and never transmitted to our servers.</p>
+            <h3>Information You Provide</h3>
+            <ul>
+              <li><strong>Date of Birth:</strong> Entered voluntarily to use our calculators. This data stays in your browser and is not stored on our servers.</li>
+              <li><strong>Contact Form Data:</strong> If you reach out via our contact form, we collect your name and email address to respond to your inquiry.</li>
+            </ul>
+            <h3>Information Collected Automatically</h3>
+            <ul>
+              <li><strong>Usage Data:</strong> Pages visited, time spent, referral URLs, and browser type — collected via analytics tools to improve our service.</li>
+              <li><strong>Log Data:</strong> IP addresses, browser identifiers, and access times recorded in standard server logs.</li>
+              <li><strong>Local Storage:</strong> We store your preferred theme (dark/light mode) and language preference locally in your browser.</li>
+            </ul>
+          </section>
+
+          <section id="how-we-use" class="policy-section">
+            <h2>2. How We Use Your Information</h2>
+            <p>We use the information we collect for the following purposes:</p>
+            <ul>
+              <li>To provide, operate, and maintain our age calculator tools</li>
+              <li>To understand and analyze how you use our website</li>
+              <li>To improve, personalize, and expand our services</li>
+              <li>To respond to your comments, questions, and requests</li>
+              <li>To send administrative information and updates</li>
+              <li>To detect and prevent fraudulent or abusive activity</li>
+            </ul>
+            <div class="policy-highlight">
+              <p>🔒 <strong>We never sell your personal information</strong> to third parties for marketing purposes.</p>
+            </div>
+          </section>
+
+          <section id="cookies" class="policy-section">
+            <h2>3. Cookies & Tracking Technologies</h2>
+            <p>We use cookies and similar tracking technologies to enhance your experience on our site.</p>
+            <h3>Types of Cookies We Use</h3>
+            <div class="cookie-grid">
+              <div class="cookie-card">
+                <span class="cookie-type essential">Essential</span>
+                <h4>Essential Cookies</h4>
+                <p>Required for the site to function properly. These cannot be disabled. Examples include session management and security tokens.</p>
+              </div>
+              <div class="cookie-card">
+                <span class="cookie-type analytics">Analytics</span>
+                <h4>Analytics Cookies</h4>
+                <p>Help us understand how visitors interact with our website by collecting anonymous usage statistics through tools like Google Analytics.</p>
+              </div>
+              <div class="cookie-card">
+                <span class="cookie-type preference">Preference</span>
+                <h4>Preference Cookies</h4>
+                <p>Remember your settings such as dark mode preference and chosen language to provide a personalized experience.</p>
+              </div>
+            </div>
+            <p>You can control cookies through your browser settings. However, disabling certain cookies may affect website functionality.</p>
+          </section>
+
+          <section id="third-parties" class="policy-section">
+            <h2>4. Third-Party Services</h2>
+            <p>We may use trusted third-party services that collect, monitor, and analyze data to help us improve our service. These include:</p>
+            <ul>
+              <li><strong>Google Analytics:</strong> Web analytics service that tracks and reports website traffic. Google's privacy policy governs data collected by this service.</li>
+              <li><strong>Google AdSense:</strong> Advertising service that may display personalized ads based on your browsing history.</li>
+              <li><strong>Google Fonts:</strong> Font delivery service. Google may collect usage data when fonts are loaded.</li>
+              <li><strong>Cloudflare:</strong> CDN and security provider that processes network traffic to protect our site.</li>
+            </ul>
+          </section>
+
+          <section id="data-retention" class="policy-section">
+            <h2>5. Data Retention</h2>
+            <p>We retain different types of data for different periods:</p>
+            <ul>
+              <li><strong>Calculator Inputs:</strong> Not retained — processed in-browser only.</li>
+              <li><strong>Contact Form Submissions:</strong> Retained for up to 12 months to enable follow-up communication.</li>
+              <li><strong>Analytics Data:</strong> Retained in aggregate form for up to 26 months per Google Analytics defaults.</li>
+              <li><strong>Server Logs:</strong> Retained for 90 days for security and troubleshooting purposes.</li>
+            </ul>
+          </section>
+
+          <section id="your-rights" class="policy-section">
+            <h2>6. Your Rights</h2>
+            <p>Depending on your location, you may have the following rights regarding your personal data:</p>
+            <ul>
+              <li><strong>Access:</strong> Request a copy of the personal data we hold about you.</li>
+              <li><strong>Correction:</strong> Request correction of inaccurate or incomplete data.</li>
+              <li><strong>Deletion:</strong> Request deletion of your personal data (the "right to be forgotten").</li>
+              <li><strong>Portability:</strong> Request transfer of your data in a machine-readable format.</li>
+              <li><strong>Objection:</strong> Object to the processing of your data for certain purposes.</li>
+              <li><strong>Restriction:</strong> Request restriction of how we process your data.</li>
+            </ul>
+            <p>To exercise any of these rights, please <a href="/contact-us">contact us</a>. We will respond within 30 days.</p>
+          </section>
+
+          <section id="security" class="policy-section">
+            <h2>7. Security</h2>
+            <p>We implement industry-standard security measures to protect your information, including:</p>
+            <ul>
+              <li>HTTPS encryption for all data transmitted between your browser and our servers</li>
+              <li>Regular security audits and vulnerability assessments</li>
+              <li>Access controls to limit who can view personal data internally</li>
+              <li>CDN-level DDoS protection via Cloudflare</li>
+            </ul>
+            <p>However, no method of transmission over the internet is 100% secure. We cannot guarantee absolute security of your information.</p>
+          </section>
+
+          <section id="children" class="policy-section">
+            <h2>8. Children's Privacy</h2>
+            <p>Our services are not directed to individuals under the age of 13. We do not knowingly collect personal information from children under 13. If you become aware that a child has provided us with personal information, please contact us so we can take appropriate action.</p>
+          </section>
+
+          <section id="changes" class="policy-section">
+            <h2>9. Changes to This Privacy Policy</h2>
+            <p>We may update our Privacy Policy from time to time. We will notify you of any significant changes by updating the "Last updated" date at the top of this page. We encourage you to review this Privacy Policy periodically to stay informed about how we are protecting your information.</p>
+          </section>
+
+          <section id="contact-privacy" class="policy-section">
+            <h2>10. Contact Us</h2>
+            <p>If you have any questions, concerns, or requests regarding this Privacy Policy or our data practices, please don't hesitate to reach out:</p>
+            <div class="contact-card">
+              <p>📧 <strong>Email:</strong> <a href="mailto:privacy@agecalconline.com">privacy@agecalconline.com</a></p>
+              <p>📍 <strong>Website:</strong> <a href="/contact-us">agecalconline.com/contact-us</a></p>
+            </div>
+          </section>
+
+        </main>
+      </div>
+    </div>
+  </div>
+
+  <Footer slot="footer" />
+</BaseLayout>
+
+<style is:global>
+.policy-hero {
+  background: linear-gradient(135deg, var(--canvas-soft-2) 0%, var(--canvas) 100%);
+  border-bottom: 1px solid var(--hairline);
+  padding: var(--space-5xl) 0 var(--space-4xl);
+}
+.policy-hero-inner {
+  max-width: 700px;
+}
+.policy-badge {
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--link);
+  background: color-mix(in srgb, var(--link) 10%, transparent);
+  padding: 4px 12px;
+  border-radius: var(--radius-full);
+  margin-bottom: var(--space-md);
+  border: 1px solid color-mix(in srgb, var(--link) 20%, transparent);
+}
+.policy-title {
+  font-size: clamp(2rem, 5vw, 3rem);
+  font-weight: 800;
+  letter-spacing: -1.5px;
+  color: var(--ink);
+  margin: 0 0 var(--space-md);
+  line-height: 1.1;
+}
+.policy-subtitle {
+  font-size: 17px;
+  color: var(--body);
+  line-height: 1.6;
+  margin: 0 0 var(--space-md);
+  max-width: 560px;
+}
+.policy-updated {
+  font-size: 13px;
+  color: var(--mute);
+}
+
+.policy-body {
+  padding: var(--space-5xl) 0;
+}
+.policy-layout {
+  display: grid;
+  grid-template-columns: 240px 1fr;
+  gap: var(--space-4xl);
+  align-items: start;
+}
+
+/* TOC */
+.policy-toc {
+  position: sticky;
+  top: calc(var(--nav-height) + var(--space-xl));
+}
+.toc-card {
+  background: var(--canvas-soft-2);
+  border: 1px solid var(--hairline);
+  border-radius: var(--radius-lg);
+  padding: var(--space-xl);
+}
+.toc-title {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--mute);
+  margin: 0 0 var(--space-md);
+}
+.toc-list {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding-left: var(--space-md);
+  margin: 0;
+}
+.toc-link {
+  font-size: 13px;
+  color: var(--body);
+  text-decoration: none;
+  padding: 4px 0;
+  display: block;
+  transition: color 0.15s ease;
+  line-height: 1.4;
+}
+.toc-link:hover { color: var(--link); }
+
+/* Content */
+.policy-content {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+.policy-section {
+  padding: var(--space-2xl) 0;
+  border-bottom: 1px solid var(--hairline);
+}
+.policy-section:last-child {
+  border-bottom: none;
+}
+.policy-section h2 {
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--ink);
+  letter-spacing: -0.6px;
+  margin: 0 0 var(--space-md);
+}
+.policy-section h3 {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--ink);
+  margin: var(--space-lg) 0 var(--space-sm);
+}
+.policy-section p {
+  font-size: 15px;
+  color: var(--body);
+  line-height: 1.7;
+  margin: 0 0 var(--space-md);
+}
+.policy-section ul {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+  padding-left: var(--space-lg);
+  margin: 0 0 var(--space-md);
+}
+.policy-section li {
+  font-size: 15px;
+  color: var(--body);
+  line-height: 1.6;
+}
+.policy-section a {
+  color: var(--link);
+  text-decoration: none;
+}
+.policy-section a:hover { text-decoration: underline; }
+
+.policy-highlight {
+  background: color-mix(in srgb, var(--link) 8%, transparent);
+  border: 1px solid color-mix(in srgb, var(--link) 20%, transparent);
+  border-radius: var(--radius-md);
+  padding: var(--space-md) var(--space-lg);
+  margin: var(--space-md) 0;
+}
+.policy-highlight p { margin: 0; color: var(--ink); }
+
+/* Cookie grid */
+.cookie-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-md);
+  margin: var(--space-lg) 0;
+}
+.cookie-card {
+  background: var(--canvas-soft-2);
+  border: 1px solid var(--hairline);
+  border-radius: var(--radius-md);
+  padding: var(--space-md);
+}
+.cookie-card h4 {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--ink);
+  margin: var(--space-xs) 0;
+}
+.cookie-card p {
+  font-size: 13px;
+  color: var(--body);
+  margin: 0;
+}
+.cookie-type {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  padding: 2px 8px;
+  border-radius: var(--radius-full);
+}
+.cookie-type.essential { background: #dcfce7; color: #166534; }
+.cookie-type.analytics { background: #dbeafe; color: #1e40af; }
+.cookie-type.preference { background: #fef3c7; color: #92400e; }
+html[data-theme="dark"] .cookie-type.essential { background: rgba(22,163,74,0.2); color: #4ade80; }
+html[data-theme="dark"] .cookie-type.analytics { background: rgba(59,130,246,0.2); color: #60a5fa; }
+html[data-theme="dark"] .cookie-type.preference { background: rgba(234,179,8,0.2); color: #fbbf24; }
+
+/* Contact card */
+.contact-card {
+  background: var(--canvas-soft-2);
+  border: 1px solid var(--hairline);
+  border-radius: var(--radius-md);
+  padding: var(--space-lg);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+}
+.contact-card p { margin: 0; }
+
+@media (max-width: 960px) {
+  .policy-layout { grid-template-columns: 1fr; }
+  .policy-toc { position: static; }
+  .cookie-grid { grid-template-columns: 1fr; }
+}
+</style>

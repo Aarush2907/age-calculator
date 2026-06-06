@@ -108,6 +108,51 @@ const schemaData = {
     <script type="application/ld+json" set:html={JSON.stringify(schemaData)} />
   </section>
 
+  <!-- Company Pages Section -->
+  <section class="company-section section band-white">
+    <div class="container">
+      <div class="section-header" style="margin-bottom:var(--space-3xl)">
+        <span class="caption-mono">Company</span>
+        <h2 class="display-md">Learn more about us.</h2>
+        <p class="body-md" style="max-width:500px;margin-top:var(--space-sm)">Transparent, trustworthy, and committed to your privacy.</p>
+      </div>
+      <div class="company-cards">
+        <a href="/about-us" class="company-card">
+          <div class="company-card-icon">👥</div>
+          <div class="company-card-content">
+            <h3 class="company-card-title">About Us</h3>
+            <p class="company-card-desc">Meet the team behind AgeCalc. Learn our story, mission, and why we built the most advanced life analytics platform — for free.</p>
+            <span class="company-card-cta">Learn more →</span>
+          </div>
+        </a>
+        <a href="/contact-us" class="company-card">
+          <div class="company-card-icon">💬</div>
+          <div class="company-card-content">
+            <h3 class="company-card-title">Contact Us</h3>
+            <p class="company-card-desc">Have a question, found a bug, or want to suggest a feature? We'd love to hear from you. We reply within 24–48 hours.</p>
+            <span class="company-card-cta">Get in touch →</span>
+          </div>
+        </a>
+        <a href="/privacy-policy" class="company-card">
+          <div class="company-card-icon">🔒</div>
+          <div class="company-card-content">
+            <h3 class="company-card-title">Privacy Policy</h3>
+            <p class="company-card-desc">Your data stays in your browser — we never store your date of birth. Read our full privacy policy to understand exactly how we handle your information.</p>
+            <span class="company-card-cta">Read policy →</span>
+          </div>
+        </a>
+        <a href="/terms-and-conditions" class="company-card">
+          <div class="company-card-icon">📄</div>
+          <div class="company-card-content">
+            <h3 class="company-card-title">Terms & Conditions</h3>
+            <p class="company-card-desc">Understand the rules and disclaimers that govern the use of our free age calculator and life analytics tools.</p>
+            <span class="company-card-cta">Read terms →</span>
+          </div>
+        </a>
+      </div>
+    </div>
+  </section>
+
   <Footer slot="footer" />
 </BaseLayout>
 
@@ -143,4 +188,60 @@ details[open] .faq-question::after { content: '−'; }
 
 @keyframes pulseDot { 0%,100%{transform:scale(1);opacity:1;} 50%{transform:scale(1.4);opacity:0.7;} }
 @keyframes fadeInUp { from{opacity:0;transform:translateY(16px);} to{opacity:1;transform:translateY(0);} }
+
+/* Company Section */
+.company-cards {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--space-lg);
+}
+.company-card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+  padding: var(--space-xl);
+  background: var(--canvas);
+  border: 1px solid var(--hairline);
+  border-radius: var(--radius-xl);
+  text-decoration: none;
+  transition: border-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+  cursor: pointer;
+}
+.company-card:hover {
+  border-color: var(--hairline-strong);
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-4);
+}
+.company-card-icon { font-size: 2rem; }
+.company-card-content { display: flex; flex-direction: column; gap: var(--space-xs); }
+.company-card-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--ink);
+  letter-spacing: -0.4px;
+  margin: 0;
+}
+.company-card-desc {
+  font-size: 13.5px;
+  color: var(--body);
+  line-height: 1.6;
+  margin: 0;
+}
+.company-card-cta {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--link);
+  margin-top: var(--space-xs);
+  display: block;
+  transition: letter-spacing 0.2s ease;
+}
+.company-card:hover .company-card-cta { letter-spacing: 0.02em; }
+
+@media (max-width: 960px) {
+  .company-cards { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 600px) {
+  .company-cards { grid-template-columns: 1fr; }
+}
+
 </style>
