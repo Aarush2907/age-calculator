@@ -10,8 +10,8 @@
     "build": "astro build",
     "preview": "astro preview",
     "astro": "astro",
-    "deploy": "astro build && wrangler deploy",
-    "cf:preview": "astro build && wrangler dev"
+    "deploy": "astro build && wrangler pages deploy dist --project-name age-calculator",
+    "cf:preview": "astro build && wrangler pages dev dist"
   },
   "dependencies": {
     "astro": "^6.4.4"
