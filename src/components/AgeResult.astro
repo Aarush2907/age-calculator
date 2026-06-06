@@ -75,10 +75,11 @@
 .age-stat-sub { font-family: var(--font-mono); font-size: 11px; color: var(--mute); margin-top: 2px; }
 
 .live-counter {
-  background: var(--ink); color: #fff; border-radius: var(--radius-lg);
+  background: #171717; color: #fff; border-radius: var(--radius-lg);
   padding: var(--space-xl); text-align: center; display: flex; flex-direction: column;
   align-items: center; gap: var(--space-xs); margin-top: var(--space-md);
 }
+[data-theme="dark"] .live-counter { background: #0a0a0a; }
 .live-counter-inner { display: flex; align-items: center; gap: var(--space-xs); }
 .live-dot { width: 8px; height: 8px; border-radius: 50%; background: #50e3c2; animation: pulseDot 1.5s ease-in-out infinite; }
 .live-counter-label { color: rgba(255,255,255,0.6); }

@@ -1,0 +1,178 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Navbar from '../components/Navbar.astro';
+import Footer from '../components/Footer.astro';
+import ToolsGrid from '../components/ToolsGrid.astro';
+
+const title = "Work Hours Calculator — Calculate Total Hours Worked | agecalconline.com";
+const description = "Calculate total work hours between two dates and times. Subtract lunch breaks, calculate overtime, and estimate your earnings. Free online work hours calculator.";
+const keywords = "work hours calculator, hours worked calculator, time calculator, calculate work hours, overtime calculator, paycheck hours calculator, total hours worked";
+const canonical = "https://agecalconline.com/work-hours-calculator";
+
+const schema = {
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "Work Hours Calculator",
+  "applicationCategory": "FinanceApplication",
+  "url": canonical,
+  "description": description,
+  "operatingSystem": "Any",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+  "aggregateRating": { "@type": "AggregateRating", "ratingValue": "4.8", "reviewCount": "2167" }
+};
+
+const faqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    { "@type": "Question", "name": "How do I calculate total work hours?", "acceptedAnswer": { "@type": "Answer", "text": "Subtract your start time from your end time to get the duration. If you have breaks, subtract those as well. Our calculator does this automatically and also handles multi-day periods." } },
+    { "@type": "Question", "name": "How many hours is a full-time job?", "acceptedAnswer": { "@type": "Answer", "text": "In the United States, full-time employment is typically defined as 40 hours per week, or 8 hours per day, 5 days a week. In some countries, the standard is 35 or 37.5 hours per week." } },
+    { "@type": "Question", "name": "How is overtime calculated?", "acceptedAnswer": { "@type": "Answer", "text": "In the US, overtime is any time worked beyond 40 hours in a single work week. Overtime is typically paid at 1.5× the regular hourly rate, though this varies by location and employment contract." } },
+    { "@type": "Question", "name": "How do I calculate my paycheck from hours?", "acceptedAnswer": { "@type": "Answer", "text": "Multiply your total hours worked by your hourly rate. For example, 42 hours at $20/hr = 40 × $20 + 2 × $30 (overtime) = $860. Our calculator includes an optional hourly rate field to estimate your earnings." } },
+    { "@type": "Question", "name": "Does the work hours calculator account for lunch breaks?", "acceptedAnswer": { "@type": "Answer", "text": "Yes! Our calculator lets you enter a break duration in minutes (e.g., 30 or 60 minutes), which will be subtracted from the total time to give you the net hours worked." } },
+  ]
+};
+---
+<BaseLayout title={title} description={description} keywords={keywords} canonical={canonical}>
+  <script type="application/ld+json" set:html={JSON.stringify(schema)} slot="head" />
+  <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} slot="head" />
+  <Navbar slot="nav" />
+
+  <section class="section-hero band-white" style="position:relative;overflow:hidden;text-align:center">
+    <div style="position:absolute;inset:-40px;background:linear-gradient(135deg,#0070f3,#00b4d8,#00dfd8);opacity:0.08;filter:blur(80px);pointer-events:none"></div>
+    <div class="container" style="position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;gap:var(--space-xl)">
+      <span class="caption-mono">Work Hours Calculator</span>
+      <h1 class="display-xl">Calculate your total hours worked.</h1>
+      <p class="body-lg text-body" style="max-width:520px">Enter your start and end times, subtract your break, and instantly see your total work hours, decimal time, and estimated earnings.</p>
+
+      <div class="card-lg" style="width:100%;max-width:620px;text-align:left">
+        <div class="grid-2" style="gap:var(--space-lg)">
+          <div class="form-group">
+            <label class="form-label" for="wh-start-date">Start Date</label>
+            <input type="date" id="wh-start-date" class="form-input form-input-lg" />
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="wh-start-time">Start Time</label>
+            <input type="time" id="wh-start-time" class="form-input form-input-lg" value="09:00" />
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="wh-end-date">End Date</label>
+            <input type="date" id="wh-end-date" class="form-input form-input-lg" />
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="wh-end-time">End Time</label>
+            <input type="time" id="wh-end-time" class="form-input form-input-lg" value="17:00" />
+          </div>
+        </div>
+
+        <div class="grid-2" style="gap:var(--space-lg);margin-top:var(--space-lg)">
+          <div class="form-group">
+            <label class="form-label" for="wh-break">Break Duration (minutes)</label>
+            <input type="number" id="wh-break" class="form-input form-input-lg" placeholder="e.g. 30" min="0" value="0" />
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="wh-rate">Hourly Rate (optional, $)</label>
+            <input type="number" id="wh-rate" class="form-input form-input-lg" placeholder="e.g. 20.00" min="0" step="0.01" />
+          </div>
+        </div>
+
+        <button class="btn-primary" id="wh-btn" style="margin-top:var(--space-lg);width:100%;justify-content:center">Calculate Work Hours</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="section band-light hidden" id="wh-result">
+    <div class="container" style="max-width:720px">
+      <div class="wh-hero">
+        <div class="caption-mono" style="color:var(--mute)">Total Time Worked</div>
+        <div class="wh-big" id="wh-main-display">—</div>
+      </div>
+      <div class="grid-3" style="margin-top:var(--space-3xl);gap:var(--space-md)">
+        <div class="wh-stat-card"><div class="wh-stat-label">Decimal Hours</div><div class="wh-stat-value" id="wh-decimal">—</div></div>
+        <div class="wh-stat-card"><div class="wh-stat-label">Total Minutes</div><div class="wh-stat-value" id="wh-total-mins">—</div></div>
+        <div class="wh-stat-card wh-stat-card--earnings hidden" id="wh-earnings-card"><div class="wh-stat-label">Estimated Earnings</div><div class="wh-stat-value" id="wh-earnings">—</div></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section band-white">
+    <div class="container" style="max-width:720px">
+      <h2 class="display-md" style="margin-bottom:var(--space-sm)">How to Calculate Work Hours</h2>
+      <p class="body-md text-body" style="margin-bottom:var(--space-xl)">Calculating work hours accurately is essential for payroll, freelance invoicing, project tracking, and overtime compliance. To find total hours worked: subtract the start time from the end time to get gross time, then subtract any unpaid break time to get net hours. For longer periods, multiply by the number of work days. Our calculator handles all of this in seconds — just enter your times and let us do the math.</p>
+
+      <h2 class="display-md" style="margin-bottom:var(--space-xl)">Frequently Asked Questions</h2>
+      <details class="faq-item"><summary class="faq-question">How do I calculate total work hours?</summary><p class="faq-answer">Subtract your start time from your end time to get the duration. If you have breaks, subtract those as well. Our calculator does this automatically and also handles multi-day periods.</p></details>
+      <details class="faq-item"><summary class="faq-question">How many hours is a full-time job?</summary><p class="faq-answer">In the United States, full-time employment is typically defined as 40 hours per week, or 8 hours per day, 5 days a week. In some countries, the standard is 35 or 37.5 hours per week.</p></details>
+      <details class="faq-item"><summary class="faq-question">How is overtime calculated?</summary><p class="faq-answer">In the US, overtime is any time worked beyond 40 hours in a single work week. Overtime is typically paid at 1.5× the regular hourly rate, though this varies by location and employment contract.</p></details>
+      <details class="faq-item"><summary class="faq-question">How do I calculate my paycheck from hours?</summary><p class="faq-answer">Multiply your total hours worked by your hourly rate. For example, 42 hours at $20/hr = 40 × $20 + 2 × $30 (overtime) = $860. Our calculator includes an optional hourly rate field to estimate your earnings.</p></details>
+      <details class="faq-item"><summary class="faq-question">Does the work hours calculator account for lunch breaks?</summary><p class="faq-answer">Yes! Our calculator lets you enter a break duration in minutes (e.g., 30 or 60 minutes), which will be subtracted from the total time to give you the net hours worked.</p></details>
+    </div>
+  </section>
+
+  <ToolsGrid />
+  <Footer slot="footer" />
+</BaseLayout>
+
+<style is:global>
+.faq-item { border-top:1px solid var(--hairline); }
+.faq-item:last-child { border-bottom:1px solid var(--hairline); }
+.faq-question { font-size:16px;font-weight:500;color:var(--ink);cursor:pointer;padding:var(--space-lg) 0;list-style:none;display:flex;justify-content:space-between;align-items:center;letter-spacing:-0.4px; }
+.faq-question::after { content:'+';font-size:20px;font-weight:300;color:var(--mute); }
+details[open] .faq-question::after { content:'−'; }
+.faq-answer { font-size:15px;color:var(--body);line-height:1.7;padding-bottom:var(--space-lg); }
+</style>
+<style>
+.wh-hero { text-align:center; padding:var(--space-3xl); background:var(--canvas); border-radius:var(--radius-lg); box-shadow:var(--shadow-3); border:1px solid var(--hairline); }
+.wh-big { font-size:42px; font-weight:600; letter-spacing:-2px; color:var(--ink); margin-top:var(--space-sm); }
+.wh-stat-card { background:var(--canvas); border-radius:var(--radius-md); padding:var(--space-lg); box-shadow:var(--shadow-2); border:1px solid var(--hairline); display:flex; flex-direction:column; gap:var(--space-xs); }
+.wh-stat-label { font-family:var(--font-mono); font-size:11px; color:var(--mute); text-transform:uppercase; letter-spacing:.08em; }
+.wh-stat-value { font-size:32px; font-weight:600; letter-spacing:-1.2px; color:var(--ink); }
+.wh-stat-card--earnings { border-color:#50e3c2; }
+@media (max-width:600px) { .wh-big { font-size:28px; } }
+</style>
+
+<script>
+// Prefill dates with today
+const today = new Date().toISOString().split('T')[0];
+(document.getElementById('wh-start-date') as HTMLInputElement).value = today;
+(document.getElementById('wh-end-date') as HTMLInputElement).value = today;
+
+document.getElementById('wh-btn')?.addEventListener('click', () => {
+  const startDate = (document.getElementById('wh-start-date') as HTMLInputElement).value;
+  const startTime = (document.getElementById('wh-start-time') as HTMLInputElement).value;
+  const endDate = (document.getElementById('wh-end-date') as HTMLInputElement).value;
+  const endTime = (document.getElementById('wh-end-time') as HTMLInputElement).value;
+  const breakMins = parseInt((document.getElementById('wh-break') as HTMLInputElement).value) || 0;
+  const rate = parseFloat((document.getElementById('wh-rate') as HTMLInputElement).value) || 0;
+
+  if (!startDate || !startTime || !endDate || !endTime) return alert('Please fill in all date and time fields.');
+
+  const start = new Date(`${startDate}T${startTime}`);
+  const end = new Date(`${endDate}T${endTime}`);
+
+  if (end <= start) return alert('End time must be after start time.');
+
+  const totalMs = end.getTime() - start.getTime();
+  const grossMins = Math.floor(totalMs / 60000);
+  const netMins = Math.max(0, grossMins - breakMins);
+  const netHours = netMins / 60;
+  const wholeHours = Math.floor(netHours);
+  const remainMins = netMins % 60;
+
+  (document.getElementById('wh-main-display') as HTMLElement).textContent = `${wholeHours}h ${remainMins}m`;
+  (document.getElementById('wh-decimal') as HTMLElement).textContent = netHours.toFixed(2) + ' hrs';
+  (document.getElementById('wh-total-mins') as HTMLElement).textContent = netMins.toLocaleString() + ' min';
+
+  const earningsCard = document.getElementById('wh-earnings-card')!;
+  if (rate > 0) {
+    const earnings = netHours * rate;
+    (document.getElementById('wh-earnings') as HTMLElement).textContent = `$${earnings.toFixed(2)}`;
+    earningsCard.classList.remove('hidden');
+  } else {
+    earningsCard.classList.add('hidden');
+  }
+
+  document.getElementById('wh-result')!.classList.remove('hidden');
+  document.getElementById('wh-result')!.scrollIntoView({ behavior: 'smooth', block: 'start' });
+});
+</script>

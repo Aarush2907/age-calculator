@@ -7,21 +7,27 @@ const SITE = 'https://agecalconline.com';
 
 const pages = [
   // Core calculators
-  { url: '/',                              priority: '1.00', changefreq: 'daily'   },
-  { url: '/age-difference-calculator',    priority: '0.90', changefreq: 'weekly'  },
-  { url: '/birthday-calculator',          priority: '0.90', changefreq: 'weekly'  },
-  { url: '/biological-age-calculator',    priority: '0.85', changefreq: 'weekly'  },
-  { url: '/life-expectancy-calculator',   priority: '0.85', changefreq: 'weekly'  },
-  { url: '/pet-age-calculator',           priority: '0.85', changefreq: 'weekly'  },
-  { url: '/retirement-calculator',        priority: '0.85', changefreq: 'weekly'  },
-  { url: '/generation-calculator',        priority: '0.80', changefreq: 'weekly'  },
-  { url: '/future-age-calculator',        priority: '0.80', changefreq: 'weekly'  },
-  { url: '/reverse-age-calculator',       priority: '0.80', changefreq: 'weekly'  },
+  { url: '/',                                     priority: '1.00', changefreq: 'daily'   },
+  { url: '/age-difference-calculator',            priority: '0.90', changefreq: 'weekly'  },
+  { url: '/birthday-calculator',                  priority: '0.90', changefreq: 'weekly'  },
+  { url: '/chronological-age-calculator',         priority: '0.90', changefreq: 'weekly'  },
+  { url: '/pregnancy-due-date-calculator',        priority: '0.90', changefreq: 'weekly'  },
+  { url: '/menstrual-cycle-calculator',           priority: '0.90', changefreq: 'weekly'  },
+  { url: '/bmi-calculator',                       priority: '0.90', changefreq: 'weekly'  },
+  { url: '/work-hours-calculator',                priority: '0.88', changefreq: 'weekly'  },
+  { url: '/percentage-calculator',                priority: '0.88', changefreq: 'weekly'  },
+  { url: '/biological-age-calculator',            priority: '0.85', changefreq: 'weekly'  },
+  { url: '/life-expectancy-calculator',           priority: '0.85', changefreq: 'weekly'  },
+  { url: '/pet-age-calculator',                   priority: '0.85', changefreq: 'weekly'  },
+  { url: '/retirement-calculator',                priority: '0.85', changefreq: 'weekly'  },
+  { url: '/generation-calculator',                priority: '0.80', changefreq: 'weekly'  },
+  { url: '/future-age-calculator',                priority: '0.80', changefreq: 'weekly'  },
+  { url: '/reverse-age-calculator',               priority: '0.80', changefreq: 'weekly'  },
   // Company / info pages
-  { url: '/about-us',                     priority: '0.60', changefreq: 'monthly' },
-  { url: '/contact-us',                   priority: '0.60', changefreq: 'monthly' },
-  { url: '/privacy-policy',              priority: '0.40', changefreq: 'yearly'  },
-  { url: '/terms-and-conditions',         priority: '0.40', changefreq: 'yearly'  },
+  { url: '/about-us',                             priority: '0.60', changefreq: 'monthly' },
+  { url: '/contact-us',                           priority: '0.60', changefreq: 'monthly' },
+  { url: '/privacy-policy',                       priority: '0.40', changefreq: 'yearly'  },
+  { url: '/terms-and-conditions',                 priority: '0.40', changefreq: 'yearly'  },
 ];
 
 const lastmod = new Date().toISOString().split('T')[0]; // YYYY-MM-DD

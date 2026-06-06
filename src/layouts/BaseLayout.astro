@@ -7,13 +7,15 @@ export interface Props {
   keywords?: string;
   canonical?: string;
   ogImage?: string;
+  ogType?: string;
 }
 const {
   title,
   description,
   keywords = "",
   canonical = `https://agecalconline.com${Astro.url.pathname}`,
-  ogImage = 'https://agecalconline.com/og-image.png'
+  ogImage = 'https://agecalconline.com/og-image.png',
+  ogType = 'website',
 } = Astro.props;
 ---
 <!DOCTYPE html>
@@ -24,6 +26,10 @@ const {
   <title>{title}</title>
   <meta name="description" content={description} />
   {keywords && <meta name="keywords" content={keywords} />}
+  <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
+  <meta name="author" content="agecalconline.com" />
+  <meta name="language" content="English" />
+  <meta name="theme-color" content="#0070f3" />
   <link rel="canonical" href={canonical} />
 
   <!-- Open Graph -->
@@ -31,14 +37,18 @@ const {
   <meta property="og:description" content={description} />
   <meta property="og:url" content={canonical} />
   <meta property="og:image" content={ogImage} />
-  <meta property="og:type" content="website" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:type" content={ogType} />
   <meta property="og:site_name" content="Age Calculator — agecalconline.com" />
+  <meta property="og:locale" content="en_US" />
 
   <!-- Twitter Card -->
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content={title} />
   <meta name="twitter:description" content={description} />
   <meta name="twitter:image" content={ogImage} />
+  <meta name="twitter:site" content="@agecalconline" />
 
   <!-- Favicon -->
   <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96" />
@@ -74,19 +84,33 @@ const {
     gtag('config', 'G-REQSJY3D4D');
   </script>
 
-  <!-- JSON-LD Schema -->
+  <!-- Global JSON-LD: Organization + Website -->
   <script type="application/ld+json" set:html={JSON.stringify({
     "@context": "https://schema.org",
-    "@type": "WebSite",
-    "name": "Age Calculator",
-    "url": "https://agecalconline.com",
-    "description": "The most advanced age & life analytics calculator. Calculate your exact age, milestones, life stats, planetary age, and more.",
-    "potentialAction": {
-      "@type": "SearchAction",
-      "target": "https://agecalconline.com/?dob={search_term_string}",
-      "query-input": "required name=search_term_string"
-    }
+    "@graph": [
+      {
+        "@type": "Organization",
+        "name": "agecalconline.com",
+        "url": "https://agecalconline.com",
+        "logo": "https://agecalconline.com/favicon-96x96.png",
+        "contactPoint": { "@type": "ContactPoint", "contactType": "Customer Support", "email": "contact@agecalconline.com" }
+      },
+      {
+        "@type": "WebSite",
+        "name": "Age Calculator",
+        "url": "https://agecalconline.com",
+        "description": "Free online calculators for age, pregnancy, work hours, percentages, and life analytics.",
+        "potentialAction": {
+          "@type": "SearchAction",
+          "target": "https://agecalconline.com/?dob={search_term_string}",
+          "query-input": "required name=search_term_string"
+        }
+      }
+    ]
   })} />
+
+  <!-- Per-page schema slot (inject SoftwareApplication / FAQPage etc. from individual pages) -->
+  <slot name="head" />
 </head>
 <body>
   <slot name="nav" />
@@ -96,3 +120,5 @@ const {
   <slot name="footer" />
 </body>
 </html>
+
+

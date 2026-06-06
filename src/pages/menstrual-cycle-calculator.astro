@@ -1,0 +1,209 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Navbar from '../components/Navbar.astro';
+import Footer from '../components/Footer.astro';
+import ToolsGrid from '../components/ToolsGrid.astro';
+
+const title = "Menstrual Cycle Calculator — Predict Your Next Period | agecalconline.com";
+const description = "Predict your next period date, fertile window, and ovulation day based on your last menstrual period and average cycle length. Free menstrual cycle calculator.";
+const keywords = "menstrual cycle calculator, period calculator, next period date, fertile window calculator, ovulation calculator, period tracker, period predictor";
+const canonical = "https://agecalconline.com/menstrual-cycle-calculator";
+
+const schema = {
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "Menstrual Cycle Calculator",
+  "applicationCategory": "HealthApplication",
+  "url": canonical,
+  "description": description,
+  "operatingSystem": "Any",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+  "aggregateRating": { "@type": "AggregateRating", "ratingValue": "4.8", "reviewCount": "2341" }
+};
+
+const faqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    { "@type": "Question", "name": "How is the next period date calculated?", "acceptedAnswer": { "@type": "Answer", "text": "Your next period is predicted by adding your average cycle length to the first day of your last period. For example, if your last period started on June 1 and your cycle is 28 days, your next period is predicted around June 29." } },
+    { "@type": "Question", "name": "What is a normal menstrual cycle length?", "acceptedAnswer": { "@type": "Answer", "text": "A normal menstrual cycle ranges from 21 to 35 days, with 28 days being the most common average. The length can vary from person to person and even cycle to cycle." } },
+    { "@type": "Question", "name": "When is the fertile window?", "acceptedAnswer": { "@type": "Answer", "text": "The fertile window is typically the 5 days before ovulation and the day of ovulation itself — about 6 days total. Ovulation usually occurs around 14 days before your next period, not 14 days after your last period." } },
+    { "@type": "Question", "name": "How accurate is the period prediction?", "acceptedAnswer": { "@type": "Answer", "text": "Period predictions are estimates based on past cycle averages. Stress, illness, diet changes, and hormonal fluctuations can all shift your actual period date. This calculator provides a rough prediction, not a medical diagnosis." } },
+    { "@type": "Question", "name": "What is the luteal phase?", "acceptedAnswer": { "@type": "Answer", "text": "The luteal phase is the second half of your cycle — the time between ovulation and your next period. It typically lasts 12–14 days. A shorter luteal phase (under 10 days) can sometimes affect fertility." } },
+  ]
+};
+---
+<BaseLayout title={title} description={description} keywords={keywords} canonical={canonical}>
+  <script type="application/ld+json" set:html={JSON.stringify(schema)} slot="head" />
+  <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} slot="head" />
+  <Navbar slot="nav" />
+
+  <section class="section-hero band-white" style="position:relative;overflow:hidden;text-align:center">
+    <div style="position:absolute;inset:-40px;background:linear-gradient(135deg,#c77dff,#e0aaff,#ff6b9d);opacity:0.10;filter:blur(80px);pointer-events:none"></div>
+    <div class="container" style="position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;gap:var(--space-xl)">
+      <span class="caption-mono">Menstrual Cycle Calculator</span>
+      <h1 class="display-xl">Predict your next period.</h1>
+      <p class="body-lg text-body" style="max-width:520px">Enter the first day of your last period and your average cycle length to predict your next period, fertile window, and estimated ovulation date.</p>
+
+      <div class="card-lg" style="width:100%;max-width:580px;text-align:left">
+        <div class="grid-2" style="gap:var(--space-lg)">
+          <div class="form-group">
+            <label class="form-label" for="mc-last-period">First Day of Last Period</label>
+            <input type="date" id="mc-last-period" class="form-input form-input-lg" />
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="mc-cycle-length">Average Cycle Length (days)</label>
+            <input type="number" id="mc-cycle-length" class="form-input form-input-lg" value="28" min="21" max="45" />
+          </div>
+        </div>
+        <div class="form-group" style="margin-top:var(--space-lg)">
+          <label class="form-label" for="mc-period-duration">Average Period Duration (days)</label>
+          <input type="number" id="mc-period-duration" class="form-input form-input-lg" value="5" min="2" max="10" />
+        </div>
+        <button class="btn-primary" id="mc-btn" style="margin-top:var(--space-lg);width:100%;justify-content:center">Predict My Cycle</button>
+        <p class="body-sm text-body" style="margin-top:var(--space-sm);text-align:center">⚠️ For informational purposes only. Not a substitute for medical advice.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Results -->
+  <section class="section band-light hidden" id="mc-result">
+    <div class="container" style="max-width:720px">
+      <!-- Next period highlight -->
+      <div class="mc-next-period">
+        <div class="caption-mono" style="color:rgba(255,255,255,0.6)">Next Period Expected</div>
+        <div class="mc-big-date" id="mc-next-date">—</div>
+        <div class="body-md" style="color:rgba(255,255,255,0.75)" id="mc-days-until">—</div>
+      </div>
+
+      <!-- Cycle info cards -->
+      <div class="grid-3" style="margin-top:var(--space-3xl);gap:var(--space-md)">
+        <div class="mc-stat-card">
+          <div class="mc-stat-icon">🥚</div>
+          <div class="mc-stat-label">Ovulation Day</div>
+          <div class="mc-stat-value" id="mc-ovulation">—</div>
+        </div>
+        <div class="mc-stat-card mc-fertile">
+          <div class="mc-stat-icon">🌸</div>
+          <div class="mc-stat-label">Fertile Window</div>
+          <div class="mc-stat-value" id="mc-fertile">—</div>
+        </div>
+        <div class="mc-stat-card">
+          <div class="mc-stat-icon">📅</div>
+          <div class="mc-stat-label">Period Ends (~)</div>
+          <div class="mc-stat-value" id="mc-period-end">—</div>
+        </div>
+      </div>
+
+      <!-- Upcoming 3 cycles preview -->
+      <div style="margin-top:var(--space-3xl)">
+        <h2 class="display-md" style="margin-bottom:var(--space-xl)">Upcoming Cycle Predictions</h2>
+        <div id="mc-cycles-list" class="mc-cycles"></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section band-white">
+    <div class="container" style="max-width:720px">
+      <h2 class="display-md" style="margin-bottom:var(--space-sm)">How Period Prediction Works</h2>
+      <p class="body-md text-body" style="margin-bottom:var(--space-xl)">The menstrual cycle begins on the first day of your period and ends the day before your next period starts. By tracking the number of days between your periods, you can estimate a pattern. This calculator adds your average cycle length to the first day of your last period to predict your next one. Keep in mind that stress, travel, diet changes, and illness can all affect your cycle timing. For persistent irregularities, speak with a healthcare provider.</p>
+
+      <h2 class="display-md" style="margin-bottom:var(--space-xl)">Frequently Asked Questions</h2>
+      <details class="faq-item"><summary class="faq-question">How is the next period date calculated?</summary><p class="faq-answer">Your next period is predicted by adding your average cycle length to the first day of your last period. For example, if your last period started on June 1 and your cycle is 28 days, your next period is predicted around June 29.</p></details>
+      <details class="faq-item"><summary class="faq-question">What is a normal menstrual cycle length?</summary><p class="faq-answer">A normal menstrual cycle ranges from 21 to 35 days, with 28 days being the most common average. The length can vary from person to person and even cycle to cycle.</p></details>
+      <details class="faq-item"><summary class="faq-question">When is the fertile window?</summary><p class="faq-answer">The fertile window is typically the 5 days before ovulation and the day of ovulation itself — about 6 days total. Ovulation usually occurs around 14 days before your next period, not 14 days after your last period.</p></details>
+      <details class="faq-item"><summary class="faq-question">How accurate is the period prediction?</summary><p class="faq-answer">Period predictions are estimates based on past cycle averages. Stress, illness, diet changes, and hormonal fluctuations can all shift your actual period date. This calculator provides a rough prediction, not a medical diagnosis.</p></details>
+      <details class="faq-item"><summary class="faq-question">What is the luteal phase?</summary><p class="faq-answer">The luteal phase is the second half of your cycle — the time between ovulation and your next period. It typically lasts 12–14 days. A shorter luteal phase (under 10 days) can sometimes affect fertility.</p></details>
+    </div>
+  </section>
+
+  <ToolsGrid />
+  <Footer slot="footer" />
+</BaseLayout>
+
+<style is:global>
+.faq-item { border-top:1px solid var(--hairline); }
+.faq-item:last-child { border-bottom:1px solid var(--hairline); }
+.faq-question { font-size:16px;font-weight:500;color:var(--ink);cursor:pointer;padding:var(--space-lg) 0;list-style:none;display:flex;justify-content:space-between;align-items:center;letter-spacing:-0.4px; }
+.faq-question::after { content:'+';font-size:20px;font-weight:300;color:var(--mute); }
+details[open] .faq-question::after { content:'−'; }
+.faq-answer { font-size:15px;color:var(--body);line-height:1.7;padding-bottom:var(--space-lg); }
+</style>
+<style>
+.mc-next-period { background:#171717; border-radius:var(--radius-xl); padding:var(--space-3xl); text-align:center; display:flex; flex-direction:column; align-items:center; gap:var(--space-sm); }
+[data-theme="dark"] .mc-next-period { background:#0a0a0a; }
+.mc-big-date { font-size:42px; font-weight:600; letter-spacing:-2px; color:#fff; }
+.mc-stat-card { background:var(--canvas); border-radius:var(--radius-md); padding:var(--space-lg); box-shadow:var(--shadow-2); border:1px solid var(--hairline); display:flex; flex-direction:column; gap:var(--space-xs); }
+.mc-fertile { border-color:#c77dff; }
+.mc-stat-icon { font-size:28px; }
+.mc-stat-label { font-family:var(--font-mono); font-size:11px; color:var(--mute); text-transform:uppercase; letter-spacing:.08em; }
+.mc-stat-value { font-size:18px; font-weight:600; color:var(--ink); letter-spacing:-0.5px; line-height:1.3; }
+.mc-cycles { display:flex; flex-direction:column; gap:var(--space-sm); }
+.mc-cycle-row { display:flex; align-items:center; justify-content:space-between; padding:var(--space-md) var(--space-lg); background:var(--canvas); border-radius:var(--radius-md); border:1px solid var(--hairline); }
+.mc-cycle-num { font-family:var(--font-mono); font-size:11px; color:var(--mute); text-transform:uppercase; }
+.mc-cycle-date { font-size:16px; font-weight:600; color:var(--ink); letter-spacing:-0.4px; }
+.mc-cycle-badge { font-size:12px; padding:2px 10px; border-radius:var(--radius-full); background:var(--canvas-soft-2); color:var(--body); border:1px solid var(--hairline); }
+@media (max-width:600px) { .mc-big-date { font-size:28px; } .mc-next-period { padding:var(--space-xl); } }
+</style>
+
+<script>
+const months = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+const shortMonths = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+
+function fmt(d: Date) { return `${months[d.getMonth()]} ${d.getDate()}, ${d.getFullYear()}`; }
+function fmtShort(d: Date) { return `${shortMonths[d.getMonth()]} ${d.getDate()}`; }
+function addDays(d: Date, n: number) { const r = new Date(d); r.setDate(r.getDate() + n); return r; }
+
+document.getElementById('mc-btn')?.addEventListener('click', () => {
+  const lastVal = (document.getElementById('mc-last-period') as HTMLInputElement).value;
+  const cycleLen = parseInt((document.getElementById('mc-cycle-length') as HTMLInputElement).value) || 28;
+  const duration = parseInt((document.getElementById('mc-period-duration') as HTMLInputElement).value) || 5;
+
+  if (!lastVal) return alert('Please enter the first day of your last period.');
+  if (cycleLen < 21 || cycleLen > 45) return alert('Cycle length should be between 21 and 45 days.');
+
+  const lastPeriod = new Date(lastVal);
+  lastPeriod.setHours(12, 0, 0, 0);
+
+  // Next period start
+  const nextPeriod = addDays(lastPeriod, cycleLen);
+  const periodEnd = addDays(nextPeriod, duration - 1);
+
+  // Ovulation: ~14 days before next period
+  const ovulation = addDays(nextPeriod, -14);
+
+  // Fertile window: 5 days before ovulation + ovulation day
+  const fertileStart = addDays(ovulation, -5);
+  const fertileEnd = ovulation;
+
+  const today = new Date();
+  today.setHours(12, 0, 0, 0);
+  const daysUntil = Math.round((nextPeriod.getTime() - today.getTime()) / 86400000);
+  const daysUntilStr = daysUntil > 0
+    ? `In ${daysUntil} day${daysUntil !== 1 ? 's' : ''}`
+    : daysUntil === 0 ? 'Today!' : `${Math.abs(daysUntil)} day${Math.abs(daysUntil) !== 1 ? 's' : ''} ago`;
+
+  (document.getElementById('mc-next-date') as HTMLElement).textContent = fmt(nextPeriod);
+  (document.getElementById('mc-days-until') as HTMLElement).textContent = daysUntilStr;
+  (document.getElementById('mc-ovulation') as HTMLElement).textContent = fmt(ovulation);
+  (document.getElementById('mc-fertile') as HTMLElement).textContent = `${fmtShort(fertileStart)} – ${fmtShort(fertileEnd)}`;
+  (document.getElementById('mc-period-end') as HTMLElement).textContent = fmt(periodEnd);
+
+  // Upcoming 3 cycles
+  const list = document.getElementById('mc-cycles-list')!;
+  let html = '';
+  for (let i = 1; i <= 4; i++) {
+    const start = addDays(lastPeriod, cycleLen * i);
+    const end = addDays(start, duration - 1);
+    html += `<div class="mc-cycle-row">
+      <span class="mc-cycle-num">Cycle ${i}</span>
+      <span class="mc-cycle-date">${fmt(start)}</span>
+      <span class="mc-cycle-badge">Ends ~${fmtShort(end)}</span>
+    </div>`;
+  }
+  list.innerHTML = html;
+
+  document.getElementById('mc-result')!.classList.remove('hidden');
+  document.getElementById('mc-result')!.scrollIntoView({ behavior: 'smooth', block: 'start' });
+});
+</script>

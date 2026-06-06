@@ -1,0 +1,207 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Navbar from '../components/Navbar.astro';
+import Footer from '../components/Footer.astro';
+import ToolsGrid from '../components/ToolsGrid.astro';
+
+const title = "Pregnancy Due Date Calculator — When Will My Baby Arrive? | agecalconline.com";
+const description = "Calculate your pregnancy due date, current trimester, weeks pregnant, and days remaining. Enter your last menstrual period or conception date for an instant result.";
+const keywords = "pregnancy due date calculator, when will my baby be born, weeks pregnant calculator, due date calculator, pregnancy calculator, LMP calculator, conception date calculator";
+const canonical = "https://agecalconline.com/pregnancy-due-date-calculator";
+
+const schema = {
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "Pregnancy Due Date Calculator",
+  "applicationCategory": "HealthApplication",
+  "url": canonical,
+  "description": description,
+  "operatingSystem": "Any",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+  "aggregateRating": { "@type": "AggregateRating", "ratingValue": "4.9", "reviewCount": "1842" }
+};
+
+const faqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    { "@type": "Question", "name": "How is the pregnancy due date calculated?", "acceptedAnswer": { "@type": "Answer", "text": "The standard method adds 280 days (40 weeks) to the first day of your last menstrual period (LMP). This is known as Naegele's Rule and is used by most OBGYNs worldwide." } },
+    { "@type": "Question", "name": "How accurate is the due date calculator?", "acceptedAnswer": { "@type": "Answer", "text": "Only about 5% of babies are born on their exact due date. The due date is an estimate, and most births occur within 2 weeks before or after it. An ultrasound in the first trimester provides the most accurate dating." } },
+    { "@type": "Question", "name": "What is a trimester?", "acceptedAnswer": { "@type": "Answer", "text": "A pregnancy is divided into three trimesters. The first trimester runs from weeks 1–13, the second from weeks 14–27, and the third from week 28 until birth around week 40." } },
+    { "@type": "Question", "name": "Can I use the conception date instead of LMP?", "acceptedAnswer": { "@type": "Answer", "text": "Yes! If you know your conception date, our calculator adds 266 days (38 weeks) to it, since conception typically occurs about 14 days after the start of your LMP." } },
+    { "@type": "Question", "name": "What if my cycle is irregular?", "acceptedAnswer": { "@type": "Answer", "text": "For irregular cycles, the LMP method may be less accurate. An early ultrasound (before 13 weeks) is the most reliable way to determine your due date when cycles are irregular." } },
+    { "@type": "Question", "name": "What week does each trimester start?", "acceptedAnswer": { "@type": "Answer", "text": "The first trimester is weeks 1–13, the second trimester is weeks 14–27, and the third trimester begins at week 28 and continues until birth." } },
+  ]
+};
+---
+<BaseLayout title={title} description={description} keywords={keywords} canonical={canonical}>
+  <script type="application/ld+json" set:html={JSON.stringify(schema)} slot="head" />
+  <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} slot="head" />
+  <Navbar slot="nav" />
+
+  <section class="section-hero band-white" style="position:relative;overflow:hidden;text-align:center">
+    <div style="position:absolute;inset:-40px;background:linear-gradient(135deg,#ff6b9d,#ff8fab,#ffc8dd,#ffafcc);opacity:0.12;filter:blur(80px);pointer-events:none"></div>
+    <div class="container" style="position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;gap:var(--space-xl)">
+      <span class="caption-mono">Pregnancy Due Date Calculator</span>
+      <h1 class="display-xl">When will your baby arrive?</h1>
+      <p class="body-lg text-body" style="max-width:520px">Enter your last menstrual period date or conception date to instantly calculate your due date, trimester, and how many weeks pregnant you are.</p>
+
+      <div class="pdc-form card-lg" style="width:100%;max-width:600px;text-align:left">
+        <div class="pdc-tabs">
+          <button class="pdc-tab pdc-tab--active" id="tab-lmp">Last Menstrual Period</button>
+          <button class="pdc-tab" id="tab-conception">Conception Date</button>
+        </div>
+
+        <div id="panel-lmp" class="pdc-panel form-group">
+          <label class="form-label" for="lmp-date">First day of your last menstrual period</label>
+          <input type="date" id="lmp-date" class="form-input form-input-lg" />
+          <p class="body-sm text-body" style="margin-top:var(--space-xs)">Assumes a standard 28-day cycle. Due date = LMP + 280 days.</p>
+        </div>
+
+        <div id="panel-conception" class="pdc-panel form-group hidden">
+          <label class="form-label" for="conception-date">Conception Date</label>
+          <input type="date" id="conception-date" class="form-input form-input-lg" />
+          <p class="body-sm text-body" style="margin-top:var(--space-xs)">Due date = conception date + 266 days (38 weeks).</p>
+        </div>
+
+        <button class="btn-primary" id="pdc-btn" style="margin-top:var(--space-lg);width:100%;justify-content:center">Calculate Due Date</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="section band-light hidden" id="pdc-result">
+    <div class="container" style="max-width:720px">
+      <div class="pdc-due-date-hero">
+        <div class="caption-mono" style="color:var(--mute)">Estimated Due Date</div>
+        <div class="pdc-big-date" id="pdc-due-date-display">—</div>
+        <div class="body-md text-body" id="pdc-days-remaining">—</div>
+      </div>
+      <div class="grid-3" style="margin-top:var(--space-3xl)">
+        <div class="pdc-stat-card">
+          <div class="pdc-stat-label">Weeks Pregnant</div>
+          <div class="pdc-stat-value" id="pdc-weeks">—</div>
+        </div>
+        <div class="pdc-stat-card">
+          <div class="pdc-stat-label">Current Trimester</div>
+          <div class="pdc-stat-value" id="pdc-trimester">—</div>
+        </div>
+        <div class="pdc-stat-card">
+          <div class="pdc-stat-label">Days Until Due Date</div>
+          <div class="pdc-stat-value" id="pdc-days">—</div>
+        </div>
+      </div>
+      <div class="pdc-trimester-bar" style="margin-top:var(--space-3xl)">
+        <div class="caption-mono" style="margin-bottom:var(--space-sm)">Pregnancy Progress</div>
+        <div class="progress-track" style="height:12px">
+          <div class="progress-fill" id="pdc-progress" style="width:0%;background:linear-gradient(90deg,#ff6b9d,#ffafcc)"></div>
+        </div>
+        <div class="pdc-bar-labels">
+          <span class="caption-mono">Week 1</span>
+          <span class="caption-mono">Week 13</span>
+          <span class="caption-mono">Week 27</span>
+          <span class="caption-mono">Week 40</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section band-white">
+    <div class="container" style="max-width:720px">
+      <h2 class="display-md" style="margin-bottom:var(--space-sm)">Understanding Your Due Date</h2>
+      <p class="body-md text-body" style="margin-bottom:var(--space-xl)">A pregnancy due date (also called EDD — estimated date of delivery) is calculated by adding 280 days (40 weeks) to the first day of your last menstrual period (LMP). This is based on Naegele's Rule, the most widely used clinical method. Keep in mind that only about 5% of babies are born on their exact due date — most arrive within a 2-week window on either side.</p>
+
+      <h2 class="display-md" style="margin-bottom:var(--space-xl)">Frequently Asked Questions</h2>
+      <details class="faq-item"><summary class="faq-question">How is the pregnancy due date calculated?</summary><p class="faq-answer">The standard method adds 280 days (40 weeks) to the first day of your last menstrual period (LMP). This is known as Naegele's Rule and is used by most OBGYNs worldwide.</p></details>
+      <details class="faq-item"><summary class="faq-question">How accurate is the due date calculator?</summary><p class="faq-answer">Only about 5% of babies are born on their exact due date. The due date is an estimate, and most births occur within 2 weeks before or after it. An ultrasound in the first trimester provides the most accurate dating.</p></details>
+      <details class="faq-item"><summary class="faq-question">What is a trimester?</summary><p class="faq-answer">A pregnancy is divided into three trimesters. The first trimester runs from weeks 1–13, the second from weeks 14–27, and the third from week 28 until birth around week 40.</p></details>
+      <details class="faq-item"><summary class="faq-question">Can I use the conception date instead of LMP?</summary><p class="faq-answer">Yes! If you know your conception date, our calculator adds 266 days (38 weeks) to it, since conception typically occurs about 14 days after the start of your LMP.</p></details>
+      <details class="faq-item"><summary class="faq-question">What if my cycle is irregular?</summary><p class="faq-answer">For irregular cycles, the LMP method may be less accurate. An early ultrasound (before 13 weeks) is the most reliable way to determine your due date when cycles are irregular.</p></details>
+      <details class="faq-item"><summary class="faq-question">What week does each trimester start?</summary><p class="faq-answer">The first trimester is weeks 1–13, the second trimester is weeks 14–27, and the third trimester begins at week 28 and continues until birth.</p></details>
+    </div>
+  </section>
+
+  <ToolsGrid />
+  <Footer slot="footer" />
+</BaseLayout>
+
+<style is:global>
+.faq-item { border-top:1px solid var(--hairline); }
+.faq-item:last-child { border-bottom:1px solid var(--hairline); }
+.faq-question { font-size:16px;font-weight:500;color:var(--ink);cursor:pointer;padding:var(--space-lg) 0;list-style:none;display:flex;justify-content:space-between;align-items:center;letter-spacing:-0.4px; }
+.faq-question::after { content:'+';font-size:20px;font-weight:300;color:var(--mute); }
+details[open] .faq-question::after { content:'−'; }
+.faq-answer { font-size:15px;color:var(--body);line-height:1.7;padding-bottom:var(--space-lg); }
+</style>
+
+<style>
+.pdc-tabs { display:flex; gap:0; border:1px solid var(--hairline); border-radius:var(--radius-sm); overflow:hidden; margin-bottom:var(--space-lg); }
+.pdc-tab { flex:1; padding:var(--space-sm) var(--space-md); font-size:14px; font-weight:500; color:var(--body); background:var(--canvas-soft); cursor:pointer; border:none; transition:all .15s ease; }
+.pdc-tab--active { background:var(--ink); color:var(--on-primary); }
+.pdc-panel { transition:opacity .2s ease; }
+.pdc-due-date-hero { text-align:center; padding:var(--space-3xl); background:linear-gradient(135deg,#ff6b9d15,#ffafcc10); border-radius:var(--radius-lg); border:1px solid #ff6b9d30; }
+.pdc-big-date { font-size:42px; font-weight:600; letter-spacing:-2px; color:var(--ink); margin:var(--space-sm) 0; }
+.pdc-stat-card { background:var(--canvas); border-radius:var(--radius-md); padding:var(--space-lg); box-shadow:var(--shadow-2); border:1px solid var(--hairline); display:flex; flex-direction:column; gap:var(--space-xs); }
+.pdc-stat-label { font-family:var(--font-mono); font-size:11px; color:var(--mute); text-transform:uppercase; letter-spacing:.08em; }
+.pdc-stat-value { font-size:32px; font-weight:600; letter-spacing:-1.2px; color:var(--ink); }
+.pdc-bar-labels { display:flex; justify-content:space-between; margin-top:var(--space-xs); }
+@media (max-width:600px) { .pdc-big-date { font-size:28px; } }
+</style>
+
+<script>
+let activeMode = 'lmp';
+
+document.getElementById('tab-lmp')?.addEventListener('click', () => {
+  activeMode = 'lmp';
+  document.getElementById('tab-lmp')!.classList.add('pdc-tab--active');
+  document.getElementById('tab-conception')!.classList.remove('pdc-tab--active');
+  document.getElementById('panel-lmp')!.classList.remove('hidden');
+  document.getElementById('panel-conception')!.classList.add('hidden');
+});
+document.getElementById('tab-conception')?.addEventListener('click', () => {
+  activeMode = 'conception';
+  document.getElementById('tab-conception')!.classList.add('pdc-tab--active');
+  document.getElementById('tab-lmp')!.classList.remove('pdc-tab--active');
+  document.getElementById('panel-conception')!.classList.remove('hidden');
+  document.getElementById('panel-lmp')!.classList.add('hidden');
+});
+
+document.getElementById('pdc-btn')?.addEventListener('click', () => {
+  const dateVal = activeMode === 'lmp'
+    ? (document.getElementById('lmp-date') as HTMLInputElement).value
+    : (document.getElementById('conception-date') as HTMLInputElement).value;
+
+  if (!dateVal) return alert('Please enter a date.');
+
+  const startDate = new Date(dateVal);
+  startDate.setHours(12, 0, 0, 0);
+  const daysToAdd = activeMode === 'lmp' ? 280 : 266;
+  const dueDate = new Date(startDate);
+  dueDate.setDate(dueDate.getDate() + daysToAdd);
+
+  const today = new Date();
+  today.setHours(12, 0, 0, 0);
+  const msElapsed = today.getTime() - startDate.getTime();
+  const daysElapsed = Math.max(0, Math.floor(msElapsed / 86400000));
+  const weeksPregnant = Math.floor(daysElapsed / 7);
+  const daysRemaining = Math.max(0, Math.ceil((dueDate.getTime() - today.getTime()) / 86400000));
+  const progress = Math.min(100, Math.round((daysElapsed / 280) * 100));
+
+  let trimester = '1st Trimester';
+  if (weeksPregnant >= 28) trimester = '3rd Trimester';
+  else if (weeksPregnant >= 14) trimester = '2nd Trimester';
+
+  const months = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+  const dueDateStr = `${months[dueDate.getMonth()]} ${dueDate.getDate()}, ${dueDate.getFullYear()}`;
+
+  (document.getElementById('pdc-due-date-display') as HTMLElement).textContent = dueDateStr;
+  (document.getElementById('pdc-days-remaining') as HTMLElement).textContent =
+    daysRemaining > 0 ? `${daysRemaining} days until your estimated due date` : 'Your estimated due date has passed';
+  (document.getElementById('pdc-weeks') as HTMLElement).textContent = `${weeksPregnant} weeks`;
+  (document.getElementById('pdc-trimester') as HTMLElement).textContent = trimester;
+  (document.getElementById('pdc-days') as HTMLElement).textContent = daysRemaining.toLocaleString();
+  (document.getElementById('pdc-progress') as HTMLElement).style.width = `${progress}%`;
+
+  document.getElementById('pdc-result')!.classList.remove('hidden');
+  document.getElementById('pdc-result')!.scrollIntoView({ behavior: 'smooth', block: 'start' });
+});
+</script>

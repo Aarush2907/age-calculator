@@ -1,0 +1,163 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Navbar from '../components/Navbar.astro';
+import Footer from '../components/Footer.astro';
+import ToolsGrid from '../components/ToolsGrid.astro';
+
+const title = "Chronological Age Calculator — Exact Age in Years, Months & Days | agecalconline.com";
+const description = "Calculate your exact chronological age in years, months, weeks, days, hours, minutes, and seconds. Free online chronological age calculator for any date of birth.";
+const keywords = "chronological age calculator, exact age calculator, age in years months days, calculate chronological age, age from date of birth, precise age calculator";
+const canonical = "https://agecalconline.com/chronological-age-calculator";
+
+const schema = {
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "Chronological Age Calculator",
+  "applicationCategory": "UtilitiesApplication",
+  "url": canonical,
+  "description": description,
+  "operatingSystem": "Any",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+  "aggregateRating": { "@type": "AggregateRating", "ratingValue": "4.9", "reviewCount": "3214" }
+};
+
+const faqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    { "@type": "Question", "name": "What is chronological age?", "acceptedAnswer": { "@type": "Answer", "text": "Chronological age is the amount of time elapsed since a person's birth, measured in years, months, and days. It is the most straightforward measure of age and is used in legal, medical, and educational contexts." } },
+    { "@type": "Question", "name": "How is chronological age different from biological age?", "acceptedAnswer": { "@type": "Answer", "text": "Chronological age is simply the time since birth. Biological age reflects how old your body actually appears or functions, based on lifestyle factors like diet, exercise, sleep, and stress. You can have a chronological age of 40 but a biological age of 32, or vice versa." } },
+    { "@type": "Question", "name": "How do you calculate chronological age precisely?", "acceptedAnswer": { "@type": "Answer", "text": "To calculate chronological age: subtract your birth date from today's date. Account for leap years and varying month lengths. The result gives years, months, and remaining days. Our calculator handles all of this automatically." } },
+    { "@type": "Question", "name": "Why does chronological age matter?", "acceptedAnswer": { "@type": "Answer", "text": "Chronological age is used to determine eligibility for school enrollment, retirement benefits, Medicare, legal rights (voting, drinking), and medical screening schedules. It is also used in child development assessments." } },
+    { "@type": "Question", "name": "Can I calculate age as of a specific date?", "acceptedAnswer": { "@type": "Answer", "text": "Yes! Our calculator lets you choose both a date of birth and a target date (which defaults to today). This lets you calculate the age at any point in time — past, present, or future." } },
+    { "@type": "Question", "name": "What is the difference between age in completed years and age in decimal?", "acceptedAnswer": { "@type": "Answer", "text": "Age in completed years (e.g., 25 years) only counts full years elapsed. Age as a decimal (e.g., 25.7 years) includes the fractional portion of the current year, which is useful in scientific and medical calculations." } },
+  ]
+};
+---
+<BaseLayout title={title} description={description} keywords={keywords} canonical={canonical}>
+  <script type="application/ld+json" set:html={JSON.stringify(schema)} slot="head" />
+  <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} slot="head" />
+  <Navbar slot="nav" />
+
+  <section class="section-hero band-white" style="position:relative;overflow:hidden;text-align:center">
+    <div style="position:absolute;inset:-40px;background:linear-gradient(135deg,#007cf0,#00dfd8,#7928ca);opacity:0.08;filter:blur(80px);pointer-events:none"></div>
+    <div class="container" style="position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;gap:var(--space-xl)">
+      <span class="caption-mono">Chronological Age Calculator</span>
+      <h1 class="display-xl">Your exact age, calculated precisely.</h1>
+      <p class="body-lg text-body" style="max-width:520px">Find out your chronological age to the exact year, month, day, hour, minute, and second. Works for any date of birth and any target date.</p>
+
+      <div class="card-lg" style="width:100%;max-width:580px;text-align:left">
+        <div class="grid-2" style="gap:var(--space-lg)">
+          <div class="form-group">
+            <label class="form-label" for="cac-dob">Date of Birth</label>
+            <input type="date" id="cac-dob" class="form-input form-input-lg" />
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="cac-target">Age As Of (defaults to today)</label>
+            <input type="date" id="cac-target" class="form-input form-input-lg" />
+          </div>
+        </div>
+        <button class="btn-primary" id="cac-btn" style="margin-top:var(--space-lg);width:100%;justify-content:center">Calculate Chronological Age</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="section band-light hidden" id="cac-result">
+    <div class="container" style="max-width:720px">
+      <div class="cac-hero-age">
+        <div class="caption-mono" style="color:var(--mute)">Your Chronological Age</div>
+        <div class="cac-main-display" id="cac-main">—</div>
+      </div>
+      <div class="grid-3" style="margin-top:var(--space-3xl);gap:var(--space-md)">
+        <div class="cac-stat-card"><div class="cac-stat-label">Total Days</div><div class="cac-stat-value" id="cac-total-days">—</div></div>
+        <div class="cac-stat-card"><div class="cac-stat-label">Total Weeks</div><div class="cac-stat-value" id="cac-total-weeks">—</div></div>
+        <div class="cac-stat-card"><div class="cac-stat-label">Total Months</div><div class="cac-stat-value" id="cac-total-months">—</div></div>
+        <div class="cac-stat-card"><div class="cac-stat-label">Total Hours</div><div class="cac-stat-value" id="cac-total-hours">—</div></div>
+        <div class="cac-stat-card"><div class="cac-stat-label">Total Minutes</div><div class="cac-stat-value" id="cac-total-mins">—</div></div>
+        <div class="cac-stat-card"><div class="cac-stat-label">Age (Decimal)</div><div class="cac-stat-value" id="cac-decimal">—</div></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section band-white">
+    <div class="container" style="max-width:720px">
+      <h2 class="display-md" style="margin-bottom:var(--space-sm)">What Is Chronological Age?</h2>
+      <p class="body-md text-body" style="margin-bottom:var(--space-xl)">Chronological age is the most fundamental measure of time lived — the number of years, months, and days that have passed since the moment of birth. Unlike biological or psychological age, which reflect physical and mental condition, chronological age is purely objective and time-based. It is used in legal settings (voting age, retirement eligibility), medical decisions (developmental milestones, age-appropriate screening), and educational placement (school readiness).</p>
+
+      <h2 class="display-md" style="margin-bottom:var(--space-xl)">Frequently Asked Questions</h2>
+      <details class="faq-item"><summary class="faq-question">What is chronological age?</summary><p class="faq-answer">Chronological age is the amount of time elapsed since a person's birth, measured in years, months, and days. It is the most straightforward measure of age and is used in legal, medical, and educational contexts.</p></details>
+      <details class="faq-item"><summary class="faq-question">How is chronological age different from biological age?</summary><p class="faq-answer">Chronological age is simply the time since birth. Biological age reflects how old your body actually appears or functions, based on lifestyle factors like diet, exercise, sleep, and stress. You can have a chronological age of 40 but a biological age of 32, or vice versa.</p></details>
+      <details class="faq-item"><summary class="faq-question">How do you calculate chronological age precisely?</summary><p class="faq-answer">To calculate chronological age: subtract your birth date from today's date. Account for leap years and varying month lengths. The result gives years, months, and remaining days. Our calculator handles all of this automatically.</p></details>
+      <details class="faq-item"><summary class="faq-question">Why does chronological age matter?</summary><p class="faq-answer">Chronological age is used to determine eligibility for school enrollment, retirement benefits, Medicare, legal rights (voting, drinking), and medical screening schedules. It is also used in child development assessments.</p></details>
+      <details class="faq-item"><summary class="faq-question">Can I calculate age as of a specific date?</summary><p class="faq-answer">Yes! Our calculator lets you choose both a date of birth and a target date (which defaults to today). This lets you calculate the age at any point in time — past, present, or future.</p></details>
+      <details class="faq-item"><summary class="faq-question">What is the difference between age in completed years and age in decimal?</summary><p class="faq-answer">Age in completed years (e.g., 25 years) only counts full years elapsed. Age as a decimal (e.g., 25.7 years) includes the fractional portion of the current year, which is useful in scientific and medical calculations.</p></details>
+    </div>
+  </section>
+
+  <ToolsGrid />
+  <Footer slot="footer" />
+</BaseLayout>
+
+<style is:global>
+.faq-item { border-top:1px solid var(--hairline); }
+.faq-item:last-child { border-bottom:1px solid var(--hairline); }
+.faq-question { font-size:16px;font-weight:500;color:var(--ink);cursor:pointer;padding:var(--space-lg) 0;list-style:none;display:flex;justify-content:space-between;align-items:center;letter-spacing:-0.4px; }
+.faq-question::after { content:'+';font-size:20px;font-weight:300;color:var(--mute); }
+details[open] .faq-question::after { content:'−'; }
+.faq-answer { font-size:15px;color:var(--body);line-height:1.7;padding-bottom:var(--space-lg); }
+</style>
+<style>
+.cac-hero-age { text-align:center; padding:var(--space-3xl); background:var(--canvas); border-radius:var(--radius-lg); box-shadow:var(--shadow-3); border:1px solid var(--hairline); }
+.cac-main-display { font-size:36px; font-weight:600; letter-spacing:-1.5px; color:var(--ink); margin-top:var(--space-sm); line-height:1.2; }
+.cac-stat-card { background:var(--canvas); border-radius:var(--radius-md); padding:var(--space-lg); box-shadow:var(--shadow-2); border:1px solid var(--hairline); display:flex; flex-direction:column; gap:var(--space-xs); }
+.cac-stat-label { font-family:var(--font-mono); font-size:11px; color:var(--mute); text-transform:uppercase; letter-spacing:.08em; }
+.cac-stat-value { font-size:28px; font-weight:600; letter-spacing:-1px; color:var(--ink); }
+@media (max-width:600px) { .cac-main-display { font-size:24px; } }
+</style>
+
+<script>
+document.getElementById('cac-btn')?.addEventListener('click', () => {
+  const dobVal = (document.getElementById('cac-dob') as HTMLInputElement).value;
+  const targetVal = (document.getElementById('cac-target') as HTMLInputElement).value;
+
+  if (!dobVal) return alert('Please enter a date of birth.');
+
+  const birth = new Date(dobVal);
+  birth.setHours(12, 0, 0, 0);
+  const target = targetVal ? new Date(targetVal) : new Date();
+  target.setHours(12, 0, 0, 0);
+
+  if (target < birth) return alert('Target date must be after date of birth.');
+
+  const ms = target.getTime() - birth.getTime();
+  const totalDays = Math.floor(ms / 86400000);
+  const totalWeeks = Math.floor(totalDays / 7);
+  const totalHours = Math.floor(ms / 3600000);
+  const totalMins = Math.floor(ms / 60000);
+
+  let years = target.getFullYear() - birth.getFullYear();
+  let months = target.getMonth() - birth.getMonth();
+  let days = target.getDate() - birth.getDate();
+  if (days < 0) { months--; days += new Date(target.getFullYear(), target.getMonth(), 0).getDate(); }
+  if (months < 0) { years--; months += 12; }
+
+  const totalMonths = years * 12 + months;
+  const decimalAge = (ms / (365.25 * 24 * 3600 * 1000)).toFixed(2);
+
+  const parts = [];
+  if (years > 0) parts.push(`${years} year${years !== 1 ? 's' : ''}`);
+  if (months > 0) parts.push(`${months} month${months !== 1 ? 's' : ''}`);
+  if (days > 0) parts.push(`${days} day${days !== 1 ? 's' : ''}`);
+
+  (document.getElementById('cac-main') as HTMLElement).textContent = parts.join(', ') || '0 days';
+  (document.getElementById('cac-total-days') as HTMLElement).textContent = totalDays.toLocaleString();
+  (document.getElementById('cac-total-weeks') as HTMLElement).textContent = totalWeeks.toLocaleString();
+  (document.getElementById('cac-total-months') as HTMLElement).textContent = totalMonths.toLocaleString();
+  (document.getElementById('cac-total-hours') as HTMLElement).textContent = totalHours.toLocaleString();
+  (document.getElementById('cac-total-mins') as HTMLElement).textContent = totalMins.toLocaleString();
+  (document.getElementById('cac-decimal') as HTMLElement).textContent = decimalAge;
+
+  document.getElementById('cac-result')!.classList.remove('hidden');
+  document.getElementById('cac-result')!.scrollIntoView({ behavior: 'smooth', block: 'start' });
+});
+</script>

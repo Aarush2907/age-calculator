@@ -3,6 +3,12 @@
 const tools = [
   { href:'/age-difference-calculator', icon:'↔️', title:'Age Difference', desc:'Compare ages of two people in years, months, weeks, and days.' },
   { href:'/birthday-calculator', icon:'🎂', title:'Birthday Calculator', desc:'Countdown to your next birthday and find your birthday twins.' },
+  { href:'/chronological-age-calculator', icon:'🕐', title:'Chronological Age', desc:'Calculate your exact age in years, months, days, hours, and seconds.' },
+  { href:'/pregnancy-due-date-calculator', icon:'🤱', title:'Pregnancy Due Date', desc:'Calculate your estimated due date, trimester, and weeks pregnant.' },
+  { href:'/menstrual-cycle-calculator', icon:'📅', title:'Menstrual Cycle', desc:'Predict your next period, fertile window, and ovulation date.' },
+  { href:'/bmi-calculator', icon:'⚖️', title:'BMI Calculator', desc:'Calculate your Body Mass Index in metric or imperial units.' },
+  { href:'/work-hours-calculator', icon:'⏱️', title:'Work Hours', desc:'Calculate total hours worked, subtract breaks, and estimate earnings.' },
+  { href:'/percentage-calculator', icon:'%', title:'Percentage Calculator', desc:'Find X% of Y, what % one number is of another, or % change.' },
   { href:'/pet-age-calculator', icon:'🐾', title:'Pet Age Calculator', desc:'Convert your pet\'s age to human years — dogs, cats, rabbits & more.' },
   { href:'/retirement-calculator', icon:'🏖️', title:'Retirement Calculator', desc:'Find out exactly how many years until your retirement date.' },
   { href:'/life-expectancy-calculator', icon:'📊', title:'Life Expectancy', desc:'Country-specific life expectancy and estimated days remaining.' },
@@ -15,9 +21,9 @@ const tools = [
 <section class="tools-grid section band-light">
   <div class="container">
     <div class="section-header section-header--center" style="margin-bottom:var(--space-3xl)">
-      <span class="caption-mono">More Tools</span>
-      <h2 class="display-lg">Explore all calculators.</h2>
-      <p class="body-md text-body">Each tool is SEO-optimized and designed for a specific life calculation need.</p>
+      <span class="caption-mono" data-i18n="tools_label">More Tools</span>
+      <h2 class="display-lg" data-i18n="tools_heading">Explore all calculators.</h2>
+      <p class="body-md text-body" data-i18n="tools_sub">Each tool is SEO-optimized and designed for a specific life calculation need.</p>
     </div>
     <div class="grid-3 tg-grid">
       {tools.map(t => (
@@ -25,7 +31,7 @@ const tools = [
           <div class="tg-card__icon">{t.icon}</div>
           <div class="tg-card__title">{t.title}</div>
           <div class="tg-card__desc">{t.desc}</div>
-          <div class="tg-card__cta">Calculate →</div>
+          <div class="tg-card__cta" data-i18n="tools_cta">Calculate →</div>
         </a>
       ))}
     </div>

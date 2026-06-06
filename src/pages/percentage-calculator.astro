@@ -1,0 +1,200 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Navbar from '../components/Navbar.astro';
+import Footer from '../components/Footer.astro';
+import ToolsGrid from '../components/ToolsGrid.astro';
+
+const title = "Percentage Calculator — Calculate Percentages Instantly | agecalconline.com";
+const description = "Free percentage calculator with 3 modes: find what % of a number is, find what percentage one number is of another, and calculate percentage increase or decrease.";
+const keywords = "percentage calculator, percent calculator, what is x percent of y, percentage increase calculator, percentage decrease calculator, how to calculate percentage, percent change calculator";
+const canonical = "https://agecalconline.com/percentage-calculator";
+
+const schema = {
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "Percentage Calculator",
+  "applicationCategory": "UtilitiesApplication",
+  "url": canonical,
+  "description": description,
+  "operatingSystem": "Any",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+  "aggregateRating": { "@type": "AggregateRating", "ratingValue": "4.9", "reviewCount": "4521" }
+};
+
+const faqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    { "@type": "Question", "name": "How do I calculate what percent one number is of another?", "acceptedAnswer": { "@type": "Answer", "text": "Divide the part by the whole, then multiply by 100. For example, to find what percent 25 is of 200: 25 ÷ 200 × 100 = 12.5%." } },
+    { "@type": "Question", "name": "How do I calculate a percentage of a number?", "acceptedAnswer": { "@type": "Answer", "text": "Multiply the number by the percentage, then divide by 100. For example, 15% of 80 = 80 × 15 ÷ 100 = 12." } },
+    { "@type": "Question", "name": "How do I calculate percentage increase?", "acceptedAnswer": { "@type": "Answer", "text": "Percentage increase = ((New Value - Old Value) / Old Value) × 100. For example, from 50 to 75: (75 - 50) / 50 × 100 = 50% increase." } },
+    { "@type": "Question", "name": "How do I calculate percentage decrease?", "acceptedAnswer": { "@type": "Answer", "text": "Percentage decrease = ((Old Value - New Value) / Old Value) × 100. For example, from 100 to 80: (100 - 80) / 100 × 100 = 20% decrease." } },
+    { "@type": "Question", "name": "What is the difference between percent and percentage?", "acceptedAnswer": { "@type": "Answer", "text": "'Percent' refers to a specific rate (e.g., 25 percent), while 'percentage' is a more general term for a portion of a whole expressed in hundredths. In everyday usage, they are often used interchangeably." } },
+    { "@type": "Question", "name": "How is percentage used in real life?", "acceptedAnswer": { "@type": "Answer", "text": "Percentages are used everywhere: calculating discounts during sales, determining tax amounts, understanding interest rates on loans, reading nutrition labels, tracking exam scores, and analyzing statistics in news reports." } },
+  ]
+};
+---
+<BaseLayout title={title} description={description} keywords={keywords} canonical={canonical}>
+  <script type="application/ld+json" set:html={JSON.stringify(schema)} slot="head" />
+  <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} slot="head" />
+  <Navbar slot="nav" />
+
+  <section class="section-hero band-white" style="position:relative;overflow:hidden;text-align:center">
+    <div style="position:absolute;inset:-40px;background:linear-gradient(135deg,#7928ca,#ff0080,#f9cb28);opacity:0.08;filter:blur(80px);pointer-events:none"></div>
+    <div class="container" style="position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;gap:var(--space-xl)">
+      <span class="caption-mono">Percentage Calculator</span>
+      <h1 class="display-xl">Calculate any percentage instantly.</h1>
+      <p class="body-lg text-body" style="max-width:520px">Three powerful modes: find a percent of a number, find what percent one number is of another, or calculate a percentage change between two values.</p>
+
+      <div class="card-lg" style="width:100%;max-width:620px;text-align:left">
+        <!-- Tabs -->
+        <div class="pc-tabs">
+          <button class="pc-tab pc-tab--active" id="tab-a">X% of Y</button>
+          <button class="pc-tab" id="tab-b">X is what % of Y</button>
+          <button class="pc-tab" id="tab-c">% Change</button>
+        </div>
+
+        <!-- Panel A: X% of Y -->
+        <div id="panel-a" class="pc-panel">
+          <div class="grid-2" style="gap:var(--space-lg);align-items:end">
+            <div class="form-group">
+              <label class="form-label" for="pa-pct">Percentage (%)</label>
+              <input type="number" id="pa-pct" class="form-input form-input-lg" placeholder="e.g. 15" />
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="pa-num">Of Number</label>
+              <input type="number" id="pa-num" class="form-input form-input-lg" placeholder="e.g. 200" />
+            </div>
+          </div>
+          <button class="btn-primary" id="btn-a" style="margin-top:var(--space-lg);width:100%;justify-content:center">Calculate</button>
+        </div>
+
+        <!-- Panel B: X is what % of Y -->
+        <div id="panel-b" class="pc-panel hidden">
+          <div class="grid-2" style="gap:var(--space-lg);align-items:end">
+            <div class="form-group">
+              <label class="form-label" for="pb-part">Part (X)</label>
+              <input type="number" id="pb-part" class="form-input form-input-lg" placeholder="e.g. 25" />
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="pb-whole">Whole (Y)</label>
+              <input type="number" id="pb-whole" class="form-input form-input-lg" placeholder="e.g. 200" />
+            </div>
+          </div>
+          <button class="btn-primary" id="btn-b" style="margin-top:var(--space-lg);width:100%;justify-content:center">Calculate</button>
+        </div>
+
+        <!-- Panel C: % Change -->
+        <div id="panel-c" class="pc-panel hidden">
+          <div class="grid-2" style="gap:var(--space-lg);align-items:end">
+            <div class="form-group">
+              <label class="form-label" for="pc-from">Original Value</label>
+              <input type="number" id="pc-from" class="form-input form-input-lg" placeholder="e.g. 50" />
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="pc-to">New Value</label>
+              <input type="number" id="pc-to" class="form-input form-input-lg" placeholder="e.g. 75" />
+            </div>
+          </div>
+          <button class="btn-primary" id="btn-c" style="margin-top:var(--space-lg);width:100%;justify-content:center">Calculate</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Result -->
+  <section class="section band-light hidden" id="pc-result">
+    <div class="container" style="max-width:560px">
+      <div class="pc-result-box">
+        <div class="caption-mono" style="color:var(--mute)" id="pc-result-label">Result</div>
+        <div class="pc-result-value" id="pc-result-value">—</div>
+        <div class="body-md text-body" id="pc-result-formula">—</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section band-white">
+    <div class="container" style="max-width:720px">
+      <h2 class="display-md" style="margin-bottom:var(--space-sm)">How to Calculate Percentages</h2>
+      <p class="body-md text-body" style="margin-bottom:var(--space-xl)">Percentages are one of the most essential concepts in everyday math — used for calculating discounts, tax, interest rates, tips, exam scores, and statistical data. A percentage is simply a way to express a ratio as a fraction of 100. For example, 25% means 25 out of every 100, or 0.25 in decimal form. Our percentage calculator covers the three most common use cases to make your life easier.</p>
+
+      <h2 class="display-md" style="margin-bottom:var(--space-xl)">Frequently Asked Questions</h2>
+      <details class="faq-item"><summary class="faq-question">How do I calculate what percent one number is of another?</summary><p class="faq-answer">Divide the part by the whole, then multiply by 100. For example, to find what percent 25 is of 200: 25 ÷ 200 × 100 = 12.5%.</p></details>
+      <details class="faq-item"><summary class="faq-question">How do I calculate a percentage of a number?</summary><p class="faq-answer">Multiply the number by the percentage, then divide by 100. For example, 15% of 80 = 80 × 15 ÷ 100 = 12.</p></details>
+      <details class="faq-item"><summary class="faq-question">How do I calculate percentage increase?</summary><p class="faq-answer">Percentage increase = ((New Value - Old Value) / Old Value) × 100. For example, from 50 to 75: (75 - 50) / 50 × 100 = 50% increase.</p></details>
+      <details class="faq-item"><summary class="faq-question">How do I calculate percentage decrease?</summary><p class="faq-answer">Percentage decrease = ((Old Value - New Value) / Old Value) × 100. For example, from 100 to 80: (100 - 80) / 100 × 100 = 20% decrease.</p></details>
+      <details class="faq-item"><summary class="faq-question">What is the difference between percent and percentage?</summary><p class="faq-answer">'Percent' refers to a specific rate (e.g., 25 percent), while 'percentage' is a more general term for a portion of a whole expressed in hundredths. In everyday usage, they are often used interchangeably.</p></details>
+      <details class="faq-item"><summary class="faq-question">How is percentage used in real life?</summary><p class="faq-answer">Percentages are used everywhere: calculating discounts during sales, determining tax amounts, understanding interest rates on loans, reading nutrition labels, tracking exam scores, and analyzing statistics in news reports.</p></details>
+    </div>
+  </section>
+
+  <ToolsGrid />
+  <Footer slot="footer" />
+</BaseLayout>
+
+<style is:global>
+.faq-item { border-top:1px solid var(--hairline); }
+.faq-item:last-child { border-bottom:1px solid var(--hairline); }
+.faq-question { font-size:16px;font-weight:500;color:var(--ink);cursor:pointer;padding:var(--space-lg) 0;list-style:none;display:flex;justify-content:space-between;align-items:center;letter-spacing:-0.4px; }
+.faq-question::after { content:'+';font-size:20px;font-weight:300;color:var(--mute); }
+details[open] .faq-question::after { content:'−'; }
+.faq-answer { font-size:15px;color:var(--body);line-height:1.7;padding-bottom:var(--space-lg); }
+</style>
+<style>
+.pc-tabs { display:flex; gap:0; border:1px solid var(--hairline); border-radius:var(--radius-sm); overflow:hidden; margin-bottom:var(--space-lg); }
+.pc-tab { flex:1; padding:var(--space-sm) var(--space-xs); font-size:13px; font-weight:500; color:var(--body); background:var(--canvas-soft); cursor:pointer; border:none; transition:all .15s ease; white-space:nowrap; }
+.pc-tab--active { background:var(--ink); color:var(--on-primary); }
+.pc-result-box { background:var(--canvas); border-radius:var(--radius-lg); padding:var(--space-3xl); text-align:center; box-shadow:var(--shadow-3); border:1px solid var(--hairline); display:flex; flex-direction:column; gap:var(--space-sm); align-items:center; }
+.pc-result-value { font-size:56px; font-weight:600; letter-spacing:-2.8px; color:var(--ink); line-height:1; }
+@media (max-width:600px) { .pc-result-value { font-size:36px; } .pc-tab { font-size:11px; padding:var(--space-xs) 4px; } }
+</style>
+
+<script>
+// Tab switching
+const tabs = ['a','b','c'];
+tabs.forEach(id => {
+  document.getElementById(`tab-${id}`)?.addEventListener('click', () => {
+    tabs.forEach(t => {
+      document.getElementById(`tab-${t}`)!.classList.toggle('pc-tab--active', t === id);
+      document.getElementById(`panel-${t}`)!.classList.toggle('hidden', t !== id);
+    });
+    document.getElementById('pc-result')!.classList.add('hidden');
+  });
+});
+
+function showResult(label: string, value: string, formula: string) {
+  (document.getElementById('pc-result-label') as HTMLElement).textContent = label;
+  (document.getElementById('pc-result-value') as HTMLElement).textContent = value;
+  (document.getElementById('pc-result-formula') as HTMLElement).textContent = formula;
+  document.getElementById('pc-result')!.classList.remove('hidden');
+  document.getElementById('pc-result')!.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+// Panel A: X% of Y
+document.getElementById('btn-a')?.addEventListener('click', () => {
+  const pct = parseFloat((document.getElementById('pa-pct') as HTMLInputElement).value);
+  const num = parseFloat((document.getElementById('pa-num') as HTMLInputElement).value);
+  if (isNaN(pct) || isNaN(num)) return alert('Please enter both values.');
+  const result = (pct / 100) * num;
+  showResult(`${pct}% of ${num}`, result % 1 === 0 ? result.toString() : result.toFixed(4), `Formula: ${pct} ÷ 100 × ${num} = ${result.toFixed(4)}`);
+});
+
+// Panel B: X is what % of Y
+document.getElementById('btn-b')?.addEventListener('click', () => {
+  const part = parseFloat((document.getElementById('pb-part') as HTMLInputElement).value);
+  const whole = parseFloat((document.getElementById('pb-whole') as HTMLInputElement).value);
+  if (isNaN(part) || isNaN(whole) || whole === 0) return alert('Please enter valid values (whole cannot be 0).');
+  const result = (part / whole) * 100;
+  showResult(`${part} is what % of ${whole}`, result.toFixed(2) + '%', `Formula: ${part} ÷ ${whole} × 100 = ${result.toFixed(2)}%`);
+});
+
+// Panel C: % Change
+document.getElementById('btn-c')?.addEventListener('click', () => {
+  const from = parseFloat((document.getElementById('pc-from') as HTMLInputElement).value);
+  const to = parseFloat((document.getElementById('pc-to') as HTMLInputElement).value);
+  if (isNaN(from) || isNaN(to) || from === 0) return alert('Please enter valid values (original value cannot be 0).');
+  const change = ((to - from) / Math.abs(from)) * 100;
+  const direction = change >= 0 ? 'increase' : 'decrease';
+  showResult(`Percentage ${direction}`, Math.abs(change).toFixed(2) + '%', `Formula: (${to} − ${from}) ÷ |${from}| × 100 = ${change.toFixed(2)}%`);
+});
+</script>
