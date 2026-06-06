@@ -1,0 +1,71 @@
+---
+// src/components/LifeCalendar.astro
+---
+<section class="life-cal section band-white hidden" id="life-calendar">
+  <div class="container">
+    <div class="section-header" style="margin-bottom:var(--space-xl)">
+      <span class="caption-mono">Life Calendar</span>
+      <h2 class="display-lg">Your life in weeks.</h2>
+      <p class="body-md text-body">Each dot = one week. <span style="display:inline-block;width:10px;height:10px;background:var(--ink);border-radius:50%;vertical-align:middle"></span> Lived &nbsp; <span style="display:inline-block;width:10px;height:10px;background:var(--hairline);border-radius:50%;vertical-align:middle"></span> Remaining</p>
+    </div>
+    <div class="lc-legend">
+      <span class="caption-mono">Age 0</span>
+      <span class="caption-mono">90 years</span>
+    </div>
+    <div class="lc-wrapper">
+      <div class="lc-grid" id="life-cal-grid"></div>
+    </div>
+    <div class="lc-stats" id="lc-stats"></div>
+  </div>
+</section>
+
+<style>
+.lc-legend { display:flex; justify-content:space-between; margin-bottom:var(--space-sm); }
+.lc-wrapper { overflow-x:auto; padding-bottom: var(--space-sm); }
+.lc-grid { display:flex; flex-wrap:wrap; gap:3px; max-width:100%; }
+.lc-dot {
+  width:10px; height:10px; border-radius:50%;
+  background: var(--hairline);
+  transition: transform 0.1s ease;
+}
+.lc-dot:hover { transform:scale(1.5); cursor:pointer; }
+.lc-dot--lived { background: var(--ink); }
+.lc-dot--current { background: #0070f3; animation: pulseDot 1.5s ease-in-out infinite; }
+.lc-stats { display:flex; gap:var(--space-xl); margin-top:var(--space-xl); flex-wrap:wrap; }
+.lc-stat { display:flex; flex-direction:column; gap:4px; }
+.lc-stat__val { font-size:24px; font-weight:600; letter-spacing:-0.96px; }
+.lc-stat__label { font-size:12px; color:var(--body); font-family:var(--font-mono); text-transform:uppercase; }
+</style>
+
+<script>
+document.addEventListener('age:calculate', (e: any) => {
+  const birth = new Date(e.detail.dob);
+  const now = new Date();
+  const totalWeeksLived = Math.floor((now.getTime() - birth.getTime()) / (7 * 86400000));
+  const totalWeeks = 90 * 52; // 90 years
+  const grid = document.getElementById('life-cal-grid')!;
+  grid.innerHTML = '';
+
+  for (let i = 0; i < totalWeeks; i++) {
+    const dot = document.createElement('div');
+    if (i < totalWeeksLived - 1) {
+      dot.className = 'lc-dot lc-dot--lived';
+    } else if (i === totalWeeksLived - 1) {
+      dot.className = 'lc-dot lc-dot--current';
+    } else {
+      dot.className = 'lc-dot';
+    }
+    grid.appendChild(dot);
+  }
+
+  const remaining = totalWeeks - totalWeeksLived;
+  const statsEl = document.getElementById('lc-stats')!;
+  statsEl.innerHTML = `
+    <div class="lc-stat"><div class="lc-stat__val">${totalWeeksLived.toLocaleString()}</div><div class="lc-stat__label">Weeks Lived</div></div>
+    <div class="lc-stat"><div class="lc-stat__val" style="color:var(--mute)">${remaining.toLocaleString()}</div><div class="lc-stat__label">Weeks Remaining (to 90)</div></div>
+    <div class="lc-stat"><div class="lc-stat__val">${((totalWeeksLived/totalWeeks)*100).toFixed(1)}%</div><div class="lc-stat__label">of 90 Years Complete</div></div>
+  `;
+
+  document.getElementById('life-calendar')!.classList.remove('hidden');
+});
+</script>

@@ -1,11 +1,146 @@
 ---
-import Welcome from '../components/Welcome.astro';
-import Layout from '../layouts/Layout.astro';
+// src/pages/index.astro
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Navbar from '../components/Navbar.astro';
+import Footer from '../components/Footer.astro';
+import HeroCalculator from '../components/HeroCalculator.astro';
+import AgeResult from '../components/AgeResult.astro';
+import LifeProgress from '../components/LifeProgress.astro';
+import BirthdayDashboard from '../components/BirthdayDashboard.astro';
+import MilestoneTracker from '../components/MilestoneTracker.astro';
+import PlanetaryAge from '../components/PlanetaryAge.astro';
+import LifeStats from '../components/LifeStats.astro';
+import GenerationZodiac from '../components/GenerationZodiac.astro';
+import LifeCalendar from '../components/LifeCalendar.astro';
+import HistoricalTimeline from '../components/HistoricalTimeline.astro';
+import ToolsGrid from '../components/ToolsGrid.astro';
 
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+const faqs = [
+  { q: "What is my age calculator?", a: "An age calculator is a digital tool designed to find your exact chronological age in years, months, days, hours, and seconds based on your specific date of birth." },
+  { q: "How to age calculator?", a: "Using our tool is simple: enter your date of birth into the input field at the top of the page and click 'Calculate My Age' to instantly view your comprehensive age breakdown." },
+  { q: "How many years calculator age?", a: "Our system calculates the exact number of full years you have been alive by mathematically comparing your birth date against today's date, accounting for leap years." },
+  { q: "How to calculate age in calculator?", a: "Simply input your birth date. The calculator's algorithm subtracts your birth date from the current date, automatically factoring in varying month lengths and leap years for 100% precision." },
+  { q: "How to age calculator from date of birth?", a: "Just provide your date of birth in the standard format. The system instantly processes this to determine your exact current age without any manual math required." },
+  { q: "Age calculator how old was I?", a: "You can use our platform to figure out exactly how old you were on a specific historical date. By adjusting the target date, you can see your precise age during past milestones." },
+  { q: "What is my body age calculator?", a: "While our primary tool calculates chronological age, a body (or biological) age calculator is a specialized tool that estimates your physical health age based on lifestyle metrics, diet, and fitness." },
+  { q: "What is my age today calculator?", a: "This tool gives you your exact live age as of today. It even includes a live ticking seconds counter so you can watch your precise age grow in real-time." },
+  { q: "Age calculator how old am I?", a: "By entering your exact birthdate into the form, you get an immediate, perfectly accurate answer to exactly how old you are right now across multiple time units." },
+  { q: "How fit am I for my age calculator?", a: "Biological age calculators assess your fitness, resting heart rate, and lifestyle habits to determine if your body functions younger or older than your actual chronological age." },
+  { q: "What age can I retire calculator?", a: "You can use our dedicated retirement calculator feature to determine exactly how many years, months, and days you have left until you reach your target retirement age." },
+  { q: "What age will I die calculator?", a: "While no tool can predict the future, our life expectancy calculators use statistical demographic data from the WHO to estimate average lifespans based on your birth year, gender, and region." }
+];
+
+const schemaData = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": faqs.map(faq => ({
+    "@type": "Question",
+    "name": faq.q,
+    "acceptedAnswer": {
+      "@type": "Answer",
+      "text": faq.a
+    }
+  }))
+};
 ---
 
-<Layout>
-	<Welcome />
-</Layout>
+<BaseLayout
+  title="Online Age Calculator | Calculate Exact Age by Date of Birth"
+  description="Use our free online chronological age calculator to find your exact age in years, months, and days. Includes dog age, retirement, baby age, and more."
+  keywords="Age Calculator, chronological age calculator, age calculator of dog, age calculator of child, age calculator by photo, age calculator on year, age calculator on specific date, age calculator of baby, age calculator on date, age calculator on date of birthage, calculator of nda, age calculator on today, age calculator of india, age calculator on dob, age calculator of dob, dog age calculator, age calculator of death, retirement age calculator, current age calculator, age calculator birthday, age calculator from date, age calculator by date, age calculator formula, age calculator in years, age calculator from date of birth, age calculator online by date of birth, age calculator google, online age calculator, age calculator by date of birth"
+>
+  <Navbar slot="nav" />
+
+  <HeroCalculator />
+  <AgeResult />
+  <LifeProgress />
+  <BirthdayDashboard />
+  <MilestoneTracker />
+  <PlanetaryAge />
+  <LifeStats />
+  <GenerationZodiac />
+  <LifeCalendar />
+  <HistoricalTimeline />
+
+  <ToolsGrid />
+
+  <!-- Comprehensive SEO Article -->
+  <section class="seo-content section band-white">
+    <div class="container seo-inner">
+      <div class="seo-text-block">
+        <h2 class="display-md">The Ultimate Online Age Calculator</h2>
+        <p class="body-md">Welcome to the most comprehensive <strong>online age calculator</strong> available on the web today. Whether you are looking for an exact <strong>chronological age calculator</strong> for a specific application or just curious about how many days you've been alive, our tool provides unparalleled precision. Unlike a basic <strong>age calculator google</strong> might provide, our platform goes deeper. By entering your details, you immediately get a highly accurate <strong>current age calculator</strong> reading that breaks down your lifespan. You can easily act as an <strong>age calculator on today</strong> to see your live age, or use it as an <strong>age calculator from date</strong> to find your exact time passed since any historical event.</p>
+
+        <h3>How to Calculate Your Exact Age</h3>
+        <p class="body-md">Using an <strong>age calculator by date of birth</strong> is the most reliable way to find your true age. The <strong>age calculator formula</strong> is mathematically straightforward—it subtracts your birth date from the current date while properly accounting for leap years and months of varying lengths. To use the tool, simply input your details into the <strong>age calculator on dob</strong> field. Instantly, the <strong>age calculator in years</strong> will display your primary age, but we also break this down into months, weeks, days, hours, and seconds. If you are looking for an <strong>age calculator on date of birthage</strong> or an <strong>age calculator of dob</strong>, this tool processes it instantly without any complex manual math.</p>
+
+        <p class="body-md">Our tool is highly versatile. You can use it as an <strong>age calculator on date</strong> or an <strong>age calculator on specific date</strong> if you want to know exactly how old you were on a past milestone, or how old you will be in the future. For instance, many users in India rely on this specific precision as an <strong>age calculator of india</strong> for government forms, or specifically as a <strong>calculator of nda</strong> (National Defence Academy) where strict age limits down to the exact day are enforced. An <strong>age calculator by date</strong> is essential for these precise use cases.</p>
+
+        <h3>Specialized Life & Age Calculators</h3>
+        <p class="body-md">Beyond standard human age, our suite offers specialized tools. If you are a parent tracking development, you can use the principles of an <strong>age calculator of baby</strong> or an <strong>age calculator of child</strong> to measure exact weeks and months—crucial for medical and developmental milestones. For pet owners, the <strong>age calculator of dog</strong> (or <strong>dog age calculator</strong>) converts your furry friend's lifespan into equivalent human years, considering breed size and maturity rates.</p>
+        
+        <p class="body-md">Looking ahead? The platform functions beautifully as a <strong>retirement age calculator</strong> to help you plan the exact days remaining until you leave the workforce. Some users also search for an <strong>age calculator of death</strong> or life expectancy tool to understand statistical demographic averages based on their birth year. Finally, if you are planning a celebration, you can use the <strong>age calculator birthday</strong> feature to find out the day of the week your next milestone falls on, or exactly how long it has been since your very first birthday.</p>
+
+        <h3>Can You Calculate Age by Photo?</h3>
+        <p class="body-md">With the rise of AI, many users search for an <strong>age calculator by photo</strong> to guess a person's age based on facial features. While those tools are entertaining for estimating visual age, they are never mathematically accurate. For exact legal, medical, or professional requirements, you must use a chronological <strong>age calculator online by date of birth</strong>. An <strong>age calculator from date of birth</strong> will always provide the factual truth, whereas a photo can only provide an AI-generated guess. Furthermore, our <strong>age calculator on year</strong> ensures that regardless of the calendar year, the math remains perfectly precise.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ Section for SEO -->
+  <section class="faq section band-white">
+    <div class="container faq-inner">
+      <div class="section-header" style="margin-bottom:var(--space-3xl)">
+        <span class="caption-mono">FAQ</span>
+        <h2 class="display-lg">Frequently asked questions.</h2>
+      </div>
+      <div class="faq-list">
+        {faqs.map(item => (
+          <details class="faq-item">
+            <summary class="faq-question">{item.q}</summary>
+            <p class="faq-answer">{item.a}</p>
+          </details>
+        ))}
+      </div>
+    </div>
+    
+    <!-- JSON-LD for FAQ SEO -->
+    <script type="application/ld+json" set:html={JSON.stringify(schemaData)} />
+  </section>
+
+  <Footer slot="footer" />
+</BaseLayout>
+
+<style is:global>
+.faq-inner { max-width: 720px; margin: 0 auto; }
+.faq-list { display: flex; flex-direction: column; }
+.faq-item { border-top: 1px solid var(--hairline); }
+.faq-item:last-child { border-bottom: 1px solid var(--hairline); }
+.faq-question {
+  font-size: 16px; font-weight: 500; color: var(--ink); cursor: pointer;
+  padding: var(--space-lg) 0; list-style: none; display: flex; justify-content: space-between;
+  align-items: center; letter-spacing: -0.4px;
+}
+.faq-question::after { content: '+'; font-size: 20px; font-weight: 300; color: var(--mute); transition: transform 0.2s ease; flex-shrink: 0; margin-left: var(--space-md); }
+details[open] .faq-question::after { content: '−'; }
+.faq-answer { font-size: 15px; color: var(--body); line-height: 1.7; padding-bottom: var(--space-lg); }
+
+/* Section headers */
+.section-header { display: flex; flex-direction: column; gap: var(--space-xs); }
+
+/* SEO Section */
+.seo-inner { max-width: 800px; margin: 0 auto; }
+.seo-text-block { display: flex; flex-direction: column; gap: var(--space-md); padding: var(--space-2xl) 0; border-top: 1px solid var(--hairline); }
+.seo-text-block h2 { color: var(--ink); margin-bottom: var(--space-xs); }
+.seo-text-block h3 { font-size: 20px; font-weight: 600; color: var(--ink); margin-top: var(--space-md); }
+.seo-text-block p { color: var(--body); line-height: 1.7; }
+.seo-text-block strong { color: var(--ink); font-weight: 500; }
+
+@media (max-width: 600px) {
+  .faq-question { font-size: 15px; padding: var(--space-md) 0; }
+  .faq-answer { font-size: 14px; }
+}
+
+@keyframes pulseDot { 0%,100%{transform:scale(1);opacity:1;} 50%{transform:scale(1.4);opacity:0.7;} }
+@keyframes fadeInUp { from{opacity:0;transform:translateY(16px);} to{opacity:1;transform:translateY(0);} }
+</style>

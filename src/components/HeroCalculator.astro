@@ -1,0 +1,118 @@
+---
+// src/components/HeroCalculator.astro
+---
+<section class="hero section-hero band-white" id="hero">
+  <div class="hero-mesh"></div>
+  <div class="container hero-inner">
+    <div class="hero-badge">
+      <span class="caption-mono" data-i18n="hero_badge">Life Analytics Platform</span>
+    </div>
+    <h1 class="display-xl hero-title" data-i18n="hero_title">Calculate your exact age.</h1>
+    <p class="body-lg hero-sub" data-i18n="hero_sub">Years, months, weeks, days, hours, minutes — and a live seconds counter. Plus milestones, planetary age, life stats, and more.</p>
+
+    <form class="hero-form" id="age-form" novalidate>
+      <div class="hero-form-inner">
+        <div class="form-group hero-form-group">
+          <label class="form-label" for="dob-input" data-i18n="hero_label_dob">Date of Birth</label>
+          <input
+            type="date"
+            id="dob-input"
+            class="form-input form-input-lg hero-date-input"
+            max=""
+            required
+            aria-label="Enter your date of birth"
+          />
+        </div>
+        <button type="submit" class="btn-primary hero-cta" id="calculate-btn">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6.5" stroke="currentColor" stroke-width="1.2"/><path d="M8 5v3l2 2" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <span data-i18n="hero_cta">Calculate My Age</span>
+        </button>
+      </div>
+      <p class="hero-error hidden" id="hero-error" role="alert" data-i18n="hero_error">Please enter a valid date of birth.</p>
+    </form>
+
+    <div class="hero-features">
+      {['Exact Precision', 'Life Milestones', 'Planetary Age', 'Life Statistics', 'Birth Year History', 'Zodiac & Generation'].map(f => (
+        <span class="hero-feature-pill">{f}</span>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+.hero { position: relative; overflow: hidden; text-align: center; }
+.hero-mesh {
+  position: absolute; inset: -40px; z-index: 0;
+  background: linear-gradient(135deg,#007cf0 0%,#00dfd8 25%,#7928ca 50%,#ff0080 75%,#ff4d4d 87%,#f9cb28 100%);
+  opacity: 0.07; filter: blur(80px); pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+[data-theme="dark"] .hero-mesh { opacity: 0.18; }
+.hero-inner { position: relative; z-index: 1; display: flex; flex-direction: column; align-items: center; gap: var(--space-xl); }
+.hero-badge {
+  display: inline-flex; align-items: center;
+  background: var(--canvas-soft-2); border: 1px solid var(--hairline);
+  border-radius: var(--radius-full); padding: var(--space-xxs) var(--space-sm);
+}
+[data-theme="dark"] .hero-badge {
+  background: rgba(255,255,255,0.06);
+  border-color: rgba(255,255,255,0.1);
+}
+.hero-title { max-width: 640px; color: var(--ink); }
+.hero-sub { max-width: 520px; color: var(--body); }
+.hero-form { width: 100%; max-width: 520px; }
+.hero-form-inner { display: flex; gap: var(--space-sm); align-items: flex-end; }
+.hero-form-group { flex: 1; }
+.hero-date-input { height: 48px; font-size: 16px; }
+[data-theme="dark"] .hero-date-input {
+  background: rgba(255,255,255,0.06);
+  border-color: rgba(255,255,255,0.12);
+  color: var(--ink);
+}
+[data-theme="dark"] .hero-date-input:focus {
+  border-color: var(--link);
+  background: rgba(255,255,255,0.08);
+}
+.hero-cta { flex-shrink: 0; gap: var(--space-xs); }
+.hero-error { font-size: 13px; color: var(--error); margin-top: var(--space-xs); text-align: left; }
+.hero-features { display: flex; flex-wrap: wrap; gap: var(--space-xs); justify-content: center; margin-top: var(--space-xs); }
+.hero-feature-pill {
+  font-size: 12px; color: var(--body); background: var(--canvas-soft-2);
+  border: 1px solid var(--hairline); border-radius: var(--radius-full);
+  padding: 3px var(--space-sm);
+}
+[data-theme="dark"] .hero-feature-pill {
+  background: rgba(255,255,255,0.05);
+  border-color: rgba(255,255,255,0.08);
+  color: var(--mute);
+}
+@media (max-width: 600px) {
+  .hero-form { max-width: 100%; padding: 0 var(--space-xs); }
+  .hero-form-inner { flex-direction: column; gap: var(--space-sm); }
+  .hero-form-group { width: 100%; }
+  .hero-date-input { width: 100%; }
+  .hero-cta { width: 100%; justify-content: center; height: 48px; }
+  .hero-features { gap: 6px; }
+  .hero-feature-pill { font-size: 11px; }
+}
+</style>
+
+<script>
+  const form = document.getElementById('age-form') as HTMLFormElement;
+  const input = document.getElementById('dob-input') as HTMLInputElement;
+  const errorEl = document.getElementById('hero-error') as HTMLElement;
+
+  // Set max date to today
+  input.max = new Date().toISOString().split('T')[0];
+
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const dob = input.value;
+    if (!dob || new Date(dob) >= new Date()) {
+      errorEl.classList.remove('hidden');
+      return;
+    }
+    errorEl.classList.add('hidden');
+    document.dispatchEvent(new CustomEvent('age:calculate', { detail: { dob } }));
+  });
+</script>

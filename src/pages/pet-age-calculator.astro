@@ -1,0 +1,117 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Navbar from '../components/Navbar.astro';
+import Footer from '../components/Footer.astro';
+import ToolsGrid from '../components/ToolsGrid.astro';
+---
+<BaseLayout title="Pet Age Calculator — Dog, Cat & Animal Age in Human Years | agecalconline.com" description="Convert your pet's age to human years. Supports dogs (small/medium/large), cats, rabbits, hamsters, and horses with accurate conversion formulas.">
+  <Navbar slot="nav" />
+  <section class="section-hero band-white" style="position:relative;overflow:hidden;text-align:center">
+    <div style="position:absolute;inset:-40px;background:linear-gradient(135deg,#007cf0,#00dfd8,#7928ca,#ff0080);opacity:0.07;filter:blur(80px);pointer-events:none"></div>
+    <div class="container" style="position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;gap:var(--space-xl)">
+      <span class="caption-mono">Pet Age Calculator</span>
+      <h1 class="display-xl">How old is your pet in human years?</h1>
+      <p class="body-lg text-body" style="max-width:480px">Dogs, cats, rabbits, hamsters, and horses — each species ages differently. Get the accurate human equivalent.</p>
+      <div class="card-lg" style="width:100%;max-width:520px;text-align:left">
+        <div class="grid-2" style="gap:var(--space-md)">
+          <div class="form-group">
+            <label class="form-label" for="pet-type">Pet Type</label>
+            <select id="pet-type" class="form-select" style="height:48px;font-size:16px">
+              <option value="dog">🐕 Dog</option>
+              <option value="cat">🐈 Cat</option>
+              <option value="rabbit">🐇 Rabbit</option>
+              <option value="hamster">🐹 Hamster</option>
+              <option value="horse">🐎 Horse</option>
+            </select>
+          </div>
+          <div class="form-group" id="dog-size-group">
+            <label class="form-label" for="dog-size">Dog Size</label>
+            <select id="dog-size" class="form-select" style="height:48px;font-size:16px">
+              <option value="small">Small (&lt;20 lbs)</option>
+              <option value="medium" selected>Medium (20–50 lbs)</option>
+              <option value="large">Large (&gt;50 lbs)</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group" style="margin-top:var(--space-md)">
+          <label class="form-label" for="pet-dob">Pet's Date of Birth</label>
+          <input type="date" id="pet-dob" class="form-input form-input-lg" />
+        </div>
+        <button class="btn-primary" id="pet-btn" style="margin-top:var(--space-lg);width:100%;justify-content:center">Calculate Pet Age</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="section band-light hidden" id="pet-result">
+    <div class="container" style="max-width:600px;text-align:center">
+      <div class="card-lg">
+        <div style="font-size:48px;margin-bottom:var(--space-md)" id="pet-emoji">🐕</div>
+        <div class="display-xl" id="pet-human-age">—</div>
+        <div class="body-lg text-body" style="margin-top:var(--space-sm)">human years old</div>
+        <div class="caption-mono" style="margin-top:var(--space-md);color:var(--mute)" id="pet-note">—</div>
+        <div class="grid-2" style="margin-top:var(--space-xl)">
+          <div class="card-soft"><div class="caption-mono" style="color:var(--mute);margin-bottom:8px">Actual Age</div><div class="display-sm" id="pet-actual-age">—</div></div>
+          <div class="card-soft"><div class="caption-mono" style="color:var(--mute);margin-bottom:8px">Life Stage</div><div class="display-sm" id="pet-stage">—</div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section band-white">
+    <div class="container" style="max-width:720px">
+      <h2 class="display-md" style="margin-bottom:var(--space-xl)">How Pet Age Conversion Works</h2>
+      <div class="grid-2" style="gap:var(--space-md)">
+        {[{e:'🐕',t:'Dogs',d:'The AKC-based formula considers breed size. Small dogs age slower in later years; large dogs age faster.'},{e:'🐈',t:'Cats',d:'First year = 15 human years, second = 9, then 4 per year after. Indoor cats live 12–18 years average.'},{e:'🐇',t:'Rabbits',d:'Rabbits have a 9:1 ratio to human years. A 5-year-old rabbit is ~45 in human years.'},{e:'🐹',t:'Hamsters',d:'Hamsters age very rapidly — 25 human years per hamster year. They typically live 2–3 years.'}].map(p=>(
+          <div class="card"><div style="font-size:24px;margin-bottom:8px">{p.e}</div><div style="font-weight:600;margin-bottom:4px">{p.t}</div><p class="body-sm text-body">{p.d}</p></div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <ToolsGrid />
+  <Footer slot="footer" />
+</BaseLayout>
+
+<script>
+const petType = document.getElementById('pet-type') as HTMLSelectElement;
+const dogSizeGroup = document.getElementById('dog-size-group')!;
+const emojis: Record<string,string> = {dog:'🐕',cat:'🐈',rabbit:'🐇',hamster:'🐹',horse:'🐎'};
+const stages = (h:number) => h < 2 ? 'Baby/Infant' : h < 12 ? 'Childhood' : h < 18 ? 'Adolescent' : h < 60 ? 'Adult' : h < 75 ? 'Senior' : 'Elder';
+
+petType.addEventListener('change', () => {
+  dogSizeGroup.style.display = petType.value === 'dog' ? 'block' : 'none';
+});
+
+document.getElementById('pet-btn')?.addEventListener('click', () => {
+  const dob = (document.getElementById('pet-dob') as HTMLInputElement).value;
+  if (!dob) return;
+  const days = (Date.now() - new Date(dob).getTime()) / 86400000;
+  const petYears = days / 365;
+  const size = (document.getElementById('dog-size') as HTMLSelectElement).value;
+  const type = petType.value;
+
+  let human = 0;
+  if (type === 'dog') {
+    const tables:Record<string,number[]> = {
+      small:[15,24,28,32,36,40,44,48,52,56,60,64,68,72,76,80],
+      medium:[15,24,28,32,36,42,47,51,55,59,63,67,71,75,79,83],
+      large:[15,24,28,32,36,45,50,55,61,66,72,77,82,88,93,99]
+    };
+    const t = tables[size] || tables.medium;
+    human = t[Math.min(Math.floor(petYears), t.length-1)];
+  } else if (type==='cat') {
+    if (petYears<=1) human=Math.round(petYears*15);
+    else if (petYears<=2) human=Math.round(15+(petYears-1)*9);
+    else human=Math.round(24+(petYears-2)*4);
+  } else if (type==='rabbit') { human=Math.round(petYears*9); }
+  else if (type==='hamster') { human=Math.round(petYears*25); }
+  else if (type==='horse') { human=Math.round(petYears*3.5); }
+
+  (document.getElementById('pet-emoji') as HTMLElement).textContent = emojis[type];
+  (document.getElementById('pet-human-age') as HTMLElement).textContent = human.toString();
+  (document.getElementById('pet-actual-age') as HTMLElement).textContent = `${petYears.toFixed(1)} years`;
+  (document.getElementById('pet-stage') as HTMLElement).textContent = stages(human);
+  (document.getElementById('pet-note') as HTMLElement).textContent = type==='dog' ? `For a ${size} dog` : '';
+  document.getElementById('pet-result')!.classList.remove('hidden');
+});
+</script>

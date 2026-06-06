@@ -1,0 +1,93 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Navbar from '../components/Navbar.astro';
+import Footer from '../components/Footer.astro';
+import ToolsGrid from '../components/ToolsGrid.astro';
+---
+<BaseLayout title="Generation Calculator — What Generation Am I? | agecalconline.com" description="Find out which generation you belong to — Gen Alpha, Gen Z, Millennial, Gen X, or Baby Boomer — and learn fascinating facts about your generation.">
+  <Navbar slot="nav" />
+  <section class="section-hero band-white" style="position:relative;overflow:hidden;text-align:center">
+    <div style="position:absolute;inset:-40px;background:linear-gradient(135deg,#007cf0,#00dfd8,#7928ca,#ff0080);opacity:0.07;filter:blur(80px);pointer-events:none"></div>
+    <div class="container" style="position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;gap:var(--space-xl)">
+      <span class="caption-mono">Generation Calculator</span>
+      <h1 class="display-xl">What generation am I?</h1>
+      <p class="body-lg text-body" style="max-width:480px">Enter your birth year to discover your generation and learn fascinating facts about what makes it unique.</p>
+      <div class="card-lg" style="width:100%;max-width:380px;text-align:left">
+        <div class="form-group">
+          <label class="form-label" for="gen-year">Birth Year</label>
+          <input type="number" id="gen-year" class="form-input form-input-lg" placeholder="e.g. 1995" min="1900" max="2025" />
+        </div>
+        <button class="btn-primary" id="gen-btn" style="margin-top:var(--space-lg);width:100%;justify-content:center">Find My Generation</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="section band-dark hidden" id="gen-result">
+    <div class="container" style="max-width:720px">
+      <div class="card-dark" style="text-align:center;padding:var(--space-3xl);margin-bottom:var(--space-xl)">
+        <div style="font-size:64px;margin-bottom:var(--space-md)" id="gen-emoji">—</div>
+        <div class="caption-mono" style="color:rgba(255,255,255,0.5);margin-bottom:8px">Your Generation</div>
+        <h2 class="display-xl" style="color:#fff" id="gen-name">—</h2>
+        <div class="body-md" style="color:rgba(255,255,255,0.6);margin-top:var(--space-xs)" id="gen-range">—</div>
+        <p class="body-lg" style="color:rgba(255,255,255,0.75);margin-top:var(--space-lg);max-width:480px;margin-left:auto;margin-right:auto" id="gen-fact">—</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section band-white">
+    <div class="container" style="max-width:720px">
+      <h2 class="display-md" style="margin-bottom:var(--space-xl)">All Generations</h2>
+      <div class="gen-table">
+        {[
+          {n:'Gen Alpha',r:'2013–2025',e:'🤖',d:'The first generation born entirely into the AI era. Raised on iPads, TikTok, and voice assistants.'},
+          {n:'Gen Z',r:'1997–2012',e:'📱',d:'Digital natives. The most diverse and globally connected generation in history.'},
+          {n:'Millennials',r:'1981–1996',e:'💻',d:'Bridged the analog and digital worlds. First generation to grow up with the internet.'},
+          {n:'Gen X',r:'1965–1980',e:'🎸',d:'The independent, adaptable "forgotten" generation between Boomers and Millennials.'},
+          {n:'Baby Boomers',r:'1946–1964',e:'🌸',d:'The post-WWII boom generation. Shaped by the Cold War, civil rights, and rock \'n\' roll.'},
+          {n:'Silent Gen',r:'1928–1945',e:'🌍',d:'Grew up during WWII. Known for civic duty, loyalty, and building modern institutions.'},
+        ].map(g=>(
+          <div class="gen-row">
+            <div class="gen-row__emoji">{g.e}</div>
+            <div class="gen-row__info">
+              <div style="font-weight:600;color:var(--ink)">{g.n} <span style="font-size:12px;font-family:var(--font-mono);color:var(--mute);font-weight:400">({g.r})</span></div>
+              <div class="body-sm text-body">{g.d}</div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <ToolsGrid />
+  <Footer slot="footer" />
+</BaseLayout>
+
+<style>
+.gen-table { display:flex; flex-direction:column; gap:0; }
+.gen-row { display:flex; gap:var(--space-lg); align-items:flex-start; padding:var(--space-lg) 0; border-bottom:1px solid var(--hairline); }
+.gen-row:first-child { border-top:1px solid var(--hairline); }
+.gen-row__emoji { font-size:28px; flex-shrink:0; width:40px; }
+.gen-row__info { display:flex; flex-direction:column; gap:4px; }
+</style>
+
+<script>
+document.getElementById('gen-btn')?.addEventListener('click', () => {
+  const year = parseInt((document.getElementById('gen-year') as HTMLInputElement).value);
+  if (!year || year < 1900 || year > 2025) return;
+  const gens = [
+    {name:'Gen Alpha',range:'2013–2025',y:[2013,2025],emoji:'🤖',fact:'The first generation to grow up entirely with AI assistants, touchscreens, and smart devices from birth.'},
+    {name:'Gen Z',range:'1997–2012',y:[1997,2012],emoji:'📱',fact:'Digital natives who came of age during the rise of social media, streaming services, and smartphones.'},
+    {name:'Millennial',range:'1981–1996',y:[1981,1996],emoji:'💻',fact:'The generation that bridged the analog and digital worlds, witnessing the birth of the internet and mobile phones.'},
+    {name:'Gen X',range:'1965–1980',y:[1965,1980],emoji:'🎸',fact:'Independent and self-reliant, Gen X grew up during the Cold War and shaped the early internet era.'},
+    {name:'Baby Boomer',range:'1946–1964',y:[1946,1964],emoji:'🌸',fact:'Born during post-WWII prosperity, Baby Boomers are one of the most influential generations in history.'},
+    {name:'Silent Generation',range:'1928–1945',y:[1928,1945],emoji:'🌍',fact:'Shaped by the Great Depression and WWII, known for civic responsibility, loyalty, and hard work.'},
+  ];
+  const gen = gens.find(g=>year>=g.y[0]&&year<=g.y[1])||gens[gens.length-1];
+  (document.getElementById('gen-emoji') as HTMLElement).textContent=gen.emoji;
+  (document.getElementById('gen-name') as HTMLElement).textContent=gen.name;
+  (document.getElementById('gen-range') as HTMLElement).textContent=gen.range;
+  (document.getElementById('gen-fact') as HTMLElement).textContent=gen.fact;
+  document.getElementById('gen-result')!.classList.remove('hidden');
+  document.getElementById('gen-result')!.scrollIntoView({behavior:'smooth'});
+});
+</script>

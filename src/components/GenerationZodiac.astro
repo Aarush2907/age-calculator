@@ -1,0 +1,146 @@
+---
+// src/components/GenerationZodiac.astro
+---
+<section class="gen-zodiac section band-dark hidden" id="gen-zodiac">
+  <div class="container">
+    <div class="section-header section-header--dark" style="margin-bottom:var(--space-3xl)">
+      <span class="caption-mono" style="color:rgba(255,255,255,0.5)">Identity</span>
+      <h2 class="display-lg" style="color:#fff">Your generation &amp; cosmic profile.</h2>
+    </div>
+
+    <div class="gz-grid">
+      <!-- Generation -->
+      <div class="card-dark gz-gen-card" id="gz-gen-card">
+        <div class="gz-gen-emoji" id="gz-gen-emoji">—</div>
+        <div class="caption-mono" style="color:rgba(255,255,255,0.5)">Your Generation</div>
+        <div class="display-md" style="color:#fff" id="gz-gen-name">—</div>
+        <div class="body-sm" style="color:rgba(255,255,255,0.6)" id="gz-gen-range">—</div>
+        <p class="body-sm gz-gen-fact" id="gz-gen-fact">—</p>
+      </div>
+
+      <!-- Western Zodiac -->
+      <div class="card-dark">
+        <div class="caption-mono" style="color:rgba(255,255,255,0.5);margin-bottom:8px">Western Zodiac</div>
+        <div style="font-size:32px" id="gz-zodiac-emoji">—</div>
+        <div class="display-sm" style="color:#fff" id="gz-zodiac-name">—</div>
+        <div class="body-sm" style="color:rgba(255,255,255,0.6)" id="gz-zodiac-dates">—</div>
+        <div class="body-sm" style="color:rgba(255,255,255,0.5);margin-top:4px" id="gz-zodiac-trait">—</div>
+        <div class="badge" style="margin-top:8px;background:rgba(255,255,255,0.1);color:rgba(255,255,255,0.7)" id="gz-zodiac-element">—</div>
+      </div>
+
+      <!-- Chinese Zodiac -->
+      <div class="card-dark">
+        <div class="caption-mono" style="color:rgba(255,255,255,0.5);margin-bottom:8px">Chinese Zodiac</div>
+        <div style="font-size:32px" id="gz-chinese-emoji">—</div>
+        <div class="display-sm" style="color:#fff" id="gz-chinese-name">—</div>
+        <div class="body-sm" style="color:rgba(255,255,255,0.6);margin-top:4px" id="gz-chinese-trait">—</div>
+      </div>
+
+      <!-- Birthstone & Flower -->
+      <div class="card-dark">
+        <div class="caption-mono" style="color:rgba(255,255,255,0.5);margin-bottom:8px">Birth Symbols</div>
+        <div class="gz-birth-row">
+          <div>
+            <div style="font-size:24px" id="gz-stone-emoji">—</div>
+            <div class="body-sm-strong" style="color:#fff;margin-top:4px" id="gz-stone-name">Birthstone</div>
+            <div class="caption-mono" style="color:rgba(255,255,255,0.4)">STONE</div>
+          </div>
+          <div class="gz-birth-divider"></div>
+          <div>
+            <div style="font-size:24px" id="gz-flower-emoji">—</div>
+            <div class="body-sm-strong" style="color:#fff;margin-top:4px" id="gz-flower-name">Birth Flower</div>
+            <div class="caption-mono" style="color:rgba(255,255,255,0.4)">FLOWER</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+.gz-grid { display:grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap:var(--space-md); }
+.gz-gen-card { display:flex; flex-direction:column; gap:var(--space-sm); }
+.gz-gen-emoji { font-size:40px; }
+.gz-gen-fact { color:rgba(255,255,255,0.55); line-height:1.6; margin-top:var(--space-xs); }
+.gz-birth-row { display:flex; gap:var(--space-lg); margin-top:var(--space-sm); }
+.gz-birth-divider { width:1px; background:rgba(255,255,255,0.1); }
+@media (max-width:960px) { .gz-grid { grid-template-columns:1fr 1fr; } .gz-gen-card { grid-column: span 2; } }
+@media (max-width:600px) { .gz-grid { grid-template-columns:1fr; } .gz-gen-card { grid-column: span 1; } }
+</style>
+
+<script>
+document.addEventListener('age:calculate', (e: any) => {
+  const birth = new Date(e.detail.dob);
+  const year = birth.getFullYear();
+  const month = birth.getMonth() + 1;
+  const day = birth.getDate();
+
+  // Generation
+  const gens = [
+    { name:'Gen Alpha', range:'2013–2025', y:[2013,2025], emoji:'🤖', fact:'The first generation to grow up entirely with AI assistants and touchscreens.' },
+    { name:'Gen Z',     range:'1997–2012', y:[1997,2012], emoji:'📱', fact:'Digital natives who came of age during the rise of social media and streaming.' },
+    { name:'Millennial',range:'1981–1996', y:[1981,1996], emoji:'💻', fact:'The generation that bridged the analog and digital worlds.' },
+    { name:'Gen X',     range:'1965–1980', y:[1965,1980], emoji:'🎸', fact:'Independent and resourceful — the "forgotten" generation between Boomers and Millennials.' },
+    { name:'Baby Boomer',range:'1946–1964',y:[1946,1964], emoji:'🌸', fact:'Born during post-WWII prosperity — the largest generation in history.' },
+    { name:'Silent Gen', range:'1928–1945',y:[1928,1945], emoji:'🌍', fact:'Grew up during WWII, known for civic responsibility.' },
+  ];
+  const gen = gens.find(g => year >= g.y[0] && year <= g.y[1]) || gens[gens.length-1];
+  (document.getElementById('gz-gen-emoji') as HTMLElement).textContent = gen.emoji;
+  (document.getElementById('gz-gen-name') as HTMLElement).textContent = gen.name;
+  (document.getElementById('gz-gen-range') as HTMLElement).textContent = gen.range;
+  (document.getElementById('gz-gen-fact') as HTMLElement).textContent = gen.fact;
+
+  // Western Zodiac
+  const zodiacData = [
+    { name:'Capricorn', emoji:'♑', dates:'Dec 22–Jan 19', element:'Earth', trait:'Disciplined & ambitious', check:(m:number,d:number)=>(m===12&&d>=22)||(m===1&&d<=19) },
+    { name:'Aquarius',  emoji:'♒', dates:'Jan 20–Feb 18', element:'Air',   trait:'Innovative & independent', check:(m:number,d:number)=>(m===1&&d>=20)||(m===2&&d<=18) },
+    { name:'Pisces',    emoji:'♓', dates:'Feb 19–Mar 20', element:'Water', trait:'Compassionate & artistic', check:(m:number,d:number)=>(m===2&&d>=19)||(m===3&&d<=20) },
+    { name:'Aries',     emoji:'♈', dates:'Mar 21–Apr 19', element:'Fire',  trait:'Courageous & energetic', check:(m:number,d:number)=>(m===3&&d>=21)||(m===4&&d<=19) },
+    { name:'Taurus',    emoji:'♉', dates:'Apr 20–May 20', element:'Earth', trait:'Reliable & patient', check:(m:number,d:number)=>(m===4&&d>=20)||(m===5&&d<=20) },
+    { name:'Gemini',    emoji:'♊', dates:'May 21–Jun 20', element:'Air',   trait:'Versatile & curious', check:(m:number,d:number)=>(m===5&&d>=21)||(m===6&&d<=20) },
+    { name:'Cancer',    emoji:'♋', dates:'Jun 21–Jul 22', element:'Water', trait:'Intuitive & nurturing', check:(m:number,d:number)=>(m===6&&d>=21)||(m===7&&d<=22) },
+    { name:'Leo',       emoji:'♌', dates:'Jul 23–Aug 22', element:'Fire',  trait:'Confident & creative', check:(m:number,d:number)=>(m===7&&d>=23)||(m===8&&d<=22) },
+    { name:'Virgo',     emoji:'♍', dates:'Aug 23–Sep 22', element:'Earth', trait:'Analytical & meticulous', check:(m:number,d:number)=>(m===8&&d>=23)||(m===9&&d<=22) },
+    { name:'Libra',     emoji:'♎', dates:'Sep 23–Oct 22', element:'Air',   trait:'Diplomatic & fair', check:(m:number,d:number)=>(m===9&&d>=23)||(m===10&&d<=22) },
+    { name:'Scorpio',   emoji:'♏', dates:'Oct 23–Nov 21', element:'Water', trait:'Passionate & resourceful', check:(m:number,d:number)=>(m===10&&d>=23)||(m===11&&d<=21) },
+    { name:'Sagittarius',emoji:'♐',dates:'Nov 22–Dec 21', element:'Fire',  trait:'Adventurous & optimistic', check:(m:number,d:number)=>(m===11&&d>=22)||(m===12&&d<=21) },
+  ];
+  const zodiac = zodiacData.find(z => z.check(month, day)) || zodiacData[0];
+  (document.getElementById('gz-zodiac-emoji') as HTMLElement).textContent = zodiac.emoji;
+  (document.getElementById('gz-zodiac-name') as HTMLElement).textContent = zodiac.name;
+  (document.getElementById('gz-zodiac-dates') as HTMLElement).textContent = zodiac.dates;
+  (document.getElementById('gz-zodiac-trait') as HTMLElement).textContent = zodiac.trait;
+  (document.getElementById('gz-zodiac-element') as HTMLElement).textContent = zodiac.element;
+
+  // Chinese Zodiac
+  const chineseAnimals = ['Rat','Ox','Tiger','Rabbit','Dragon','Snake','Horse','Goat','Monkey','Rooster','Dog','Pig'];
+  const chineseEmojis  = ['🐀','🐂','🐅','🐇','🐉','🐍','🐎','🐑','🐒','🐓','🐕','🐖'];
+  const chineseTraits  = ['Clever & quick','Diligent & strong','Brave & confident','Kind & gentle','Majestic & lucky','Wise & intuitive','Free & energetic','Gentle & creative','Smart & witty','Confident & honest','Loyal & friendly','Generous & diligent'];
+  const ci = (year - 1900) % 12;
+  (document.getElementById('gz-chinese-emoji') as HTMLElement).textContent = chineseEmojis[ci];
+  (document.getElementById('gz-chinese-name') as HTMLElement).textContent = `Year of the ${chineseAnimals[ci]}`;
+  (document.getElementById('gz-chinese-trait') as HTMLElement).textContent = chineseTraits[ci];
+
+  // Birthstone & Flower
+  const birthInfo = [
+    { stone:'Garnet',    flower:'Carnation',  se:'💎', fe:'🌸' },
+    { stone:'Amethyst',  flower:'Violet',      se:'💜', fe:'💜' },
+    { stone:'Aquamarine',flower:'Daffodil',    se:'💎', fe:'🌼' },
+    { stone:'Diamond',   flower:'Daisy',       se:'💎', fe:'🌼' },
+    { stone:'Emerald',   flower:'Lily of Valley',se:'💚', fe:'🌿' },
+    { stone:'Alexandrite',flower:'Rose',       se:'💎', fe:'🌹' },
+    { stone:'Ruby',      flower:'Larkspur',    se:'❤️', fe:'💐' },
+    { stone:'Peridot',   flower:'Gladiolus',   se:'💚', fe:'💐' },
+    { stone:'Sapphire',  flower:'Aster',       se:'💙', fe:'🌸' },
+    { stone:'Opal',      flower:'Marigold',    se:'💎', fe:'🌻' },
+    { stone:'Topaz',     flower:'Chrysanthemum',se:'💛',fe:'🌼' },
+    { stone:'Turquoise', flower:'Narcissus',   se:'💎', fe:'🌸' },
+  ][month - 1];
+  (document.getElementById('gz-stone-emoji') as HTMLElement).textContent = birthInfo.se;
+  (document.getElementById('gz-stone-name') as HTMLElement).textContent = birthInfo.stone;
+  (document.getElementById('gz-flower-emoji') as HTMLElement).textContent = birthInfo.fe;
+  (document.getElementById('gz-flower-name') as HTMLElement).textContent = birthInfo.flower;
+
+  document.getElementById('gen-zodiac')!.classList.remove('hidden');
+});
+</script>

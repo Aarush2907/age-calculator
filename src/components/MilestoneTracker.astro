@@ -1,0 +1,76 @@
+---
+// src/components/MilestoneTracker.astro
+---
+<section class="milestones section band-light hidden" id="milestones">
+  <div class="container">
+    <div class="section-header" style="margin-bottom:var(--space-3xl)">
+      <span class="caption-mono">Milestone Tracker</span>
+      <h2 class="display-lg">Your life milestones.</h2>
+      <p class="body-md text-body">Gamified milestones — see what you've achieved and what's coming next.</p>
+    </div>
+    <div class="grid-4 ms-grid" id="milestones-grid"></div>
+  </div>
+</section>
+
+<style>
+.ms-grid { gap: var(--space-md); }
+.ms-card {
+  background: var(--canvas); border-radius: var(--radius-md);
+  padding: var(--space-lg); box-shadow: var(--shadow-2);
+  display: flex; flex-direction: column; gap: var(--space-sm);
+  position: relative; overflow: hidden;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.ms-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-4); }
+.ms-card--past { border-left: 3px solid #50e3c2; }
+.ms-card--future { border-left: 3px solid var(--hairline); opacity: 0.75; }
+.ms-card__icon { font-size: 28px; }
+.ms-card__label { font-size: 15px; font-weight: 600; color: var(--ink); letter-spacing: -0.4px; }
+.ms-card__date { font-family: var(--font-mono); font-size: 11px; color: var(--mute); }
+.ms-card__status { display:inline-flex; align-items:center; gap:4px; font-size:12px; border-radius:var(--radius-full); padding:2px 10px; font-weight:500; }
+.ms-card__status--past { background:#d1fae5; color:#065f46; }
+.ms-card__status--future { background:var(--canvas-soft-2); color:var(--body); }
+.ms-card__days { font-size:12px; color:var(--body); }
+</style>
+
+<script>
+document.addEventListener('age:calculate', (e: any) => {
+  const birth = new Date(e.detail.dob);
+  const now = new Date();
+  const milestones = [
+    { label: '1 Million Minutes', icon: '⏱️', seconds: 60_000_000 },
+    { label: '10,000 Days', icon: '📅', seconds: 864_000_000 },
+    { label: '500M Seconds', icon: '💫', seconds: 500_000_000 },
+    { label: '1 Billion Seconds', icon: '🚀', seconds: 1_000_000_000 },
+    { label: '1 Million Hours', icon: '⏰', seconds: 3_600_000_000 },
+    { label: '25,000 Days', icon: '🌟', seconds: 2_160_000_000 },
+    { label: '50 Years', icon: '🎖️', seconds: 50 * 365.25 * 86400 },
+    { label: '100 Years', icon: '🎉', seconds: 100 * 365.25 * 86400 },
+  ];
+
+  const grid = document.getElementById('milestones-grid')!;
+  grid.innerHTML = '';
+
+  milestones.sort((a, b) => a.seconds - b.seconds).forEach(m => {
+    const mDate = new Date(birth.getTime() + m.seconds * 1000);
+    const isPast = mDate <= now;
+    const daysAway = Math.abs(Math.round((mDate.getTime() - now.getTime()) / 86400000));
+    const dateStr = mDate.toLocaleDateString('en-US', { year:'numeric', month:'short', day:'numeric' });
+
+    const card = document.createElement('div');
+    card.className = `ms-card ms-card--${isPast ? 'past' : 'future'}`;
+    card.innerHTML = `
+      <div class="ms-card__icon">${m.icon}</div>
+      <div class="ms-card__label">${m.label}</div>
+      <div class="ms-card__date">${dateStr}</div>
+      <span class="ms-card__status ms-card__status--${isPast ? 'past' : 'future'}">
+        ${isPast ? '✅ Achieved' : '⏳ Upcoming'}
+      </span>
+      <div class="ms-card__days">${isPast ? `${daysAway.toLocaleString()} days ago` : `in ${daysAway.toLocaleString()} days`}</div>
+    `;
+    grid.appendChild(card);
+  });
+
+  document.getElementById('milestones')!.classList.remove('hidden');
+});
+</script>

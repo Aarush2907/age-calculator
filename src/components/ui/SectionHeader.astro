@@ -1,0 +1,27 @@
+---
+// src/components/ui/SectionHeader.astro
+export interface Props {
+  eyebrow?: string;
+  title: string;
+  body?: string;
+  dark?: boolean;
+  center?: boolean;
+}
+const { eyebrow, title, body, dark = false, center = false } = Astro.props;
+---
+<div class={`section-header ${center ? 'section-header--center' : ''} ${dark ? 'section-header--dark' : ''}`}>
+  {eyebrow && <span class="caption-mono section-header__eyebrow">{eyebrow}</span>}
+  <h2 class="display-lg section-header__title">{title}</h2>
+  {body && <p class="body-lg section-header__body">{body}</p>}
+</div>
+
+<style>
+.section-header { display: flex; flex-direction: column; gap: var(--space-sm); max-width: 600px; }
+.section-header--center { align-items: center; text-align: center; margin: 0 auto; }
+.section-header__eyebrow { color: var(--mute); }
+.section-header--dark .section-header__eyebrow { color: rgba(255,255,255,0.5); }
+.section-header__title { color: var(--ink); }
+.section-header--dark .section-header__title { color: #fff; }
+.section-header__body { color: var(--body); margin-top: var(--space-xs); }
+.section-header--dark .section-header__body { color: rgba(255,255,255,0.65); }
+</style>

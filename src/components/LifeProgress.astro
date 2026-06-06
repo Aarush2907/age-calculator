@@ -1,0 +1,102 @@
+---
+// src/components/LifeProgress.astro
+---
+<section class="life-progress section band-dark hidden" id="life-progress">
+  <div class="container">
+    <div class="lp-header">
+      <span class="caption-mono" style="color:rgba(255,255,255,0.5)">Life Progress Dashboard</span>
+      <h2 class="display-lg" style="color:#fff">How far along is your life?</h2>
+      <p class="body-md" style="color:rgba(255,255,255,0.65); max-width:480px">Based on average life expectancy data for your selected country.</p>
+    </div>
+
+    <div class="lp-country-row">
+      <label class="form-label" style="color:rgba(255,255,255,0.7)" for="country-select">Select your country</label>
+      <select class="form-select lp-select" id="country-select" style="max-width:260px">
+        <option value="73.4">World Average (73.4 yrs)</option>
+        <option value="84.3">Japan (84.3 yrs)</option>
+        <option value="83.8">Switzerland (83.8 yrs)</option>
+        <option value="83.5">Australia (83.5 yrs)</option>
+        <option value="83.4">Spain (83.4 yrs)</option>
+        <option value="83.0">Sweden (83.0 yrs)</option>
+        <option value="82.7">France (82.7 yrs)</option>
+        <option value="82.7">South Korea (82.7 yrs)</option>
+        <option value="82.5">Canada (82.5 yrs)</option>
+        <option value="81.3">UK (81.3 yrs)</option>
+        <option value="81.4">Germany (81.4 yrs)</option>
+        <option value="78.9">USA (78.9 yrs)</option>
+        <option value="77.3">China (77.3 yrs)</option>
+        <option value="75.4">Brazil (75.4 yrs)</option>
+        <option value="75.0">Mexico (75.0 yrs)</option>
+        <option value="73.2">Russia (73.2 yrs)</option>
+        <option value="70.8">India (70.8 yrs)</option>
+        <option value="67.2">Pakistan (67.2 yrs)</option>
+        <option value="54.7">Nigeria (54.7 yrs)</option>
+      </select>
+    </div>
+
+    <div class="lp-progress-block">
+      <div class="lp-pct-label" id="lp-pct-label">0%</div>
+      <div class="progress-track lp-track">
+        <div class="progress-fill" id="lp-fill" style="width:0%; background: linear-gradient(90deg,#007cf0,#00dfd8)"></div>
+      </div>
+      <div class="lp-track-labels">
+        <span class="caption-mono" style="color:rgba(255,255,255,0.4)">Birth</span>
+        <span class="caption-mono" style="color:rgba(255,255,255,0.4)">Average Lifespan</span>
+      </div>
+    </div>
+
+    <div class="grid-3 lp-stats">
+      <div class="card-dark">
+        <div class="caption-mono" style="color:rgba(255,255,255,0.5);margin-bottom:8px">Days Lived</div>
+        <div class="display-md" style="color:#fff" id="lp-days-lived">—</div>
+      </div>
+      <div class="card-dark">
+        <div class="caption-mono" style="color:rgba(255,255,255,0.5);margin-bottom:8px">Est. Days Remaining</div>
+        <div class="display-md" style="color:#50e3c2" id="lp-days-remaining">—</div>
+      </div>
+      <div class="card-dark">
+        <div class="caption-mono" style="color:rgba(255,255,255,0.5);margin-bottom:8px">Life Completed</div>
+        <div class="display-md" style="color:#f9cb28" id="lp-pct-stat">—</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+.lp-header { display:flex; flex-direction:column; gap:var(--space-sm); margin-bottom:var(--space-xl); }
+.lp-country-row { margin-bottom:var(--space-xl); display:flex; flex-direction:column; gap:var(--space-xs); }
+.lp-select { background:#2a2a2a; color:#fff; border-color:rgba(255,255,255,0.15); }
+.lp-progress-block { margin-bottom:var(--space-xl); }
+.lp-pct-label { font-size:48px; font-weight:600; letter-spacing:-2.4px; color:#fff; margin-bottom:var(--space-sm); }
+.lp-track { height:12px; background:rgba(255,255,255,0.1); }
+.progress-fill { transition: width 1.2s cubic-bezier(0.4,0,0.2,1); }
+.lp-track-labels { display:flex; justify-content:space-between; margin-top:var(--space-xs); }
+.lp-stats { margin-top:var(--space-xl); }
+</style>
+
+<script>
+let _lpDob = '';
+document.addEventListener('age:calculate', (e: any) => {
+  _lpDob = e.detail.dob;
+  updateLP();
+  document.getElementById('life-progress')!.classList.remove('hidden');
+});
+document.getElementById('country-select')?.addEventListener('change', updateLP);
+
+function updateLP() {
+  if (!_lpDob) return;
+  const expectancy = parseFloat((document.getElementById('country-select') as HTMLSelectElement).value);
+  const birth = new Date(_lpDob);
+  const now = new Date();
+  const totalDays = Math.floor((now.getTime() - birth.getTime()) / 86400000);
+  const expectancyDays = Math.round(expectancy * 365.25);
+  const remaining = Math.max(0, expectancyDays - totalDays);
+  const pct = Math.min(100, ((totalDays / expectancyDays) * 100)).toFixed(1);
+
+  (document.getElementById('lp-pct-label') as HTMLElement).textContent = pct + '%';
+  (document.getElementById('lp-fill') as HTMLElement).style.width = pct + '%';
+  (document.getElementById('lp-days-lived') as HTMLElement).textContent = totalDays.toLocaleString();
+  (document.getElementById('lp-days-remaining') as HTMLElement).textContent = remaining.toLocaleString();
+  (document.getElementById('lp-pct-stat') as HTMLElement).textContent = pct + '%';
+}
+</script>

@@ -1,0 +1,65 @@
+---
+// src/components/PlanetaryAge.astro
+---
+<section class="planetary section band-white hidden" id="planetary">
+  <div class="container">
+    <div class="section-header" style="margin-bottom:var(--space-3xl)">
+      <span class="caption-mono">Solar System</span>
+      <h2 class="display-lg">Your age on other planets.</h2>
+      <p class="body-md text-body">Each planet has a different orbital period — here's how old you'd be on each one.</p>
+    </div>
+    <div class="grid-4 planet-grid" id="planet-grid"></div>
+  </div>
+</section>
+
+<style>
+.planet-card {
+  background: var(--canvas); border-radius: var(--radius-md);
+  padding: var(--space-lg); box-shadow: var(--shadow-2);
+  display: flex; flex-direction: column; gap: var(--space-sm);
+  transition: transform 0.2s ease;
+}
+.planet-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-4); }
+.planet-card__emoji { font-size: 32px; }
+.planet-card__name { font-size: 14px; font-weight: 600; color: var(--ink); letter-spacing: -0.28px; }
+.planet-card__age { font-size: 36px; font-weight: 600; letter-spacing: -1.5px; line-height: 1; }
+.planet-card__label { font-size: 11px; font-family: var(--font-mono); color: var(--mute); text-transform: uppercase; }
+.planet-card__orbital { font-size: 12px; color: var(--body); }
+</style>
+
+<script>
+document.addEventListener('age:calculate', (e: any) => {
+  const birth = new Date(e.detail.dob);
+  const now = new Date();
+  const totalDays = (now.getTime() - birth.getTime()) / 86400000;
+
+  const planets = [
+    { name: 'Mercury', emoji: '⚫', orbital: 87.97,   color: '#6b7280' },
+    { name: 'Venus',   emoji: '🟡', orbital: 224.70,  color: '#f59e0b' },
+    { name: 'Mars',    emoji: '🔴', orbital: 686.97,  color: '#ef4444' },
+    { name: 'Jupiter', emoji: '🟠', orbital: 4332.59, color: '#f97316' },
+    { name: 'Saturn',  emoji: '🪐', orbital: 10759.22,color: '#eab308' },
+    { name: 'Uranus',  emoji: '🔵', orbital: 30685.4, color: '#06b6d4' },
+    { name: 'Neptune', emoji: '🌊', orbital: 60190.0, color: '#3b82f6' },
+  ];
+
+  const grid = document.getElementById('planet-grid')!;
+  grid.innerHTML = '';
+  planets.forEach(p => {
+    const age = (totalDays / p.orbital).toFixed(2);
+    const ageInt = Math.floor(totalDays / p.orbital);
+    const card = document.createElement('div');
+    card.className = 'planet-card';
+    card.innerHTML = `
+      <div class="planet-card__emoji">${p.emoji}</div>
+      <div class="planet-card__name">${p.name}</div>
+      <div class="planet-card__age" style="color:${p.color}">${age}</div>
+      <div class="planet-card__label">Planet Years</div>
+      <div class="planet-card__orbital">1 year = ${p.orbital.toFixed(0)} Earth days</div>
+    `;
+    grid.appendChild(card);
+  });
+
+  document.getElementById('planetary')!.classList.remove('hidden');
+});
+</script>

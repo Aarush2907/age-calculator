@@ -1,0 +1,55 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Navbar from '../components/Navbar.astro';
+import Footer from '../components/Footer.astro';
+import ToolsGrid from '../components/ToolsGrid.astro';
+---
+<BaseLayout title="Reverse Age Calculator — Find Birth Date from Age | agecalconline.com" description="Calculate your birth date range from a known age. Enter your current age in years, months, and days to find your estimated date of birth.">
+  <Navbar slot="nav" />
+  <section class="section-hero band-white" style="position:relative;overflow:hidden;text-align:center">
+    <div style="position:absolute;inset:-40px;background:linear-gradient(135deg,#007cf0,#00dfd8,#7928ca,#ff0080);opacity:0.07;filter:blur(80px);pointer-events:none"></div>
+    <div class="container" style="position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;gap:var(--space-xl)">
+      <span class="caption-mono">Reverse Age Calculator</span>
+      <h1 class="display-xl">Find your birth date.</h1>
+      <p class="body-lg text-body" style="max-width:480px">Know your age but not your exact birth date? Enter your age to find your estimated date of birth range.</p>
+      <div class="card-lg" style="width:100%;max-width:480px;text-align:left">
+        <div class="grid-3" style="gap:var(--space-md)">
+          <div class="form-group"><label class="form-label" for="rev-years">Years</label><input type="number" id="rev-years" class="form-input form-input-lg" placeholder="25" min="0" max="130" /></div>
+          <div class="form-group"><label class="form-label" for="rev-months">Months</label><input type="number" id="rev-months" class="form-input form-input-lg" placeholder="6" min="0" max="11" /></div>
+          <div class="form-group"><label class="form-label" for="rev-days">Days</label><input type="number" id="rev-days" class="form-input form-input-lg" placeholder="15" min="0" max="30" /></div>
+        </div>
+        <button class="btn-primary" id="rev-btn" style="margin-top:var(--space-lg);width:100%;justify-content:center">Find Birth Date</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="section band-light hidden" id="rev-result">
+    <div class="container" style="max-width:600px;text-align:center">
+      <div class="card-lg">
+        <div style="font-size:48px;margin-bottom:var(--space-md)">📅</div>
+        <div class="caption-mono" style="color:var(--mute);margin-bottom:8px">Estimated Date of Birth</div>
+        <h2 class="display-md" id="rev-dob">—</h2>
+        <p class="body-sm text-body" style="margin-top:var(--space-sm)" id="rev-range">—</p>
+      </div>
+    </div>
+  </section>
+
+  <ToolsGrid />
+  <Footer slot="footer" />
+</BaseLayout>
+
+<script>
+document.getElementById('rev-btn')?.addEventListener('click', () => {
+  const years  = parseInt((document.getElementById('rev-years') as HTMLInputElement).value)||0;
+  const months = parseInt((document.getElementById('rev-months') as HTMLInputElement).value)||0;
+  const days   = parseInt((document.getElementById('rev-days') as HTMLInputElement).value)||0;
+  const now = new Date();
+  const dob = new Date(now.getFullYear()-years, now.getMonth()-months, now.getDate()-days);
+  const opts: Intl.DateTimeFormatOptions = {year:'numeric',month:'long',day:'numeric'};
+  (document.getElementById('rev-dob') as HTMLElement).textContent=dob.toLocaleDateString('en-US',opts);
+  const earliest = new Date(dob.getTime()-86400000);
+  const latest   = new Date(dob.getTime()+86400000);
+  (document.getElementById('rev-range') as HTMLElement).textContent=`Possible range: ${earliest.toLocaleDateString('en-US',opts)} — ${latest.toLocaleDateString('en-US',opts)}`;
+  document.getElementById('rev-result')!.classList.remove('hidden');
+});
+</script>

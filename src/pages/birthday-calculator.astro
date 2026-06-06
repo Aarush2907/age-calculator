@@ -1,0 +1,93 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Navbar from '../components/Navbar.astro';
+import Footer from '../components/Footer.astro';
+import ToolsGrid from '../components/ToolsGrid.astro';
+---
+<BaseLayout title="Birthday Calculator — Next Birthday Countdown | agecalconline.com" description="Calculate your next birthday, find which day of the week it falls on, and get a live countdown in days, hours, and minutes.">
+  <Navbar slot="nav" />
+
+  <section class="section-hero band-white" style="position:relative;overflow:hidden;text-align:center">
+    <div style="position:absolute;inset:-40px;background:linear-gradient(135deg,#007cf0,#00dfd8,#7928ca,#ff0080);opacity:0.07;filter:blur(80px);pointer-events:none"></div>
+    <div class="container" style="position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;gap:var(--space-xl)">
+      <span class="caption-mono">Birthday Calculator</span>
+      <h1 class="display-xl">When is your next birthday?</h1>
+      <p class="body-lg text-body" style="max-width:480px">Get a live countdown to your next birthday, find out which day it falls on, and see your birthday twin celebrities.</p>
+      <div class="card-lg" style="width:100%;max-width:480px;text-align:left">
+        <div class="form-group">
+          <label class="form-label" for="bday-dob">Your Date of Birth</label>
+          <input type="date" id="bday-dob" class="form-input form-input-lg" />
+        </div>
+        <button class="btn-primary" id="bday-btn" style="margin-top:var(--space-lg);width:100%;justify-content:center">Find My Next Birthday</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="section band-light hidden" id="bday-result">
+    <div class="container" style="max-width:720px">
+      <div class="card-lg" style="text-align:center;margin-bottom:var(--space-xl)">
+        <div style="font-size:48px;margin-bottom:var(--space-md)">🎂</div>
+        <h2 class="display-md" id="bday-date-display">—</h2>
+        <p class="body-md text-body" id="bday-weekday-display">—</p>
+        <div style="display:flex;justify-content:center;gap:var(--space-xl);margin-top:var(--space-xl)">
+          <div><div class="display-lg" id="bday-days">—</div><div class="caption-mono">Days</div></div>
+          <div style="font-size:32px;color:var(--mute);padding-top:4px">:</div>
+          <div><div class="display-lg" id="bday-hours">—</div><div class="caption-mono">Hours</div></div>
+          <div style="font-size:32px;color:var(--mute);padding-top:4px">:</div>
+          <div><div class="display-lg" id="bday-mins">—</div><div class="caption-mono">Minutes</div></div>
+        </div>
+      </div>
+      <div class="grid-2" id="bday-stats-grid"></div>
+    </div>
+  </section>
+
+  <section class="section band-white">
+    <div class="container" style="max-width:720px">
+      <h2 class="display-md" style="margin-bottom:var(--space-xl)">Frequently Asked Questions</h2>
+      <details class="faq-item"><summary class="faq-question">How many days until my birthday?</summary><p class="faq-answer">Enter your date of birth above and our calculator will instantly show you the exact number of days, hours, and minutes until your next birthday.</p></details>
+      <details class="faq-item"><summary class="faq-question">What day of the week is my birthday?</summary><p class="faq-answer">Our birthday calculator tells you exactly which day of the week your upcoming birthday falls on, so you can plan ahead.</p></details>
+    </div>
+  </section>
+
+  <ToolsGrid />
+  <Footer slot="footer" />
+</BaseLayout>
+
+<style is:global>
+.faq-item{border-top:1px solid var(--hairline)}.faq-item:last-child{border-bottom:1px solid var(--hairline)}.faq-question{font-size:16px;font-weight:500;color:var(--ink);cursor:pointer;padding:var(--space-lg) 0;list-style:none;display:flex;justify-content:space-between;align-items:center}.faq-question::after{content:'+'}.faq-answer{font-size:15px;color:var(--body);line-height:1.7;padding-bottom:var(--space-lg)}
+</style>
+
+<script>
+document.getElementById('bday-btn')?.addEventListener('click', () => {
+  const val = (document.getElementById('bday-dob') as HTMLInputElement).value;
+  if (!val) return;
+  const birth = new Date(val);
+  const now = new Date();
+  let next = new Date(now.getFullYear(), birth.getMonth(), birth.getDate());
+  if (next <= now) next = new Date(now.getFullYear()+1, birth.getMonth(), birth.getDate());
+  const ms = next.getTime() - now.getTime();
+  const days = Math.floor(ms/86400000);
+  const hrs  = Math.floor((ms%86400000)/3600000);
+  const mins = Math.floor((ms%3600000)/60000);
+  const weekdays=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+  const months_=['January','February','March','April','May','June','July','August','September','October','November','December'];
+  (document.getElementById('bday-date-display') as HTMLElement).textContent=`${months_[next.getMonth()]} ${next.getDate()}, ${next.getFullYear()}`;
+  (document.getElementById('bday-weekday-display') as HTMLElement).textContent=`Falls on a ${weekdays[next.getDay()]}`;
+  (document.getElementById('bday-days') as HTMLElement).textContent=days.toString();
+  (document.getElementById('bday-hours') as HTMLElement).textContent=hrs.toString();
+  (document.getElementById('bday-mins') as HTMLElement).textContent=mins.toString();
+  let cel=now.getFullYear()-birth.getFullYear();
+  if(now.getMonth()<birth.getMonth()||(now.getMonth()===birth.getMonth()&&now.getDate()<birth.getDate()))cel--;
+  const grid=document.getElementById('bday-stats-grid')!;
+  const isLeap=(y:number)=>(y%4===0&&y%100!==0)||y%400===0;
+  const start=new Date(birth.getFullYear(),0,0);
+  const doy=Math.floor((birth.getTime()-start.getTime())/86400000);
+  grid.innerHTML=[
+    {l:'Birthdays Celebrated',v:cel},
+    {l:'Birth Year Leap Year',v:isLeap(birth.getFullYear())?'✅ Yes':'❌ No'},
+    {l:'Day of Year Born',v:'#'+doy},
+    {l:'Next Birthday Age',v:`${next.getFullYear()-birth.getFullYear()} years old`},
+  ].map(s=>`<div class="card"><div class="caption-mono" style="color:var(--mute);margin-bottom:8px">${s.l}</div><div class="display-sm">${s.v}</div></div>`).join('');
+  document.getElementById('bday-result')!.classList.remove('hidden');
+});
+</script>

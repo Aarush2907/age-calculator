@@ -1,0 +1,91 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Navbar from '../components/Navbar.astro';
+import Footer from '../components/Footer.astro';
+import ToolsGrid from '../components/ToolsGrid.astro';
+---
+<BaseLayout title="Life Expectancy Calculator — How Long Will You Live? | agecalconline.com" description="Calculate your estimated life expectancy based on your country. See how many days you have lived and how many remain.">
+  <Navbar slot="nav" />
+  <section class="section-hero band-white" style="position:relative;overflow:hidden;text-align:center">
+    <div style="position:absolute;inset:-40px;background:linear-gradient(135deg,#007cf0,#00dfd8,#7928ca,#ff0080);opacity:0.07;filter:blur(80px);pointer-events:none"></div>
+    <div class="container" style="position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;gap:var(--space-xl)">
+      <span class="caption-mono">Life Expectancy Calculator</span>
+      <h1 class="display-xl">How long will you live?</h1>
+      <p class="body-lg text-body" style="max-width:480px">Based on WHO country life expectancy data, calculate your estimated remaining years and days.</p>
+      <div class="card-lg" style="width:100%;max-width:480px;text-align:left">
+        <div class="form-group">
+          <label class="form-label" for="le-dob">Date of Birth</label>
+          <input type="date" id="le-dob" class="form-input form-input-lg" />
+        </div>
+        <div class="form-group" style="margin-top:var(--space-md)">
+          <label class="form-label" for="le-country">Country</label>
+          <select id="le-country" class="form-select" style="height:48px;font-size:16px">
+            <option value="73.4">World Average (73.4 yrs)</option>
+            <option value="84.3">Japan (84.3 yrs)</option>
+            <option value="83.8">Switzerland (83.8 yrs)</option>
+            <option value="83.5">Australia (83.5 yrs)</option>
+            <option value="83.4">Spain (83.4 yrs)</option>
+            <option value="83.0">Sweden (83.0 yrs)</option>
+            <option value="82.7">France (82.7 yrs)</option>
+            <option value="82.5">Canada (82.5 yrs)</option>
+            <option value="81.3">UK (81.3 yrs)</option>
+            <option value="81.4">Germany (81.4 yrs)</option>
+            <option value="78.9">USA (78.9 yrs)</option>
+            <option value="77.3">China (77.3 yrs)</option>
+            <option value="75.4">Brazil (75.4 yrs)</option>
+            <option value="75.0">Mexico (75.0 yrs)</option>
+            <option value="73.2">Russia (73.2 yrs)</option>
+            <option value="70.8">India (70.8 yrs)</option>
+            <option value="67.2">Pakistan (67.2 yrs)</option>
+            <option value="54.7">Nigeria (54.7 yrs)</option>
+          </select>
+        </div>
+        <button class="btn-primary" id="le-btn" style="margin-top:var(--space-lg);width:100%;justify-content:center">Calculate Life Expectancy</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="section band-dark hidden" id="le-result">
+    <div class="container" style="max-width:720px">
+      <div style="text-align:center;margin-bottom:var(--space-3xl)">
+        <div class="caption-mono" style="color:rgba(255,255,255,0.5);margin-bottom:8px">Life Completed</div>
+        <div class="display-xl" style="color:#fff" id="le-pct">—</div>
+        <div class="progress-track" style="margin-top:var(--space-lg);height:12px;background:rgba(255,255,255,0.1)">
+          <div class="progress-fill" id="le-fill" style="width:0%;background:linear-gradient(90deg,#007cf0,#00dfd8)"></div>
+        </div>
+      </div>
+      <div class="grid-3" id="le-grid"></div>
+    </div>
+  </section>
+
+  <ToolsGrid />
+  <Footer slot="footer" />
+</BaseLayout>
+
+<script>
+document.getElementById('le-btn')?.addEventListener('click', () => {
+  const dob = (document.getElementById('le-dob') as HTMLInputElement).value;
+  const exp = parseFloat((document.getElementById('le-country') as HTMLSelectElement).value);
+  if (!dob) return;
+  const birth = new Date(dob);
+  const now = new Date();
+  const totalDaysLived = Math.floor((now.getTime()-birth.getTime())/86400000);
+  const expDays = Math.round(exp*365.25);
+  const remaining = Math.max(0,expDays-totalDaysLived);
+  const pct = Math.min(100,(totalDaysLived/expDays)*100).toFixed(1);
+  const estDeathDate = new Date(birth.getTime()+expDays*86400000);
+  const ms2=['January','February','March','April','May','June','July','August','September','October','November','December'];
+  (document.getElementById('le-pct') as HTMLElement).textContent=pct+'%';
+  (document.getElementById('le-fill') as HTMLElement).style.width=pct+'%';
+  const grid=document.getElementById('le-grid')!;
+  grid.innerHTML=[
+    {l:'Days Lived',v:totalDaysLived.toLocaleString(),c:'#50e3c2'},
+    {l:'Est. Days Remaining',v:remaining.toLocaleString(),c:'#f9cb28'},
+    {l:'Est. Life Expectancy',v:`${exp} years`,c:'#fff'},
+    {l:'Est. End Date',v:`${ms2[estDeathDate.getMonth()]} ${estDeathDate.getFullYear()}`,c:'#fff'},
+    {l:'Years Remaining',v:Math.max(0,Math.floor(remaining/365.25)).toLocaleString(),c:'#fff'},
+    {l:'Weeks Remaining',v:Math.max(0,Math.floor(remaining/7)).toLocaleString(),c:'#fff'},
+  ].map(s=>`<div class="card-dark"><div class="caption-mono" style="color:rgba(255,255,255,0.5);margin-bottom:8px">${s.l}</div><div class="display-sm" style="color:${s.c}">${s.v}</div></div>`).join('');
+  document.getElementById('le-result')!.classList.remove('hidden');
+});
+</script>

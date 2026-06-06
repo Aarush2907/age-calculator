@@ -1,0 +1,69 @@
+---
+// src/components/LifeStats.astro
+---
+<section class="life-stats section band-light hidden" id="life-stats">
+  <div class="container">
+    <div class="section-header" style="margin-bottom:var(--space-3xl)">
+      <span class="caption-mono">Life Statistics</span>
+      <h2 class="display-lg">Your life by the numbers.</h2>
+      <p class="body-md text-body">Estimated statistics based on average human activity throughout your life.</p>
+    </div>
+    <div class="grid-4" id="life-stats-grid"></div>
+  </div>
+</section>
+
+<style>
+.ls-card {
+  background: var(--canvas); border-radius: var(--radius-md);
+  padding: var(--space-lg); box-shadow: var(--shadow-2);
+  display: flex; flex-direction: column; gap: var(--space-xs);
+  transition: transform 0.2s ease;
+}
+.ls-card:hover { transform: translateY(-2px); }
+.ls-card__icon { font-size: 24px; margin-bottom: 4px; }
+.ls-card__value { font-size: 24px; font-weight: 600; letter-spacing: -0.96px; line-height: 1; color: var(--ink); }
+.ls-card__label { font-size: 14px; font-weight: 500; color: var(--ink); }
+.ls-card__unit { font-size: 11px; font-family: var(--font-mono); color: var(--mute); text-transform: uppercase; }
+</style>
+
+<script>
+document.addEventListener('age:calculate', (e: any) => {
+  const birth = new Date(e.detail.dob);
+  const now = new Date();
+  const totalDays = (now.getTime() - birth.getTime()) / 86400000;
+  const totalSec = (now.getTime() - birth.getTime()) / 1000;
+
+  function fmt(n: number) {
+    if (n >= 1e9) return (n / 1e9).toFixed(2) + 'B';
+    if (n >= 1e6) return (n / 1e6).toFixed(2) + 'M';
+    return Math.floor(n).toLocaleString();
+  }
+
+  const stats = [
+    { label: 'Heartbeats', icon: '❤️', value: fmt(totalSec * 1.17), unit: 'beats (avg 70 bpm)' },
+    { label: 'Breaths Taken', icon: '💨', value: fmt(totalSec * 0.27), unit: 'breaths (avg 16/min)' },
+    { label: 'Steps Walked', icon: '👣', value: fmt(totalDays * 7500), unit: 'steps (avg 7,500/day)' },
+    { label: 'Meals Eaten', icon: '🍽️', value: fmt(totalDays * 3), unit: 'meals (avg 3/day)' },
+    { label: 'Hours Slept', icon: '😴', value: fmt(totalDays * 8), unit: 'hours (avg 8/day)' },
+    { label: 'Blinks', icon: '👁️', value: fmt(totalSec * 0.28), unit: 'blinks (avg 17/min)' },
+    { label: 'Distance Walked', icon: '🚶', value: fmt(totalDays * 5.6), unit: 'km (avg 5.6/day)' },
+    { label: 'Words Spoken', icon: '💬', value: fmt(totalDays * 16000), unit: 'words (avg 16k/day)' },
+  ];
+
+  const grid = document.getElementById('life-stats-grid')!;
+  grid.innerHTML = '';
+  stats.forEach(s => {
+    const card = document.createElement('div');
+    card.className = 'ls-card';
+    card.innerHTML = `
+      <div class="ls-card__icon">${s.icon}</div>
+      <div class="ls-card__value">${s.value}</div>
+      <div class="ls-card__label">${s.label}</div>
+      <div class="ls-card__unit">${s.unit}</div>
+    `;
+    grid.appendChild(card);
+  });
+
+  document.getElementById('life-stats')!.classList.remove('hidden');
+});
+</script>

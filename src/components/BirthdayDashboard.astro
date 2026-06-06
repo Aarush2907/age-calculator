@@ -1,0 +1,112 @@
+---
+// src/components/BirthdayDashboard.astro
+---
+<section class="birthday-dash section band-white hidden" id="birthday-dash">
+  <div class="container">
+    <div class="section-header" style="margin-bottom:var(--space-3xl)">
+      <span class="caption-mono">Birthday Dashboard</span>
+      <h2 class="display-lg">Your next birthday.</h2>
+    </div>
+
+    <div class="bd-grid">
+      <div class="card-lg bd-main">
+        <div class="bd-cake">🎂</div>
+        <div class="display-md" id="bd-date">—</div>
+        <div class="body-sm text-body" id="bd-weekday">—</div>
+        <div class="bd-countdown">
+          <div class="bd-cd-item"><span class="bd-cd-num" id="bd-days-left">—</span><span class="bd-cd-label">days</span></div>
+          <div class="bd-cd-sep">:</div>
+          <div class="bd-cd-item"><span class="bd-cd-num" id="bd-hrs-left">—</span><span class="bd-cd-label">hours</span></div>
+          <div class="bd-cd-sep">:</div>
+          <div class="bd-cd-item"><span class="bd-cd-num" id="bd-min-left">—</span><span class="bd-cd-label">min</span></div>
+        </div>
+        <div class="badge bd-today-badge hidden" id="bd-today-badge">🎉 Happy Birthday!</div>
+      </div>
+
+      <div class="bd-side">
+        <div class="card bd-info-card">
+          <div class="caption-mono" style="color:var(--mute)">Birthdays Celebrated</div>
+          <div class="display-md" id="bd-celebrated">—</div>
+        </div>
+        <div class="card bd-info-card">
+          <div class="caption-mono" style="color:var(--mute)">Birth Year Leap Year?</div>
+          <div class="display-sm" id="bd-leap">—</div>
+        </div>
+        <div class="card bd-info-card">
+          <div class="caption-mono" style="color:var(--mute)">Day of Year Born</div>
+          <div class="display-md" id="bd-day-of-year">—</div>
+        </div>
+        <div class="card bd-info-card">
+          <div class="caption-mono" style="color:var(--mute)">Age on Next Birthday</div>
+          <div class="display-md" id="bd-next-age">—</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+.bd-grid { display:grid; grid-template-columns:1fr 1fr; gap:var(--space-lg); }
+.bd-main { display:flex; flex-direction:column; gap:var(--space-md); align-items:flex-start; }
+.bd-cake { font-size:40px; }
+.bd-countdown { display:flex; align-items:center; gap:var(--space-sm); margin-top:var(--space-xs); }
+.bd-cd-item { display:flex; flex-direction:column; align-items:center; gap:2px; }
+.bd-cd-num { font-size:32px; font-weight:600; letter-spacing:-1.28px; line-height:1; }
+.bd-cd-sep { font-size:24px; font-weight:300; color:var(--mute); margin-bottom:14px; }
+.bd-cd-label { font-size:11px; font-family:var(--font-mono); text-transform:uppercase; color:var(--mute); }
+.bd-side { display:flex; flex-direction:column; gap:var(--space-md); }
+.bd-info-card { display:flex; flex-direction:column; gap:var(--space-xs); }
+.bd-today-badge { background:var(--link-bg-soft); color:var(--link-deep); font-size:14px; padding:4px 12px; border-radius:var(--radius-full); }
+@media (max-width:768px) { .bd-grid { grid-template-columns:1fr; } }
+</style>
+
+<script>
+document.addEventListener('age:calculate', (e: any) => {
+  const dob = e.detail.dob;
+  const birth = new Date(dob);
+  const now = new Date();
+
+  // Next birthday
+  let next = new Date(now.getFullYear(), birth.getMonth(), birth.getDate());
+  if (next <= now) next = new Date(now.getFullYear() + 1, birth.getMonth(), birth.getDate());
+
+  const ms = next.getTime() - now.getTime();
+  const daysLeft = Math.floor(ms / 86400000);
+  const hrsLeft = Math.floor((ms % 86400000) / 3600000);
+  const minLeft = Math.floor((ms % 3600000) / 60000);
+
+  const isToday = now.getDate() === birth.getDate() && now.getMonth() === birth.getMonth();
+
+  const weekdays = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+  const months = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+
+  (document.getElementById('bd-date') as HTMLElement).textContent = `${months[next.getMonth()]} ${next.getDate()}, ${next.getFullYear()}`;
+  (document.getElementById('bd-weekday') as HTMLElement).textContent = `Falls on a ${weekdays[next.getDay()]}`;
+  (document.getElementById('bd-days-left') as HTMLElement).textContent = daysLeft.toString();
+  (document.getElementById('bd-hrs-left') as HTMLElement).textContent = hrsLeft.toString();
+  (document.getElementById('bd-min-left') as HTMLElement).textContent = minLeft.toString();
+
+  if (isToday) document.getElementById('bd-today-badge')!.classList.remove('hidden');
+
+  // Celebrated
+  let cel = now.getFullYear() - birth.getFullYear();
+  if (now.getMonth() < birth.getMonth() || (now.getMonth() === birth.getMonth() && now.getDate() < birth.getDate())) cel--;
+  (document.getElementById('bd-celebrated') as HTMLElement).textContent = cel.toLocaleString();
+
+  // Leap
+  const bYear = birth.getFullYear();
+  const isLeap = (bYear % 4 === 0 && bYear % 100 !== 0) || bYear % 400 === 0;
+  (document.getElementById('bd-leap') as HTMLElement).textContent = isLeap ? '✅ Yes — Leap Year!' : '❌ No';
+
+  // Day of year
+  const start = new Date(birth.getFullYear(), 0, 0);
+  const diff = birth.getTime() - start.getTime();
+  const dayOfYear = Math.floor(diff / 86400000);
+  (document.getElementById('bd-day-of-year') as HTMLElement).textContent = `#${dayOfYear}`;
+
+  // Next age
+  (document.getElementById('bd-next-age') as HTMLElement).textContent = `${next.getFullYear() - birth.getFullYear()} years old`;
+
+  document.getElementById('birthday-dash')!.classList.remove('hidden');
+});
+</script>

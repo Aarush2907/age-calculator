@@ -1,0 +1,108 @@
+---
+// Footer.astro
+const year = new Date().getFullYear();
+const tools = [
+  { href: '/', label: 'Age Calculator' },
+  { href: '/age-difference-calculator', label: 'Age Difference' },
+  { href: '/birthday-calculator', label: 'Birthday Calculator' },
+  { href: '/reverse-age-calculator', label: 'Reverse Age' },
+  { href: '/future-age-calculator', label: 'Future Age' },
+  { href: '/pet-age-calculator', label: 'Pet Age Calculator' },
+  { href: '/retirement-calculator', label: 'Retirement Calculator' },
+  { href: '/life-expectancy-calculator', label: 'Life Expectancy' },
+  { href: '/biological-age-calculator', label: 'Biological Age' },
+  { href: '/generation-calculator', label: 'Generation Calculator' },
+];
+---
+<footer class="footer">
+  <div class="divider"></div>
+  <div class="footer-inner container">
+    <div class="footer-brand">
+      <a href="/" class="footer-logo">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="1.5"/>
+          <path d="M12 7v5l3 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <span>AgeCalc</span>
+      </a>
+      <p class="footer-tagline">The most advanced life analytics platform. Calculate your exact age, milestones, planetary age, and life statistics.</p>
+    </div>
+
+    <div class="footer-col">
+      <h3 class="footer-col-title">Calculators</h3>
+      <ul class="footer-links">
+        {tools.slice(0, 5).map(t => (
+          <li><a href={t.href} class="footer-link">{t.label}</a></li>
+        ))}
+      </ul>
+    </div>
+
+    <div class="footer-col">
+      <h3 class="footer-col-title">More Tools</h3>
+      <ul class="footer-links">
+        {tools.slice(5).map(t => (
+          <li><a href={t.href} class="footer-link">{t.label}</a></li>
+        ))}
+      </ul>
+    </div>
+
+    <div class="footer-col">
+      <h3 class="footer-col-title">Features</h3>
+      <ul class="footer-links">
+        <li><a href="/#life-progress" class="footer-link">Life Progress</a></li>
+        <li><a href="/#milestones" class="footer-link">Milestone Tracker</a></li>
+        <li><a href="/#planetary" class="footer-link">Planetary Age</a></li>
+        <li><a href="/#life-calendar" class="footer-link">Life Calendar</a></li>
+        <li><a href="/#life-stats" class="footer-link">Life Statistics</a></li>
+        <li><a href="/#historical" class="footer-link">Historical Timeline</a></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="footer-bottom">
+    <div class="container">
+      <div class="footer-bottom-inner">
+        <p class="caption text-body">&copy; {year} agecalconline.com — All rights reserved.</p>
+        <div class="footer-bottom-links">
+          <a href="/privacy" class="footer-bottom-link">Privacy</a>
+          <a href="/sitemap.xml" class="footer-bottom-link">Sitemap</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<style>
+.footer { background: var(--canvas); border-top: 1px solid var(--hairline); margin-top: var(--space-5xl); }
+.footer-inner {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr;
+  gap: var(--space-4xl);
+  padding-top: var(--space-4xl);
+  padding-bottom: var(--space-4xl);
+}
+.footer-brand { display: flex; flex-direction: column; gap: var(--space-md); }
+.footer-logo {
+  display: flex; align-items: center; gap: var(--space-xs);
+  color: var(--ink); font-weight: 600; font-size: 15px; text-decoration: none;
+}
+.footer-tagline { font-size: 13px; color: var(--body); line-height: 1.6; max-width: 260px; }
+.footer-col { display: flex; flex-direction: column; gap: var(--space-md); }
+.footer-col-title { font-family: var(--font-mono); font-size: 11px; font-weight: 400; text-transform: uppercase; letter-spacing: 0.08em; color: var(--mute); }
+.footer-links { display: flex; flex-direction: column; gap: var(--space-xs); }
+.footer-link { font-size: 14px; color: var(--body); text-decoration: none; letter-spacing: -0.28px; transition: color .15s ease; }
+.footer-link:hover { color: var(--ink); }
+.footer-bottom { border-top: 1px solid var(--hairline); }
+.footer-bottom-inner { display: flex; justify-content: space-between; align-items: center; padding: var(--space-lg) 0; }
+.footer-bottom-links { display: flex; gap: var(--space-lg); }
+.footer-bottom-link { font-size: 13px; color: var(--body); text-decoration: none; transition: color .15s ease; }
+.footer-bottom-link:hover { color: var(--ink); }
+@media (max-width: 960px) {
+  .footer-inner { grid-template-columns: 1fr 1fr; }
+  .footer-brand { grid-column: 1 / -1; }
+}
+@media (max-width: 600px) {
+  .footer-inner { grid-template-columns: 1fr; gap: var(--space-xl); }
+  .footer-bottom-inner { flex-direction: column; gap: var(--space-sm); text-align: center; }
+}
+</style>

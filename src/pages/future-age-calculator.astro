@@ -1,0 +1,65 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Navbar from '../components/Navbar.astro';
+import Footer from '../components/Footer.astro';
+import ToolsGrid from '../components/ToolsGrid.astro';
+---
+<BaseLayout title="Future Age Calculator — How Old Will I Be? | agecalconline.com" description="Calculate exactly how old you will be on any future date. Perfect for planning milestones, events, and important life dates.">
+  <Navbar slot="nav" />
+  <section class="section-hero band-white" style="position:relative;overflow:hidden;text-align:center">
+    <div style="position:absolute;inset:-40px;background:linear-gradient(135deg,#007cf0,#00dfd8,#7928ca,#ff0080);opacity:0.07;filter:blur(80px);pointer-events:none"></div>
+    <div class="container" style="position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;gap:var(--space-xl)">
+      <span class="caption-mono">Future Age Calculator</span>
+      <h1 class="display-xl">How old will you be?</h1>
+      <p class="body-lg text-body" style="max-width:480px">Calculate your exact age on any future date — perfect for planning milestones and special events.</p>
+      <div class="card-lg" style="width:100%;max-width:520px;text-align:left">
+        <div class="grid-2" style="gap:var(--space-md)">
+          <div class="form-group"><label class="form-label" for="fut-dob">Your Date of Birth</label><input type="date" id="fut-dob" class="form-input form-input-lg" /></div>
+          <div class="form-group"><label class="form-label" for="fut-date">Future Date</label><input type="date" id="fut-date" class="form-input form-input-lg" /></div>
+        </div>
+        <button class="btn-primary" id="fut-btn" style="margin-top:var(--space-lg);width:100%;justify-content:center">Calculate Future Age</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="section band-light hidden" id="fut-result">
+    <div class="container" style="max-width:600px;text-align:center">
+      <div class="card-lg">
+        <div style="font-size:48px;margin-bottom:var(--space-md)">🔮</div>
+        <div class="caption-mono" style="color:var(--mute);margin-bottom:8px">Your Age On That Date</div>
+        <h2 class="display-xl" id="fut-age">—</h2>
+        <p class="body-md text-body" style="margin-top:var(--space-sm)" id="fut-summary">—</p>
+        <div class="grid-3" style="margin-top:var(--space-xl)" id="fut-grid"></div>
+      </div>
+    </div>
+  </section>
+
+  <ToolsGrid />
+  <Footer slot="footer" />
+</BaseLayout>
+
+<script>
+document.getElementById('fut-btn')?.addEventListener('click', () => {
+  const dob  = (document.getElementById('fut-dob') as HTMLInputElement).value;
+  const futD = (document.getElementById('fut-date') as HTMLInputElement).value;
+  if (!dob||!futD) return;
+  const birth = new Date(dob);
+  const future = new Date(futD);
+  if (future<=birth) return alert('Future date must be after birth date.');
+  let years=future.getFullYear()-birth.getFullYear();
+  let months=future.getMonth()-birth.getMonth();
+  let days=future.getDate()-birth.getDate();
+  if(days<0){months--;days+=new Date(future.getFullYear(),future.getMonth(),0).getDate();}
+  if(months<0){years--;months+=12;}
+  const totalDays=Math.floor((future.getTime()-birth.getTime())/86400000);
+  const opts:Intl.DateTimeFormatOptions={year:'numeric',month:'long',day:'numeric'};
+  (document.getElementById('fut-age') as HTMLElement).textContent=`${years} years old`;
+  (document.getElementById('fut-summary') as HTMLElement).textContent=`On ${future.toLocaleDateString('en-US',opts)}, you will be ${years} years, ${months} months, and ${days} days old.`;
+  const grid=document.getElementById('fut-grid')!;
+  grid.innerHTML=[
+    {l:'Years',v:years},{l:'Months',v:months},{l:'Days',v:days},
+    {l:'Total Days',v:totalDays.toLocaleString()},{l:'Total Weeks',v:Math.floor(totalDays/7).toLocaleString()},{l:'Total Months',v:(years*12+months).toLocaleString()},
+  ].map(s=>`<div class="card-soft"><div class="caption-mono" style="color:var(--mute);margin-bottom:8px">${s.l}</div><div class="display-sm">${s.v}</div></div>`).join('');
+  document.getElementById('fut-result')!.classList.remove('hidden');
+});
+</script>

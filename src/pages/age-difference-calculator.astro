@@ -1,0 +1,96 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Navbar from '../components/Navbar.astro';
+import Footer from '../components/Footer.astro';
+import ToolsGrid from '../components/ToolsGrid.astro';
+---
+<BaseLayout title="Age Difference Calculator — Compare Two Ages | agecalconline.com" description="Calculate the age difference between two people in years, months, weeks, days, hours, and minutes. Perfect for couples, family, and friends.">
+  <Navbar slot="nav" />
+
+  <section class="section-hero band-white" style="position:relative;overflow:hidden;text-align:center">
+    <div style="position:absolute;inset:-40px;background:linear-gradient(135deg,#007cf0,#00dfd8,#7928ca,#ff0080);opacity:0.07;filter:blur(80px);pointer-events:none"></div>
+    <div class="container" style="position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;gap:var(--space-xl)">
+      <span class="caption-mono">Age Difference Calculator</span>
+      <h1 class="display-xl">How far apart are you?</h1>
+      <p class="body-lg text-body" style="max-width:480px">Compare the ages of two people and see the exact difference in years, months, weeks, days, hours, and minutes.</p>
+      <div class="adc-form card-lg" style="width:100%;max-width:560px;text-align:left">
+        <div class="grid-2" style="gap:var(--space-lg)">
+          <div class="form-group">
+            <label class="form-label" for="dob-a">Person A — Date of Birth</label>
+            <input type="date" id="dob-a" class="form-input form-input-lg" />
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="dob-b">Person B — Date of Birth</label>
+            <input type="date" id="dob-b" class="form-input form-input-lg" />
+          </div>
+        </div>
+        <button class="btn-primary" id="adc-btn" style="margin-top:var(--space-lg);width:100%;justify-content:center">Calculate Difference</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="section band-light hidden" id="adc-result">
+    <div class="container" style="max-width:720px">
+      <h2 class="display-lg" style="text-align:center;margin-bottom:var(--space-3xl)" id="adc-headline">—</h2>
+      <div class="grid-3" id="adc-grid"></div>
+    </div>
+  </section>
+
+  <section class="section band-white">
+    <div class="container" style="max-width:720px">
+      <h2 class="display-md" style="margin-bottom:var(--space-xl)">Frequently Asked Questions</h2>
+      <details class="faq-item"><summary class="faq-question">How do you calculate age difference?</summary><p class="faq-answer">Subtract the older person's birth date from the younger person's birth date. Our calculator shows the result in years, months, weeks, days, hours, and minutes for maximum precision.</p></details>
+      <details class="faq-item"><summary class="faq-question">What is the ideal age difference between partners?</summary><p class="faq-answer">Research suggests couples with a 1–3 year age difference tend to have higher relationship satisfaction, though individual compatibility matters far more than age.</p></details>
+      <details class="faq-item"><summary class="faq-question">Can I calculate age difference in weeks?</summary><p class="faq-answer">Yes! Our age difference calculator shows the exact difference in years, months, weeks, days, hours, and minutes simultaneously.</p></details>
+    </div>
+  </section>
+
+  <ToolsGrid />
+  <Footer slot="footer" />
+</BaseLayout>
+
+<style is:global>
+.faq-item { border-top:1px solid var(--hairline); }
+.faq-item:last-child { border-bottom:1px solid var(--hairline); }
+.faq-question { font-size:16px;font-weight:500;color:var(--ink);cursor:pointer;padding:var(--space-lg) 0;list-style:none;display:flex;justify-content:space-between;align-items:center;letter-spacing:-0.4px; }
+.faq-question::after { content:'+';font-size:20px;font-weight:300;color:var(--mute); }
+details[open] .faq-question::after { content:'−'; }
+.faq-answer { font-size:15px;color:var(--body);line-height:1.7;padding-bottom:var(--space-lg); }
+.adc-diff-card { background:var(--canvas);border-radius:var(--radius-md);padding:var(--space-lg);box-shadow:var(--shadow-2);display:flex;flex-direction:column;gap:4px; }
+.adc-diff-val { font-size:32px;font-weight:600;letter-spacing:-1.28px;line-height:1;color:var(--ink); }
+.adc-diff-label { font-size:13px;color:var(--body); }
+</style>
+
+<script>
+const btn = document.getElementById('adc-btn');
+btn?.addEventListener('click', () => {
+  const a = (document.getElementById('dob-a') as HTMLInputElement).value;
+  const b = (document.getElementById('dob-b') as HTMLInputElement).value;
+  if (!a || !b) return alert('Please enter both dates.');
+  const d1 = new Date(Math.min(+new Date(a), +new Date(b)));
+  const d2 = new Date(Math.max(+new Date(a), +new Date(b)));
+  const ms = d2.getTime() - d1.getTime();
+  const totalDays = Math.floor(ms / 86400000);
+  const totalWeeks = Math.floor(totalDays / 7);
+  const totalHours = Math.floor(ms / 3600000);
+  const totalMins  = Math.floor(ms / 60000);
+  let years = d2.getFullYear() - d1.getFullYear();
+  let months = d2.getMonth() - d1.getMonth();
+  let days = d2.getDate() - d1.getDate();
+  if (days < 0) { months--; days += new Date(d2.getFullYear(), d2.getMonth(), 0).getDate(); }
+  if (months < 0) { years--; months += 12; }
+
+  (document.getElementById('adc-headline') as HTMLElement).textContent = `${years} years, ${months} months, and ${days} days apart.`;
+  const stats = [
+    { v: years.toLocaleString(), l:'Years Apart' },
+    { v: months.toLocaleString(), l:'Months Apart' },
+    { v: totalWeeks.toLocaleString(), l:'Weeks Apart' },
+    { v: totalDays.toLocaleString(), l:'Days Apart' },
+    { v: totalHours.toLocaleString(), l:'Hours Apart' },
+    { v: totalMins.toLocaleString(), l:'Minutes Apart' },
+  ];
+  const grid = document.getElementById('adc-grid')!;
+  grid.innerHTML = stats.map(s => `<div class="adc-diff-card"><div class="adc-diff-val">${s.v}</div><div class="adc-diff-label">${s.l}</div></div>`).join('');
+  document.getElementById('adc-result')!.classList.remove('hidden');
+});
+</script>

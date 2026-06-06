@@ -1,0 +1,54 @@
+---
+// src/components/ToolsGrid.astro
+const tools = [
+  { href:'/age-difference-calculator', icon:'↔️', title:'Age Difference', desc:'Compare ages of two people in years, months, weeks, and days.' },
+  { href:'/birthday-calculator', icon:'🎂', title:'Birthday Calculator', desc:'Countdown to your next birthday and find your birthday twins.' },
+  { href:'/pet-age-calculator', icon:'🐾', title:'Pet Age Calculator', desc:'Convert your pet\'s age to human years — dogs, cats, rabbits & more.' },
+  { href:'/retirement-calculator', icon:'🏖️', title:'Retirement Calculator', desc:'Find out exactly how many years until your retirement date.' },
+  { href:'/life-expectancy-calculator', icon:'📊', title:'Life Expectancy', desc:'Country-specific life expectancy and estimated days remaining.' },
+  { href:'/biological-age-calculator', icon:'🧬', title:'Biological Age', desc:'Estimate your biological age based on your lifestyle habits.' },
+  { href:'/generation-calculator', icon:'👥', title:'Generation Calculator', desc:'Discover your generation and what makes it unique.' },
+  { href:'/future-age-calculator', icon:'🔮', title:'Future Age', desc:'Calculate exactly how old you\'ll be on any future date.' },
+  { href:'/reverse-age-calculator', icon:'↩️', title:'Reverse Age', desc:'Find your birth date from a known age.' },
+];
+---
+<section class="tools-grid section band-light">
+  <div class="container">
+    <div class="section-header section-header--center" style="margin-bottom:var(--space-3xl)">
+      <span class="caption-mono">More Tools</span>
+      <h2 class="display-lg">Explore all calculators.</h2>
+      <p class="body-md text-body">Each tool is SEO-optimized and designed for a specific life calculation need.</p>
+    </div>
+    <div class="grid-3 tg-grid">
+      {tools.map(t => (
+        <a href={t.href} class="tg-card">
+          <div class="tg-card__icon">{t.icon}</div>
+          <div class="tg-card__title">{t.title}</div>
+          <div class="tg-card__desc">{t.desc}</div>
+          <div class="tg-card__cta">Calculate →</div>
+        </a>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+.tg-card {
+  background: var(--canvas); border-radius: var(--radius-md);
+  padding: var(--space-lg); box-shadow: var(--shadow-2);
+  border: 1px solid var(--hairline);
+  display: flex; flex-direction: column; gap: var(--space-xs);
+  text-decoration: none; color: inherit;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.tg-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-4); }
+.tg-card__icon { font-size: 28px; margin-bottom: 4px; }
+.tg-card__title { font-size: 16px; font-weight: 600; color: var(--ink); letter-spacing: -0.4px; }
+.tg-card__desc { font-size: 14px; color: var(--body); line-height: 1.5; flex: 1; }
+.tg-card__cta { font-size: 13px; color: var(--link); font-weight: 500; margin-top: var(--space-xs); }
+.section-header--center { text-align: center; }
+@media (max-width: 600px) {
+  .section-header--center { text-align: left; }
+  .tg-card { padding: var(--space-md); }
+}
+</style>

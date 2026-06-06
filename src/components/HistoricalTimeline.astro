@@ -1,0 +1,98 @@
+---
+// src/components/HistoricalTimeline.astro
+---
+<section class="historical section band-light hidden" id="historical">
+  <div class="container">
+    <div class="section-header" style="margin-bottom:var(--space-3xl)">
+      <span class="caption-mono">Birth Year</span>
+      <h2 class="display-lg">The world when you were born.</h2>
+      <p class="body-md text-body">A snapshot of history, culture, and technology from your birth year.</p>
+    </div>
+
+    <div class="ht-year-badge" id="ht-year">—</div>
+
+    <div class="grid-2 ht-grid" id="ht-grid"></div>
+  </div>
+</section>
+
+<style>
+.ht-year-badge {
+  display: inline-block; font-size: 64px; font-weight: 600; letter-spacing: -3px;
+  color: var(--ink); margin-bottom: var(--space-xl); line-height: 1;
+}
+.ht-card {
+  background: var(--canvas); border-radius: var(--radius-md);
+  padding: var(--space-lg); box-shadow: var(--shadow-2);
+}
+.ht-card__icon { font-size: 24px; margin-bottom: var(--space-sm); }
+.ht-card__cat { font-family: var(--font-mono); font-size: 11px; text-transform: uppercase; color: var(--mute); margin-bottom: var(--space-xs); }
+.ht-card__text { font-size: 16px; font-weight: 500; color: var(--ink); line-height: 1.4; }
+</style>
+
+<script>
+document.addEventListener('age:calculate', (e: any) => {
+  const birth = new Date(e.detail.dob);
+  const year = birth.getFullYear();
+
+  (document.getElementById('ht-year') as HTMLElement).textContent = String(year);
+
+  const facts: Record<number, any> = {
+    1990:{event:'German Reunification',tech:'World Wide Web invented by Tim Berners-Lee',movie:'Home Alone',song:'Nothing Compares 2 U — Sinéad O\'Connor',pop:'5.3 Billion'},
+    1991:{event:'USSR dissolved',tech:'Linux kernel created by Linus Torvalds',movie:'The Silence of the Lambs',song:'Everything I Do — Bryan Adams',pop:'5.4B'},
+    1992:{event:'Bill Clinton elected US President',tech:'First SMS text message sent',movie:'Aladdin',song:'End of the Road — Boyz II Men',pop:'5.5B'},
+    1993:{event:'Oslo Accords — Israel & Palestine peace',tech:'Mosaic browser released',movie:"Schindler's List",song:'I Will Always Love You — Whitney Houston',pop:'5.6B'},
+    1994:{event:'Nelson Mandela elected in South Africa',tech:'Amazon & Yahoo! founded',movie:'The Lion King',song:'The Sign — Ace of Base',pop:'5.6B'},
+    1995:{event:'Oklahoma City bombing',tech:'Windows 95 & Java released',movie:'Toy Story',song:"Gangsta's Paradise — Coolio",pop:'5.7B'},
+    1996:{event:'Dolly the sheep cloned',tech:'Google domain registered, DVD invented',movie:'Independence Day',song:'Macarena — Los Del Rio',pop:'5.8B'},
+    1997:{event:'Hong Kong returned to China',tech:'Netflix founded',movie:'Titanic',song:'Candle in the Wind — Elton John',pop:'5.9B'},
+    1998:{event:'Clinton impeachment proceedings',tech:'Google officially founded',movie:'Saving Private Ryan',song:'My Heart Will Go On — Céline Dion',pop:'5.9B'},
+    1999:{event:'Euro currency introduced',tech:'Napster launched, Bluetooth invented',movie:'The Matrix',song:'Believe — Cher',pop:'6.0B'},
+    2000:{event:'Y2K Millennium transition',tech:'USB flash drive invented',movie:'Gladiator',song:'Breathe — Faith Hill',pop:'6.1B'},
+    2001:{event:'September 11 attacks',tech:'Wikipedia & iPod launched',movie:"Harry Potter & the Sorcerer's Stone",song:'Hanging by a Moment — Lifehouse',pop:'6.2B'},
+    2002:{event:'Euro coins entered circulation',tech:'LinkedIn founded',movie:'Spider-Man',song:'How You Remind Me — Nickelback',pop:'6.2B'},
+    2003:{event:'Iraq War began',tech:'MySpace & Skype launched',movie:'Finding Nemo',song:'In da Club — 50 Cent',pop:'6.3B'},
+    2004:{event:'Indian Ocean Tsunami',tech:'Facebook & Gmail launched',movie:'Shrek 2',song:'Yeah! — Usher',pop:'6.4B'},
+    2005:{event:'Hurricane Katrina',tech:'YouTube founded',movie:'Star Wars: Revenge of the Sith',song:'We Belong Together — Mariah Carey',pop:'6.5B'},
+    2006:{event:'Pluto reclassified as dwarf planet',tech:'Twitter launched',movie:'Pirates of the Caribbean: Dead Man\'s Chest',song:'Bad Day — Daniel Powter',pop:'6.6B'},
+    2007:{event:'iPhone introduced by Steve Jobs',tech:'Netflix streaming began',movie:'Spider-Man 3',song:'Irreplaceable — Beyoncé',pop:'6.7B'},
+    2008:{event:'Barack Obama elected president',tech:'App Store & Android launched',movie:'The Dark Knight',song:'Low — Flo Rida',pop:'6.7B'},
+    2009:{event:'H1N1 Swine Flu pandemic',tech:'Bitcoin created by Satoshi Nakamoto',movie:'Avatar',song:'I Gotta Feeling — Black Eyed Peas',pop:'6.8B'},
+    2010:{event:'Haiti earthquake kills 250,000',tech:'Instagram & iPad launched',movie:'Toy Story 3',song:'Need You Now — Lady Antebellum',pop:'6.9B'},
+    2011:{event:'Arab Spring revolutions, bin Laden killed',tech:'Siri introduced',movie:'Harry Potter & the Deathly Hallows Part 2',song:'Rolling in the Deep — Adele',pop:'7.0B'},
+    2012:{event:'Sandy Hook elementary school shooting',tech:'Instagram acquired by Facebook for $1B',movie:'The Avengers',song:'Somebody That I Used to Know — Gotye',pop:'7.1B'},
+    2013:{event:'Edward Snowden NSA leaks',tech:'Snapchat rose to fame',movie:'Frozen',song:'Thrift Shop — Macklemore',pop:'7.2B'},
+    2014:{event:'Ebola outbreak in West Africa',tech:'Amazon Echo announced',movie:'Guardians of the Galaxy',song:'Happy — Pharrell Williams',pop:'7.3B'},
+    2015:{event:'Paris Bataclan terror attacks',tech:'Apple Watch released',movie:'Star Wars: The Force Awakens',song:'Uptown Funk — Mark Ronson ft. Bruno Mars',pop:'7.4B'},
+    2016:{event:'Brexit vote & Trump elected',tech:'Pokémon Go launched',movie:'Captain America: Civil War',song:'One Dance — Drake',pop:'7.4B'},
+    2017:{event:'Me Too movement goes viral',tech:'iPhone X with Face ID launched',movie:'Beauty and the Beast',song:'Shape of You — Ed Sheeran',pop:'7.5B'},
+    2018:{event:'Kavanaugh Supreme Court hearings',tech:'TikTok global launch',movie:'Avengers: Infinity War',song:"God's Plan — Drake",pop:'7.6B'},
+    2019:{event:'Notre Dame fire & Hong Kong protests',tech:'5G networks launched worldwide',movie:'Avengers: Endgame',song:'Old Town Road — Lil Nas X',pop:'7.7B'},
+    2020:{event:'COVID-19 global pandemic',tech:'Zoom became ubiquitous overnight',movie:'Tenet',song:'Blinding Lights — The Weeknd',pop:'7.8B'},
+    2021:{event:'COVID vaccines rolled out globally',tech:'NFT boom, Metaverse announced',movie:'Spider-Man: No Way Home',song:'Levitating — Dua Lipa',pop:'7.9B'},
+    2022:{event:'Russia invaded Ukraine',tech:'ChatGPT launched by OpenAI',movie:'Top Gun: Maverick',song:'As It Was — Harry Styles',pop:'8.0B'},
+    2023:{event:'Israel-Hamas conflict began',tech:'GPT-4 & AI revolution',movie:'Barbie',song:'Flowers — Miley Cyrus',pop:'8.0B'},
+    2024:{event:'US Presidential Election',tech:'AI agents became mainstream',movie:'Inside Out 2',song:'Espresso — Sabrina Carpenter',pop:'8.1B'},
+  };
+
+  const f = facts[year] || { event:`Major events shaped ${year}`, tech:'Technology was rapidly advancing', movie:'Great films were released', song:'Music was defining culture', pop:'World population was growing' };
+
+  const cards = [
+    { icon:'🌍', cat:'World Event', text:f.event },
+    { icon:'💻', cat:'Technology', text:f.tech },
+    { icon:'🎬', cat:'#1 Movie',  text:f.movie },
+    { icon:'🎵', cat:'#1 Song',   text:f.song },
+    { icon:'👥', cat:'World Population', text:f.pop },
+  ];
+
+  const grid = document.getElementById('ht-grid')!;
+  grid.innerHTML = '';
+  cards.forEach(c => {
+    const el = document.createElement('div');
+    el.className = 'ht-card';
+    el.innerHTML = `<div class="ht-card__icon">${c.icon}</div><div class="ht-card__cat">${c.cat}</div><div class="ht-card__text">${c.text}</div>`;
+    grid.appendChild(el);
+  });
+
+  document.getElementById('historical')!.classList.remove('hidden');
+});
+</script>

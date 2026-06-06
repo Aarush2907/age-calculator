@@ -1,0 +1,42 @@
+---
+// src/components/ui/StatCard.astro
+export interface Props {
+  label: string;
+  value: string;
+  sub?: string;
+  icon?: string;
+  dark?: boolean;
+  id?: string;
+}
+const { label, value, sub, icon, dark = false, id } = Astro.props;
+---
+<div class={`stat-card ${dark ? 'stat-card--dark' : ''}`} id={id}>
+  {icon && <span class="stat-card__icon">{icon}</span>}
+  <div class="stat-card__value">{value}</div>
+  <div class="stat-card__label">{label}</div>
+  {sub && <div class="stat-card__sub">{sub}</div>}
+</div>
+
+<style>
+.stat-card {
+  background: var(--canvas);
+  border-radius: var(--radius-md);
+  padding: var(--space-lg);
+  box-shadow: var(--shadow-2);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xxs);
+}
+.stat-card--dark {
+  background: rgba(255,255,255,0.07);
+  border: 1px solid rgba(255,255,255,0.1);
+  box-shadow: none;
+}
+.stat-card__icon { font-size: 20px; margin-bottom: var(--space-xxs); }
+.stat-card__value { font-size: 32px; font-weight: 600; letter-spacing: -1.28px; line-height: 1; }
+.stat-card--dark .stat-card__value { color: #fff; }
+.stat-card__label { font-size: 13px; color: var(--body); letter-spacing: -0.28px; margin-top: 4px; }
+.stat-card--dark .stat-card__label { color: rgba(255,255,255,0.6); }
+.stat-card__sub { font-size: 12px; color: var(--mute); font-family: var(--font-mono); }
+.stat-card--dark .stat-card__sub { color: rgba(255,255,255,0.4); }
+</style>

@@ -1,0 +1,79 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Navbar from '../components/Navbar.astro';
+import Footer from '../components/Footer.astro';
+import ToolsGrid from '../components/ToolsGrid.astro';
+---
+<BaseLayout title="Retirement Calculator — Years Until Retirement | agecalconline.com" description="Calculate exactly how many years, months, and days until your retirement. Find your retirement date based on your desired retirement age.">
+  <Navbar slot="nav" />
+  <section class="section-hero band-white" style="position:relative;overflow:hidden;text-align:center">
+    <div style="position:absolute;inset:-40px;background:linear-gradient(135deg,#007cf0,#00dfd8,#7928ca,#ff0080);opacity:0.07;filter:blur(80px);pointer-events:none"></div>
+    <div class="container" style="position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;gap:var(--space-xl)">
+      <span class="caption-mono">Retirement Calculator</span>
+      <h1 class="display-xl">When can you retire?</h1>
+      <p class="body-lg text-body" style="max-width:480px">Calculate exactly how many years, months, and days remain until your retirement date.</p>
+      <div class="card-lg" style="width:100%;max-width:480px;text-align:left">
+        <div class="form-group">
+          <label class="form-label" for="ret-dob">Your Date of Birth</label>
+          <input type="date" id="ret-dob" class="form-input form-input-lg" />
+        </div>
+        <div class="form-group" style="margin-top:var(--space-md)">
+          <label class="form-label" for="ret-age">Desired Retirement Age</label>
+          <select id="ret-age" class="form-select" style="height:48px;font-size:16px">
+            {[55,58,60,62,65,67,70,72,75].map(a=><option value={a} selected={a===65}>{a} years old</option>)}
+          </select>
+        </div>
+        <button class="btn-primary" id="ret-btn" style="margin-top:var(--space-lg);width:100%;justify-content:center">Calculate Retirement Date</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="section band-light hidden" id="ret-result">
+    <div class="container" style="max-width:720px">
+      <div class="card-lg" style="text-align:center;margin-bottom:var(--space-xl)">
+        <div style="font-size:48px;margin-bottom:var(--space-md)">🏖️</div>
+        <div class="caption-mono" style="color:var(--mute);margin-bottom:8px">Your Retirement Date</div>
+        <h2 class="display-md" id="ret-date">—</h2>
+        <p class="body-md text-body" id="ret-weekday" style="margin-top:4px">—</p>
+      </div>
+      <div class="grid-3" id="ret-grid"></div>
+    </div>
+  </section>
+
+  <ToolsGrid />
+  <Footer slot="footer" />
+</BaseLayout>
+
+<script>
+document.getElementById('ret-btn')?.addEventListener('click', () => {
+  const dob = (document.getElementById('ret-dob') as HTMLInputElement).value;
+  const retAge = parseInt((document.getElementById('ret-age') as HTMLSelectElement).value);
+  if (!dob) return;
+  const birth = new Date(dob);
+  const now = new Date();
+  const retDate = new Date(birth.getFullYear()+retAge, birth.getMonth(), birth.getDate());
+  const ms = retDate.getTime() - now.getTime();
+  const totalDays = Math.max(0, Math.floor(ms/86400000));
+  const totalWeeks = Math.floor(totalDays/7);
+  let years = retDate.getFullYear()-now.getFullYear();
+  let months = retDate.getMonth()-now.getMonth();
+  let days = retDate.getDate()-now.getDate();
+  if (days<0){months--;days+=new Date(now.getFullYear(),now.getMonth()+1,0).getDate();}
+  if (months<0){years--;months+=12;}
+  if (retDate<=now){years=months=days=0;}
+  const weekdays=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+  const ms2=['January','February','March','April','May','June','July','August','September','October','November','December'];
+  (document.getElementById('ret-date') as HTMLElement).textContent=`${ms2[retDate.getMonth()]} ${retDate.getDate()}, ${retDate.getFullYear()}`;
+  (document.getElementById('ret-weekday') as HTMLElement).textContent=retDate<=now?'You\'ve already reached retirement age!':`Falls on a ${weekdays[retDate.getDay()]}`;
+  const grid=document.getElementById('ret-grid')!;
+  grid.innerHTML=[
+    {l:'Years Remaining',v:years.toLocaleString()},
+    {l:'Months Remaining',v:months.toLocaleString()},
+    {l:'Days Remaining',v:totalDays.toLocaleString()},
+    {l:'Weeks Remaining',v:totalWeeks.toLocaleString()},
+    {l:'Current Age',v:`${now.getFullYear()-birth.getFullYear()} years`},
+    {l:'Retirement Age',v:`${retAge} years`},
+  ].map(s=>`<div class="card"><div class="caption-mono" style="color:var(--mute);margin-bottom:8px">${s.l}</div><div class="display-sm">${s.v}</div></div>`).join('');
+  document.getElementById('ret-result')!.classList.remove('hidden');
+});
+</script>

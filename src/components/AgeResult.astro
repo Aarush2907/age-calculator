@@ -1,0 +1,158 @@
+---
+// src/components/AgeResult.astro
+---
+<section class="age-result section band-light hidden" id="age-result">
+  <div class="container">
+    <div class="age-result-header">
+      <span class="caption-mono" data-i18n="result_your_exact_age">Your Exact Age</span>
+      <h2 class="display-lg age-main-display" id="age-main-display">—</h2>
+      <p class="body-sm text-body" id="age-born-on">Born on —</p>
+    </div>
+
+    <div class="age-result-grid">
+      <div class="age-stat-card age-stat-card--large">
+        <div class="age-stat-value" id="r-years">0</div>
+        <div class="age-stat-label" data-i18n="result_years">Years</div>
+      </div>
+      <div class="age-stat-card">
+        <div class="age-stat-value" id="r-months">0</div>
+        <div class="age-stat-label" data-i18n="result_months">Months</div>
+        <div class="age-stat-sub" id="r-total-months">Total months: —</div>
+      </div>
+      <div class="age-stat-card">
+        <div class="age-stat-value" id="r-weeks">0</div>
+        <div class="age-stat-label" data-i18n="result_weeks">Weeks</div>
+        <div class="age-stat-sub">Total weeks lived</div>
+      </div>
+      <div class="age-stat-card">
+        <div class="age-stat-value" id="r-days">0</div>
+        <div class="age-stat-label" data-i18n="result_days">Days</div>
+        <div class="age-stat-sub" id="r-total-days">Total days: —</div>
+      </div>
+      <div class="age-stat-card">
+        <div class="age-stat-value" id="r-hours">0</div>
+        <div class="age-stat-label" data-i18n="result_hours">Hours</div>
+        <div class="age-stat-sub" data-i18n="result_hours_sub">Current hour of the day</div>
+      </div>
+      <div class="age-stat-card">
+        <div class="age-stat-value" id="r-minutes">0</div>
+        <div class="age-stat-label" data-i18n="result_minutes">Minutes</div>
+        <div class="age-stat-sub" data-i18n="result_minutes_sub">Current minute of the hour</div>
+      </div>
+    </div>
+
+    <!-- Live seconds counter -->
+    <div class="live-counter">
+      <div class="live-counter-inner">
+        <div class="live-dot"></div>
+        <span class="caption-mono live-counter-label" data-i18n="result_live_label">Live Counter</span>
+      </div>
+      <div class="live-counter-value" id="live-seconds">0</div>
+      <div class="body-sm text-body" style="margin-top:4px" data-i18n="result_live_sub">seconds you have been alive</div>
+    </div>
+  </div>
+</section>
+
+<style>
+.age-result-header { text-align: center; margin-bottom: var(--space-3xl); display: flex; flex-direction: column; gap: var(--space-sm); align-items: center; }
+.age-main-display { color: var(--ink); }
+.age-result-grid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: var(--space-md);
+  margin-bottom: var(--space-xl);
+}
+.age-stat-card {
+  background: var(--canvas); border-radius: var(--radius-md);
+  padding: var(--space-lg) var(--space-md); box-shadow: var(--shadow-2);
+  display: flex; flex-direction: column; gap: 4px;
+  animation: fadeInUp 0.4s ease forwards;
+}
+.age-stat-card--large { grid-column: span 2; }
+.age-stat-value { font-size: 36px; font-weight: 600; letter-spacing: -1.5px; line-height: 1; color: var(--ink); }
+.age-stat-card--large .age-stat-value { font-size: 56px; letter-spacing: -2.8px; }
+.age-stat-label { font-size: 13px; color: var(--body); margin-top: 4px; }
+.age-stat-sub { font-family: var(--font-mono); font-size: 11px; color: var(--mute); margin-top: 2px; }
+
+.live-counter {
+  background: var(--ink); color: #fff; border-radius: var(--radius-lg);
+  padding: var(--space-xl); text-align: center; display: flex; flex-direction: column;
+  align-items: center; gap: var(--space-xs); margin-top: var(--space-md);
+}
+.live-counter-inner { display: flex; align-items: center; gap: var(--space-xs); }
+.live-dot { width: 8px; height: 8px; border-radius: 50%; background: #50e3c2; animation: pulseDot 1.5s ease-in-out infinite; }
+.live-counter-label { color: rgba(255,255,255,0.6); }
+.live-counter-value { font-size: 48px; font-weight: 600; letter-spacing: -2.4px; line-height: 1; color: #fff; font-variant-numeric: tabular-nums; }
+
+@media (max-width: 960px) {
+  .age-result-grid { grid-template-columns: repeat(3, 1fr); }
+  .age-stat-card--large { grid-column: span 1; }
+  .age-stat-card--large .age-stat-value { font-size: 42px; }
+}
+@media (max-width: 600px) {
+  .age-result-grid { grid-template-columns: repeat(2, 1fr); gap: var(--space-xs); }
+  .age-stat-card--large { grid-column: span 2; }
+  .age-stat-card--large .age-stat-value { font-size: 40px; }
+  .age-stat-value { font-size: 28px; }
+  .age-result-header { margin-bottom: var(--space-xl); }
+  .live-counter-value { font-size: 32px; letter-spacing: -1.5px; }
+  .live-counter { padding: var(--space-lg); }
+}
+@media (max-width: 400px) {
+  .age-stat-value { font-size: 24px; }
+  .age-stat-card { padding: var(--space-md) var(--space-xs); }
+}
+</style>
+
+<script>
+let _liveInterval: ReturnType<typeof setInterval> | null = null;
+
+document.addEventListener('age:calculate', (e: any) => {
+  const { dob } = e.detail;
+  renderAge(dob);
+});
+
+function renderAge(dob: string) {
+  const birth = new Date(dob);
+  const now = new Date();
+
+  const totalMs = now.getTime() - birth.getTime();
+  const totalSec = Math.floor(totalMs / 1000);
+  const totalMin = Math.floor(totalSec / 60);
+  const totalHrs = Math.floor(totalMin / 60);
+  const totalDays = Math.floor(totalHrs / 24);
+  const totalWeeks = Math.floor(totalDays / 7);
+
+  let years = now.getFullYear() - birth.getFullYear();
+  let months = now.getMonth() - birth.getMonth();
+  let days = now.getDate() - birth.getDate();
+  if (days < 0) { months--; days += new Date(now.getFullYear(), now.getMonth(), 0).getDate(); }
+  if (months < 0) { years--; months += 12; }
+
+  const months_str = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+
+  (document.getElementById('age-main-display') as HTMLElement).textContent = `${years} years, ${months} months, ${days} days`;
+  (document.getElementById('age-born-on') as HTMLElement).textContent = `Born on ${months_str[birth.getMonth()]} ${birth.getDate()}, ${birth.getFullYear()}`;
+  (document.getElementById('r-years') as HTMLElement).textContent = years.toLocaleString();
+  (document.getElementById('r-months') as HTMLElement).textContent = months.toLocaleString();
+  (document.getElementById('r-weeks') as HTMLElement).textContent = totalWeeks.toLocaleString();
+  (document.getElementById('r-days') as HTMLElement).textContent = days.toLocaleString();
+  (document.getElementById('r-hours') as HTMLElement).textContent = (now.getHours()).toLocaleString();
+  (document.getElementById('r-minutes') as HTMLElement).textContent = (now.getMinutes()).toLocaleString();
+  (document.getElementById('r-total-months') as HTMLElement).textContent = `Total months: ${(years*12+months).toLocaleString()}`;
+  (document.getElementById('r-total-days') as HTMLElement).textContent = `Total days: ${totalDays.toLocaleString()}`;
+
+  // Live counter
+  if (_liveInterval) clearInterval(_liveInterval);
+  const startSec = Math.floor((Date.now() - birth.getTime()) / 1000);
+  const el = document.getElementById('live-seconds') as HTMLElement;
+  el.textContent = startSec.toLocaleString();
+  _liveInterval = setInterval(() => {
+    const s = Math.floor((Date.now() - birth.getTime()) / 1000);
+    el.textContent = s.toLocaleString();
+  }, 1000);
+
+  document.getElementById('age-result')!.classList.remove('hidden');
+  document.getElementById('age-result')!.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+</script>
