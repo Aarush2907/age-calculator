@@ -1,0 +1,374 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Navbar from '../components/Navbar.astro';
+import Footer from '../components/Footer.astro';
+
+const steps = [
+  { icon: "🔄", label: "Refresh the page", desc: "The issue may be temporary. Try reloading." },
+  { icon: "⏳", label: "Wait a moment", desc: "We may be deploying an update. Check back shortly." },
+  { icon: "💬", label: "Contact us", desc: "If the problem persists, let our team know." },
+];
+---
+
+<BaseLayout
+  title="500 — Server Error | AgeCalc"
+  description="Something went wrong on our end. Our team has been notified and is working to fix the issue. Please try again shortly."
+>
+  <Navbar slot="nav" />
+
+  <main class="error-page error-500-page">
+    <!-- Animated background -->
+    <div class="error-grid-bg" aria-hidden="true"></div>
+    <div class="error-500-orb error-500-orb-1" aria-hidden="true"></div>
+    <div class="error-500-orb error-500-orb-2" aria-hidden="true"></div>
+
+    <div class="container error-container">
+
+      <!-- Big number -->
+      <div class="error-number-wrap" aria-hidden="true">
+        <span class="error-number error-500-num">500</span>
+        <div class="error-number-glow error-500-glow"></div>
+      </div>
+
+      <!-- Content -->
+      <div class="error-content">
+        <span class="error-badge error-badge-500">Server Error</span>
+        <h1 class="error-title">Something broke on our end.</h1>
+        <p class="error-desc">
+          Our server ran into an unexpected problem. This is not your fault —
+          our team has been automatically notified and is working on a fix.
+        </p>
+
+        <!-- Status indicator -->
+        <div class="error-status-bar">
+          <span class="error-status-dot"></span>
+          <span class="error-status-text">Our team is aware and investigating</span>
+        </div>
+
+        <!-- CTA Buttons -->
+        <div class="error-actions">
+          <button onclick="window.location.reload()" class="error-btn-primary">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 2v6h-6"/><path d="M3 12a9 9 0 0 1 15-6.7L21 8"/><path d="M3 22v-6h6"/><path d="M21 12a9 9 0 0 1-15 6.7L3 16"/></svg>
+            Refresh Page
+          </button>
+          <a href="/" class="error-btn-secondary">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
+            Go Home
+          </a>
+          <a href="/contact-us" class="error-btn-ghost">Report the issue →</a>
+        </div>
+      </div>
+
+      <!-- What to do steps -->
+      <div class="error-500-steps">
+        <p class="error-suggestions-label">What you can do right now:</p>
+        <div class="steps-grid">
+          {steps.map((step, i) => (
+            <div class="step-card">
+              <div class="step-number">{i + 1}</div>
+              <div class="step-icon">{step.icon}</div>
+              <h3 class="step-label">{step.label}</h3>
+              <p class="step-desc">{step.desc}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <!-- Error code -->
+      <p class="error-code-hint">Error code: <code>HTTP 500 Internal Server Error</code></p>
+
+    </div>
+  </main>
+
+  <Footer slot="footer" />
+</BaseLayout>
+
+<style is:global>
+/* ── Shared error page base (self-contained for 500) ── */
+.error-page {
+  position: relative;
+  min-height: calc(100vh - var(--nav-height));
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  padding: var(--space-5xl) 0;
+  background: var(--canvas);
+}
+.error-grid-bg {
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(circle, var(--hairline) 1px, transparent 1px);
+  background-size: 28px 28px;
+  opacity: 0.7;
+  pointer-events: none;
+  z-index: 0;
+}
+html[data-theme="dark"] .error-grid-bg { opacity: 0.25; }
+.error-container {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: var(--space-3xl);
+}
+.error-number-wrap {
+  position: relative;
+  display: inline-block;
+  animation: fadeInUp 0.6s ease both;
+}
+.error-number {
+  display: block;
+  font-size: clamp(7rem, 18vw, 14rem);
+  font-weight: 900;
+  letter-spacing: -8px;
+  line-height: 1;
+  user-select: none;
+}
+.error-number-glow {
+  position: absolute;
+  bottom: -20px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60%;
+  height: 30px;
+  background: radial-gradient(ellipse, var(--hairline-strong) 0%, transparent 70%);
+  opacity: 0.5;
+  pointer-events: none;
+}
+.error-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-lg);
+  max-width: 560px;
+  animation: fadeInUp 0.6s 0.1s ease both;
+}
+.error-badge {
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--error);
+  background: color-mix(in srgb, var(--error) 10%, transparent);
+  padding: 4px 14px;
+  border-radius: var(--radius-full);
+  border: 1px solid color-mix(in srgb, var(--error) 25%, transparent);
+}
+.error-title {
+  font-size: clamp(1.5rem, 3.5vw, 2rem);
+  font-weight: 800;
+  letter-spacing: -1px;
+  color: var(--ink);
+  line-height: 1.2;
+  margin: 0;
+}
+.error-desc {
+  font-size: 16px;
+  color: var(--body);
+  line-height: 1.6;
+  margin: 0;
+}
+.error-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.error-btn-primary {
+  display: inline-flex; align-items: center; gap: 6px;
+  background: var(--ink); color: var(--on-primary);
+  font-size: 14px; font-weight: 600;
+  padding: 10px 20px; border-radius: var(--radius-full);
+  text-decoration: none; letter-spacing: -0.2px;
+  transition: opacity 0.15s, transform 0.15s;
+  border: none; cursor: pointer; font-family: var(--font-sans);
+}
+.error-btn-primary:hover { opacity: 0.85; transform: translateY(-1px); }
+.error-btn-secondary {
+  display: inline-flex; align-items: center; gap: 6px;
+  background: var(--canvas-soft-2); color: var(--ink);
+  font-size: 14px; font-weight: 500;
+  padding: 10px 20px; border-radius: var(--radius-full);
+  text-decoration: none; letter-spacing: -0.2px;
+  border: 1px solid var(--hairline);
+  transition: border-color 0.15s, transform 0.15s;
+}
+.error-btn-secondary:hover { border-color: var(--hairline-strong); transform: translateY(-1px); }
+.error-btn-ghost {
+  display: inline-flex; align-items: center;
+  background: transparent; color: var(--mute);
+  font-size: 14px; font-weight: 400;
+  padding: 10px 16px; border-radius: var(--radius-full);
+  letter-spacing: -0.2px; cursor: pointer;
+  transition: color 0.15s;
+  border: none; text-decoration: none; font-family: var(--font-sans);
+}
+.error-btn-ghost:hover { color: var(--ink); }
+.error-suggestions-label {
+  font-size: 12px;
+  font-family: var(--font-mono);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--mute);
+  margin-bottom: var(--space-md);
+}
+
+/* ── 500-specific overrides ── */
+.error-500-page {
+  background: var(--canvas);
+}
+
+/* Ambient orbs */
+.error-500-orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(100px);
+  pointer-events: none;
+  z-index: 0;
+}
+.error-500-orb-1 {
+  width: 500px; height: 500px;
+  background: radial-gradient(circle, color-mix(in srgb, var(--error) 30%, transparent), transparent);
+  top: -100px; right: -80px;
+  opacity: 0.15;
+  animation: error-orb-pulse 6s ease-in-out infinite;
+}
+.error-500-orb-2 {
+  width: 350px; height: 350px;
+  background: radial-gradient(circle, color-mix(in srgb, var(--warning) 30%, transparent), transparent);
+  bottom: -80px; left: -60px;
+  opacity: 0.12;
+  animation: error-orb-pulse 8s 2s ease-in-out infinite;
+}
+@keyframes error-orb-pulse {
+  0%, 100% { opacity: 0.12; transform: scale(1); }
+  50%       { opacity: 0.22; transform: scale(1.08); }
+}
+
+/* 500 number — red tint */
+.error-500-num {
+  background: linear-gradient(135deg, var(--error) 0%, #ff6b6b 50%, var(--ink) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: error-shake 6s ease-in-out infinite;
+}
+@keyframes error-shake {
+  0%, 90%, 100% { transform: translateX(0); }
+  92%           { transform: translateX(-4px) rotate(-0.5deg); }
+  94%           { transform: translateX(4px) rotate(0.5deg); }
+  96%           { transform: translateX(-2px); }
+  98%           { transform: translateX(2px); }
+}
+.error-500-glow {
+  background: radial-gradient(ellipse, color-mix(in srgb, var(--error) 40%, transparent) 0%, transparent 70%);
+}
+
+/* 500 badge */
+.error-badge-500 {
+  color: var(--warning);
+  background: color-mix(in srgb, var(--warning) 10%, transparent);
+  border-color: color-mix(in srgb, var(--warning) 25%, transparent);
+}
+
+/* Status bar */
+.error-status-bar {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-sm);
+  background: var(--canvas-soft-2);
+  border: 1px solid var(--hairline);
+  border-radius: var(--radius-full);
+  padding: 8px 16px;
+}
+.error-status-dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: var(--warning);
+  flex-shrink: 0;
+  animation: pulseDot 1.5s ease-in-out infinite;
+}
+.error-status-text {
+  font-size: 13px;
+  color: var(--body);
+  font-weight: 500;
+}
+
+/* Steps */
+.error-500-steps {
+  width: 100%;
+  max-width: 680px;
+  animation: fadeInUp 0.6s 0.2s ease both;
+}
+.steps-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-md);
+}
+.step-card {
+  background: var(--canvas-soft-2);
+  border: 1px solid var(--hairline);
+  border-radius: var(--radius-xl);
+  padding: var(--space-xl) var(--space-md);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-xs);
+  text-align: center;
+  transition: border-color 0.2s, transform 0.2s;
+}
+.step-card:hover {
+  border-color: var(--hairline-strong);
+  transform: translateY(-2px);
+}
+.step-number {
+  width: 24px; height: 24px;
+  border-radius: 50%;
+  background: var(--canvas-soft-2);
+  border: 1px solid var(--hairline);
+  font-size: 11px;
+  font-weight: 700;
+  font-family: var(--font-mono);
+  color: var(--mute);
+  display: flex; align-items: center; justify-content: center;
+  margin-bottom: var(--space-xs);
+}
+.step-icon { font-size: 1.6rem; }
+.step-label {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--ink);
+  letter-spacing: -0.3px;
+  margin: 0;
+}
+.step-desc {
+  font-size: 12.5px;
+  color: var(--body);
+  line-height: 1.5;
+  margin: 0;
+}
+
+/* Error code hint */
+.error-code-hint {
+  font-size: 12px;
+  color: var(--mute);
+  animation: fadeInUp 0.6s 0.3s ease both;
+}
+.error-code-hint code {
+  font-family: var(--font-mono);
+  background: var(--canvas-soft-2);
+  border: 1px solid var(--hairline);
+  padding: 2px 8px;
+  border-radius: var(--radius-xs);
+  font-size: 11px;
+}
+
+@media (max-width: 640px) {
+  .steps-grid { grid-template-columns: 1fr; }
+}
+</style>

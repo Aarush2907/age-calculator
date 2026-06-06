@@ -2,19 +2,11 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Navbar from '../components/Navbar.astro';
 import Footer from '../components/Footer.astro';
-
-const faqs = [
-  { q: "How quickly will you respond?", a: "We aim to respond to all inquiries within 24–48 business hours. For urgent matters, please mark your subject line with [URGENT]." },
-  { q: "I found a bug. How do I report it?", a: "We appreciate bug reports! Please describe the issue, the calculator you were using, your browser, and steps to reproduce it. Screenshots are very helpful." },
-  { q: "Can I suggest a new calculator?", a: "Absolutely! We love user suggestions. Tell us what kind of age or life analytics tool you'd like to see, and we'll consider it for a future update." },
-  { q: "Do you offer API access?", a: "We don't currently offer a public API, but this is on our roadmap. If you have specific API needs, please reach out and we'll note your interest." },
-  { q: "How do I report incorrect information?", a: "Please use the contact form and select 'Content Issue' as the subject. Include the page URL and specific information that appears incorrect." },
-];
 ---
 
 <BaseLayout
   title="Contact Us | AgeCalc — Get in Touch with agecalconline.com"
-  description="Contact the AgeCalc team with questions, feedback, bug reports, or partnership inquiries. We typically respond within 24-48 hours."
+  description="Contact the AgeCalc team with questions, feedback, or bug reports. Reach us by email or use the contact form below."
   keywords="contact agecalconline, contact age calculator, get in touch, support"
 >
   <Navbar slot="nav" />
@@ -23,205 +15,106 @@ const faqs = [
   <div class="contact-hero">
     <div class="container">
       <div class="contact-hero-inner">
-        <span class="policy-badge">Support</span>
+        <span class="policy-badge">Contact</span>
         <h1 class="policy-title">Get in touch.</h1>
-        <p class="policy-subtitle">Have a question, found a bug, or want to suggest a new feature? We'd love to hear from you.</p>
+        <p class="policy-subtitle">Have a question, found a bug, or want to suggest a new feature? We'd love to hear from you. Fill in the form or email us directly.</p>
+        <a href="mailto:contact@agecalconline.com" class="contact-email-link">📧 contact@agecalconline.com</a>
       </div>
     </div>
   </div>
 
-  <!-- Contact Methods -->
-  <div class="contact-methods-section">
-    <div class="container">
-      <div class="contact-methods-grid">
-        <div class="contact-method-card">
-          <div class="contact-method-icon">📧</div>
-          <h3>Email Support</h3>
-          <p>For general inquiries and support questions</p>
-          <a href="mailto:support@agecalconline.com" class="contact-method-link">support@agecalconline.com</a>
-        </div>
-        <div class="contact-method-card">
-          <div class="contact-method-icon">🐛</div>
-          <h3>Bug Reports</h3>
-          <p>Found something broken? Let us know</p>
-          <a href="mailto:bugs@agecalconline.com" class="contact-method-link">bugs@agecalconline.com</a>
-        </div>
-        <div class="contact-method-card">
-          <div class="contact-method-icon">🤝</div>
-          <h3>Partnerships</h3>
-          <p>Business inquiries and collaboration</p>
-          <a href="mailto:hello@agecalconline.com" class="contact-method-link">hello@agecalconline.com</a>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Main Content: Form + Info -->
+  <!-- Form Section -->
   <section class="contact-main-section section band-white">
-    <div class="container">
-      <div class="contact-grid">
+    <div class="container contact-center">
 
-        <!-- Form -->
-        <div class="contact-form-wrapper">
-          <div class="contact-form-header">
-            <h2 class="contact-form-title">Send us a message</h2>
-            <p class="contact-form-subtitle">We typically reply within 24–48 business hours.</p>
-          </div>
-
-          <form class="contact-form" id="contact-form" novalidate>
-            <div class="form-row">
-              <div class="form-group">
-                <label for="contact-name" class="form-label">Full Name <span class="required">*</span></label>
-                <input
-                  type="text"
-                  id="contact-name"
-                  name="name"
-                  class="form-input"
-                  placeholder="John Smith"
-                  required
-                  autocomplete="name"
-                />
-                <span class="form-error" id="name-error">Please enter your name.</span>
-              </div>
-              <div class="form-group">
-                <label for="contact-email" class="form-label">Email Address <span class="required">*</span></label>
-                <input
-                  type="email"
-                  id="contact-email"
-                  name="email"
-                  class="form-input"
-                  placeholder="john@example.com"
-                  required
-                  autocomplete="email"
-                />
-                <span class="form-error" id="email-error">Please enter a valid email.</span>
-              </div>
-            </div>
-
-            <div class="form-group">
-              <label for="contact-subject" class="form-label">Subject <span class="required">*</span></label>
-              <select id="contact-subject" name="subject" class="form-select" required>
-                <option value="" disabled selected>Select a topic...</option>
-                <option value="general">General Question</option>
-                <option value="bug">Bug Report</option>
-                <option value="feature">Feature Request</option>
-                <option value="content">Content Issue</option>
-                <option value="partnership">Partnership / Business</option>
-                <option value="privacy">Privacy Concern</option>
-                <option value="other">Other</option>
-              </select>
-              <span class="form-error" id="subject-error">Please select a subject.</span>
-            </div>
-
-            <div class="form-group">
-              <label for="contact-message" class="form-label">Message <span class="required">*</span></label>
-              <textarea
-                id="contact-message"
-                name="message"
-                class="form-textarea"
-                placeholder="Describe your question or issue in detail. For bug reports, include the calculator name, your browser, and steps to reproduce the issue."
-                rows="6"
-                required
-              ></textarea>
-              <div class="form-meta">
-                <span class="form-error" id="message-error">Message must be at least 20 characters.</span>
-                <span class="char-count" id="char-count">0 / 2000</span>
-              </div>
-            </div>
-
-            <button type="submit" class="btn-contact-submit" id="contact-submit">
-              <span class="submit-text">Send Message</span>
-              <span class="submit-icon">→</span>
-            </button>
-
-            <!-- Success / Error states -->
-            <div class="form-status form-status--success" id="form-success" aria-live="polite">
-              <span class="status-icon">✅</span>
-              <div>
-                <strong>Message sent!</strong>
-                <p>Thank you for reaching out. We'll reply to your email within 24–48 hours.</p>
-              </div>
-            </div>
-            <div class="form-status form-status--error" id="form-error-msg" aria-live="polite">
-              <span class="status-icon">❌</span>
-              <div>
-                <strong>Failed to send.</strong>
-                <p>Please try again or email us directly at support@agecalconline.com.</p>
-              </div>
-            </div>
-          </form>
+      <div class="contact-form-wrapper">
+        <div class="contact-form-header">
+          <h2 class="contact-form-title">Send us a message</h2>
+          <p class="contact-form-subtitle">We typically reply within 24–48 business hours.</p>
         </div>
 
-        <!-- Sidebar Info -->
-        <aside class="contact-sidebar">
-          <div class="contact-info-card">
-            <h3 class="contact-info-title">Response Times</h3>
-            <div class="response-times">
-              <div class="response-item">
-                <span class="response-type">General Questions</span>
-                <span class="response-time">24–48 hours</span>
-              </div>
-              <div class="response-item">
-                <span class="response-type">Bug Reports</span>
-                <span class="response-time">12–24 hours</span>
-              </div>
-              <div class="response-item">
-                <span class="response-type">Business Inquiries</span>
-                <span class="response-time">2–3 business days</span>
-              </div>
-              <div class="response-item">
-                <span class="response-type">Privacy Requests</span>
-                <span class="response-time">Up to 30 days</span>
-              </div>
+        <form class="contact-form" id="contact-form" novalidate>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="contact-name" class="form-label">Full Name <span class="required">*</span></label>
+              <input
+                type="text"
+                id="contact-name"
+                name="name"
+                class="form-input"
+                placeholder="John Smith"
+                required
+                autocomplete="name"
+              />
+              <span class="form-error" id="name-error">Please enter your name.</span>
+            </div>
+            <div class="form-group">
+              <label for="contact-email" class="form-label">Email Address <span class="required">*</span></label>
+              <input
+                type="email"
+                id="contact-email"
+                name="email"
+                class="form-input"
+                placeholder="john@example.com"
+                required
+                autocomplete="email"
+              />
+              <span class="form-error" id="email-error">Please enter a valid email.</span>
             </div>
           </div>
 
-          <div class="contact-info-card">
-            <h3 class="contact-info-title">Before You Write</h3>
-            <p class="contact-info-text">Check if your question is already answered:</p>
-            <div class="quick-links">
-              <a href="/privacy-policy" class="quick-link">
-                <span>🔒</span> Privacy Policy
-              </a>
-              <a href="/terms-and-conditions" class="quick-link">
-                <span>📄</span> Terms & Conditions
-              </a>
-              <a href="/about-us" class="quick-link">
-                <span>ℹ️</span> About AgeCalc
-              </a>
-              <a href="/" class="quick-link">
-                <span>🧮</span> Age Calculator
-              </a>
+          <div class="form-group">
+            <label for="contact-subject" class="form-label">Subject <span class="required">*</span></label>
+            <input
+              type="text"
+              id="contact-subject"
+              name="subject"
+              class="form-input"
+              placeholder="What is your message about?"
+              required
+            />
+            <span class="form-error" id="subject-error">Please enter a subject.</span>
+          </div>
+
+          <div class="form-group">
+            <label for="contact-message" class="form-label">Message <span class="required">*</span></label>
+            <textarea
+              id="contact-message"
+              name="message"
+              class="form-textarea"
+              placeholder="Write your message here..."
+              rows="6"
+              required
+            ></textarea>
+            <div class="form-meta">
+              <span class="form-error" id="message-error">Message must be at least 20 characters.</span>
+              <span class="char-count" id="char-count">0 / 2000</span>
             </div>
           </div>
 
-          <div class="contact-info-card contact-info-card--dark">
-            <div class="contact-info-dark-content">
-              <span class="contact-info-emoji">⚡</span>
-              <h3>Quick Tip</h3>
-              <p>For the fastest response, describe your issue clearly with your browser name/version and the specific calculator you were using.</p>
+          <button type="submit" class="btn-contact-submit" id="contact-submit">
+            <span class="submit-text">Send Message</span>
+            <span class="submit-icon">→</span>
+          </button>
+
+          <!-- Success / Error states -->
+          <div class="form-status form-status--success" id="form-success" aria-live="polite">
+            <span class="status-icon">✅</span>
+            <div>
+              <strong>Message sent!</strong>
+              <p>Thank you for reaching out. We'll reply to your email within 24–48 hours.</p>
             </div>
           </div>
-        </aside>
+          <div class="form-status form-status--error" id="form-error-msg" aria-live="polite">
+            <span class="status-icon">❌</span>
+            <div>
+              <strong>Failed to send.</strong>
+              <p>Please try again or email us at contact@agecalconline.com.</p>
+            </div>
+          </div>
+        </form>
       </div>
-    </div>
-  </section>
 
-  <!-- FAQ -->
-  <section class="section band-alt">
-    <div class="container contact-faq">
-      <div class="section-header" style="margin-bottom: var(--space-3xl)">
-        <span class="caption-mono">FAQ</span>
-        <h2 class="display-md">Common questions.</h2>
-      </div>
-      <div class="faq-list">
-        {faqs.map(item => (
-          <details class="faq-item">
-            <summary class="faq-question">{item.q}</summary>
-            <p class="faq-answer">{item.a}</p>
-          </details>
-        ))}
-      </div>
     </div>
   </section>
 
@@ -233,7 +126,6 @@ const form = document.getElementById('contact-form') as HTMLFormElement;
 const textarea = document.getElementById('contact-message') as HTMLTextAreaElement;
 const charCount = document.getElementById('char-count');
 const successEl = document.getElementById('form-success');
-const errorEl = document.getElementById('form-error-msg');
 const submitBtn = document.getElementById('contact-submit') as HTMLButtonElement;
 
 // Char counter
@@ -243,41 +135,33 @@ textarea?.addEventListener('input', () => {
   if (len > 2000) textarea.value = textarea.value.slice(0, 2000);
 });
 
-// Validate helper
 function showError(id: string, show: boolean) {
   const el = document.getElementById(id);
   if (el) el.classList.toggle('visible', show);
 }
 
-// Form submit
 form?.addEventListener('submit', async (e) => {
   e.preventDefault();
-  let valid = true;
 
   const name = (document.getElementById('contact-name') as HTMLInputElement).value.trim();
   const email = (document.getElementById('contact-email') as HTMLInputElement).value.trim();
-  const subject = (document.getElementById('contact-subject') as HTMLSelectElement).value;
+  const subject = (document.getElementById('contact-subject') as HTMLInputElement).value.trim();
   const message = textarea?.value.trim();
 
+  const emailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+
   showError('name-error', !name);
-  showError('email-error', !email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email));
+  showError('email-error', !email || !emailValid);
   showError('subject-error', !subject);
   showError('message-error', !message || message.length < 20);
 
-  if (!name || !email || !subject || !message || message.length < 20 ||
-      !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-    valid = false;
-  }
+  if (!name || !email || !emailValid || !subject || !message || message.length < 20) return;
 
-  if (!valid) return;
-
-  // Simulate submit (replace with actual endpoint)
   submitBtn.disabled = true;
-  submitBtn.textContent = 'Sending…';
+  (submitBtn.querySelector('.submit-text') as HTMLElement).textContent = 'Sending…';
 
   await new Promise(r => setTimeout(r, 1200));
 
-  // Show success
   if (successEl) {
     successEl.classList.add('visible');
     form.reset();
@@ -295,60 +179,33 @@ form?.addEventListener('submit', async (e) => {
   border-bottom: 1px solid var(--hairline);
   padding: var(--space-5xl) 0 var(--space-4xl);
 }
-
-/* Contact Methods */
-.contact-methods-section {
-  padding: var(--space-3xl) 0;
-  background: var(--canvas);
-  border-bottom: 1px solid var(--hairline);
-}
-.contact-methods-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: var(--space-xl);
-}
-.contact-method-card {
+.contact-hero-inner {
   display: flex;
   flex-direction: column;
+  gap: var(--space-md);
+  max-width: 600px;
+}
+.contact-email-link {
+  display: inline-flex;
+  align-items: center;
   gap: var(--space-xs);
-  padding: var(--space-xl);
-  background: var(--canvas-soft-2);
-  border: 1px solid var(--hairline);
-  border-radius: var(--radius-xl);
-  transition: border-color 0.2s, transform 0.2s;
-}
-.contact-method-card:hover {
-  border-color: var(--hairline-strong);
-  transform: translateY(-2px);
-}
-.contact-method-icon { font-size: 2rem; margin-bottom: var(--space-xs); }
-.contact-method-card h3 {
-  font-size: 16px;
-  font-weight: 700;
-  color: var(--ink);
-  letter-spacing: -0.4px;
-  margin: 0;
-}
-.contact-method-card p {
-  font-size: 13px;
-  color: var(--body);
-  margin: 0;
-}
-.contact-method-link {
-  font-size: 14px;
+  font-size: 15px;
+  font-weight: 500;
   color: var(--link);
   text-decoration: none;
-  font-weight: 500;
   margin-top: var(--space-xs);
+  transition: opacity 0.15s;
 }
-.contact-method-link:hover { text-decoration: underline; }
+.contact-email-link:hover { opacity: 0.75; text-decoration: underline; }
 
-/* Contact Grid */
-.contact-grid {
-  display: grid;
-  grid-template-columns: 1fr 340px;
-  gap: var(--space-4xl);
-  align-items: start;
+/* Center layout */
+.contact-center {
+  display: flex;
+  justify-content: center;
+}
+.contact-form-wrapper {
+  width: 100%;
+  max-width: 680px;
 }
 
 /* Form */
@@ -388,7 +245,6 @@ form?.addEventListener('submit', async (e) => {
 }
 .required { color: #ef4444; }
 .form-input,
-.form-select,
 .form-textarea {
   width: 100%;
   padding: 10px 14px;
@@ -403,7 +259,6 @@ form?.addEventListener('submit', async (e) => {
   box-sizing: border-box;
 }
 .form-input:focus,
-.form-select:focus,
 .form-textarea:focus {
   border-color: var(--link);
   box-shadow: 0 0 0 3px color-mix(in srgb, var(--link) 15%, transparent);
@@ -490,107 +345,7 @@ html[data-theme="dark"] .form-status--error {
 .form-status p { margin: 0; opacity: 0.85; }
 .status-icon { font-size: 1.4rem; flex-shrink: 0; }
 
-/* Sidebar */
-.contact-sidebar {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-lg);
-  position: sticky;
-  top: calc(var(--nav-height) + var(--space-xl));
-}
-.contact-info-card {
-  background: var(--canvas-soft-2);
-  border: 1px solid var(--hairline);
-  border-radius: var(--radius-xl);
-  padding: var(--space-xl);
-}
-.contact-info-title {
-  font-family: var(--font-mono);
-  font-size: 11px;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  color: var(--mute);
-  margin: 0 0 var(--space-md);
-}
-.contact-info-text {
-  font-size: 13px;
-  color: var(--body);
-  margin: 0 0 var(--space-md);
-}
-.response-times { display: flex; flex-direction: column; gap: var(--space-sm); }
-.response-item {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: var(--space-xs) 0;
-  border-bottom: 1px solid var(--hairline);
-}
-.response-item:last-child { border-bottom: none; }
-.response-type { font-size: 13px; color: var(--body); }
-.response-time {
-  font-size: 12px;
-  font-family: var(--font-mono);
-  color: var(--link);
-  font-weight: 600;
-}
-.quick-links {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-xs);
-}
-.quick-link {
-  display: flex;
-  align-items: center;
-  gap: var(--space-sm);
-  font-size: 13.5px;
-  color: var(--body);
-  text-decoration: none;
-  padding: var(--space-xs) var(--space-sm);
-  border-radius: var(--radius-sm);
-  transition: background 0.15s, color 0.15s;
-}
-.quick-link:hover {
-  background: var(--canvas);
-  color: var(--ink);
-}
-
-.contact-info-card--dark {
-  background: var(--ink);
-  border-color: var(--ink);
-}
-html[data-theme="dark"] .contact-info-card--dark {
-  background: var(--canvas-soft-2);
-  border-color: var(--hairline);
-}
-.contact-info-dark-content { display: flex; flex-direction: column; gap: var(--space-xs); }
-.contact-info-emoji { font-size: 1.8rem; }
-.contact-info-card--dark h3 {
-  font-size: 15px;
-  font-weight: 700;
-  color: var(--on-primary);
-  margin: 0;
-  letter-spacing: -0.3px;
-}
-html[data-theme="dark"] .contact-info-card--dark h3 { color: var(--ink); }
-.contact-info-card--dark p {
-  font-size: 13px;
-  color: rgba(255,255,255,0.7);
-  line-height: 1.6;
-  margin: 0;
-}
-html[data-theme="dark"] .contact-info-card--dark p { color: var(--body); }
-
-/* Contact FAQ */
-.contact-faq { max-width: 720px; margin: 0 auto; }
-.band-alt { background: var(--canvas-soft-2); }
-
-@media (max-width: 960px) {
-  .contact-grid { grid-template-columns: 1fr; }
-  .contact-methods-grid { grid-template-columns: 1fr; }
-  .contact-sidebar { position: static; }
-  .form-row { grid-template-columns: 1fr; }
-}
 @media (max-width: 600px) {
-  .contact-methods-grid { grid-template-columns: 1fr; }
+  .form-row { grid-template-columns: 1fr; }
 }
 </style>

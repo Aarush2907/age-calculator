@@ -1,0 +1,12 @@
+# robots.txt — agecalconline.com
+# https://www.robotstxt.org/
+
+User-agent: *
+Allow: /
+
+# Block error pages from indexing
+Disallow: /404
+Disallow: /500
+
+# Sitemap location
+Sitemap: https://agecalconline.com/sitemap.xml

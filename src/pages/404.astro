@@ -1,0 +1,353 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Navbar from '../components/Navbar.astro';
+import Footer from '../components/Footer.astro';
+
+const suggestions = [
+  { href: '/', label: '🧮 Age Calculator', desc: 'Calculate your exact age' },
+  { href: '/birthday-calculator', label: '🎂 Birthday Calculator', desc: 'Days until your next birthday' },
+  { href: '/life-expectancy-calculator', label: '📊 Life Expectancy', desc: 'Statistical lifespan insights' },
+  { href: '/pet-age-calculator', label: '🐾 Pet Age Calculator', desc: 'Convert pet years to human years' },
+  { href: '/about-us', label: 'ℹ️ About Us', desc: 'Learn about AgeCalc' },
+  { href: '/contact-us', label: '💬 Contact Us', desc: 'Reach out to our team' },
+];
+---
+
+<BaseLayout
+  title="404 — Page Not Found | AgeCalc"
+  description="The page you were looking for doesn't exist. Head back to AgeCalc and calculate your exact age, milestones, and life stats."
+>
+  <Navbar slot="nav" />
+
+  <main class="error-page">
+    <!-- Background grid -->
+    <div class="error-grid-bg" aria-hidden="true"></div>
+
+    <div class="container error-container">
+
+      <!-- Big number -->
+      <div class="error-number-wrap" aria-hidden="true">
+        <span class="error-number error-404-num">404</span>
+        <div class="error-number-glow"></div>
+      </div>
+
+      <!-- Content -->
+      <div class="error-content">
+        <span class="error-badge">Page Not Found</span>
+        <h1 class="error-title">Looks like this page got lost in time.</h1>
+        <p class="error-desc">
+          The page you're looking for doesn't exist, may have been moved, or the URL might be mistyped.
+          Let's get you back on track.
+        </p>
+
+        <!-- Search bar -->
+        <div class="error-search">
+          <label for="error-search-input" class="sr-only">Search the site</label>
+          <div class="error-search-inner">
+            <svg class="error-search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+            </svg>
+            <input
+              type="text"
+              id="error-search-input"
+              class="error-search-input"
+              placeholder="Search for a calculator…"
+              autocomplete="off"
+            />
+          </div>
+        </div>
+
+        <!-- CTA Buttons -->
+        <div class="error-actions">
+          <a href="/" class="error-btn-primary">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+            Go Home
+          </a>
+          <a href="/contact-us" class="error-btn-secondary">Contact Support</a>
+          <button onclick="history.back()" class="error-btn-ghost">← Go Back</button>
+        </div>
+      </div>
+
+      <!-- Suggestions grid -->
+      <div class="error-suggestions">
+        <p class="error-suggestions-label">Popular pages you might be looking for:</p>
+        <div class="error-suggestions-grid">
+          {suggestions.map(s => (
+            <a href={s.href} class="error-suggestion-card">
+              <span class="suggestion-label">{s.label}</span>
+              <span class="suggestion-desc">{s.desc}</span>
+            </a>
+          ))}
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <Footer slot="footer" />
+</BaseLayout>
+
+<script>
+// Filter suggestions by search input
+const input = document.getElementById('error-search-input') as HTMLInputElement;
+const cards = document.querySelectorAll<HTMLElement>('.error-suggestion-card');
+
+input?.addEventListener('input', () => {
+  const q = input.value.toLowerCase();
+  cards.forEach(card => {
+    const text = card.textContent?.toLowerCase() ?? '';
+    card.style.display = text.includes(q) ? '' : 'none';
+  });
+});
+</script>
+
+<style is:global>
+/* ── 404 page ── */
+.error-page {
+  position: relative;
+  min-height: calc(100vh - var(--nav-height));
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  padding: var(--space-5xl) 0;
+  background: var(--canvas);
+}
+
+/* Dotted grid background */
+.error-grid-bg {
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(circle, var(--hairline) 1px, transparent 1px);
+  background-size: 28px 28px;
+  opacity: 0.7;
+  pointer-events: none;
+  z-index: 0;
+}
+html[data-theme="dark"] .error-grid-bg {
+  opacity: 0.25;
+}
+
+.error-container {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: var(--space-3xl);
+}
+
+/* ── Big number ── */
+.error-number-wrap {
+  position: relative;
+  display: inline-block;
+  animation: fadeInUp 0.6s ease both;
+}
+.error-number {
+  display: block;
+  font-size: clamp(7rem, 18vw, 14rem);
+  font-weight: 900;
+  letter-spacing: -8px;
+  line-height: 1;
+  background: linear-gradient(135deg, var(--ink) 30%, var(--hairline-strong) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  user-select: none;
+}
+html[data-theme="dark"] .error-number {
+  background: linear-gradient(135deg, var(--ink) 40%, var(--mute) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+}
+.error-404-num {
+  animation: error-float 4s ease-in-out infinite;
+}
+@keyframes error-float {
+  0%, 100% { transform: translateY(0); }
+  50%       { transform: translateY(-10px); }
+}
+.error-number-glow {
+  position: absolute;
+  bottom: -20px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60%;
+  height: 30px;
+  background: radial-gradient(ellipse, var(--hairline-strong) 0%, transparent 70%);
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+/* ── Content ── */
+.error-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-lg);
+  max-width: 560px;
+  animation: fadeInUp 0.6s 0.1s ease both;
+}
+.error-badge {
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--error);
+  background: color-mix(in srgb, var(--error) 10%, transparent);
+  padding: 4px 14px;
+  border-radius: var(--radius-full);
+  border: 1px solid color-mix(in srgb, var(--error) 25%, transparent);
+}
+.error-title {
+  font-size: clamp(1.5rem, 3.5vw, 2rem);
+  font-weight: 800;
+  letter-spacing: -1px;
+  color: var(--ink);
+  line-height: 1.2;
+  margin: 0;
+}
+.error-desc {
+  font-size: 16px;
+  color: var(--body);
+  line-height: 1.6;
+  margin: 0;
+}
+
+/* ── Search ── */
+.error-search {
+  width: 100%;
+  max-width: 400px;
+}
+.error-search-inner {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  background: var(--canvas-soft-2);
+  border: 1px solid var(--hairline);
+  border-radius: var(--radius-full);
+  padding: 10px 18px;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+.error-search-inner:focus-within {
+  border-color: var(--link);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--link) 15%, transparent);
+}
+.error-search-icon { color: var(--mute); flex-shrink: 0; }
+.error-search-input {
+  background: transparent;
+  border: none;
+  outline: none;
+  font-size: 14px;
+  color: var(--ink);
+  width: 100%;
+  font-family: var(--font-sans);
+}
+.error-search-input::placeholder { color: var(--mute); }
+
+/* ── Action buttons ── */
+.error-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.error-btn-primary {
+  display: inline-flex; align-items: center; gap: 6px;
+  background: var(--ink); color: var(--on-primary);
+  font-size: 14px; font-weight: 600;
+  padding: 10px 20px; border-radius: var(--radius-full);
+  text-decoration: none; letter-spacing: -0.2px;
+  transition: opacity 0.15s, transform 0.15s;
+}
+.error-btn-primary:hover { opacity: 0.85; transform: translateY(-1px); }
+
+.error-btn-secondary {
+  display: inline-flex; align-items: center;
+  background: var(--canvas-soft-2); color: var(--ink);
+  font-size: 14px; font-weight: 500;
+  padding: 10px 20px; border-radius: var(--radius-full);
+  text-decoration: none; letter-spacing: -0.2px;
+  border: 1px solid var(--hairline);
+  transition: border-color 0.15s, transform 0.15s;
+}
+.error-btn-secondary:hover { border-color: var(--hairline-strong); transform: translateY(-1px); }
+
+.error-btn-ghost {
+  display: inline-flex; align-items: center;
+  background: transparent; color: var(--mute);
+  font-size: 14px; font-weight: 400;
+  padding: 10px 16px; border-radius: var(--radius-full);
+  letter-spacing: -0.2px; cursor: pointer;
+  transition: color 0.15s;
+  border: none;
+}
+.error-btn-ghost:hover { color: var(--ink); }
+
+/* ── Suggestions ── */
+.error-suggestions {
+  width: 100%;
+  max-width: 760px;
+  animation: fadeInUp 0.6s 0.2s ease both;
+}
+.error-suggestions-label {
+  font-size: 12px;
+  font-family: var(--font-mono);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--mute);
+  margin-bottom: var(--space-md);
+}
+.error-suggestions-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-sm);
+}
+.error-suggestion-card {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: var(--space-md) var(--space-md);
+  background: var(--canvas-soft-2);
+  border: 1px solid var(--hairline);
+  border-radius: var(--radius-lg);
+  text-decoration: none;
+  transition: border-color 0.15s, transform 0.15s, background 0.15s;
+  text-align: left;
+}
+.error-suggestion-card:hover {
+  border-color: var(--hairline-strong);
+  background: var(--canvas);
+  transform: translateY(-2px);
+}
+.suggestion-label {
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--ink);
+  letter-spacing: -0.3px;
+}
+.suggestion-desc {
+  font-size: 12px;
+  color: var(--mute);
+}
+
+/* a11y */
+.sr-only {
+  position: absolute; width: 1px; height: 1px;
+  padding: 0; margin: -1px; overflow: hidden;
+  clip: rect(0,0,0,0); white-space: nowrap; border: 0;
+}
+
+@media (max-width: 640px) {
+  .error-suggestions-grid { grid-template-columns: 1fr 1fr; }
+  .error-number { letter-spacing: -4px; }
+}
+@media (max-width: 400px) {
+  .error-suggestions-grid { grid-template-columns: 1fr; }
+  .error-actions { flex-direction: column; width: 100%; }
+  .error-btn-primary, .error-btn-secondary { width: 100%; justify-content: center; }
+}
+</style>

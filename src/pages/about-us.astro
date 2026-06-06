@@ -3,52 +3,18 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import Navbar from '../components/Navbar.astro';
 import Footer from '../components/Footer.astro';
 
-const team = [
-  {
-    name: "Arjun Sharma",
-    role: "Founder & Lead Developer",
-    bio: "Full-stack developer with 12+ years of experience building data-driven web applications. Passionate about making complex calculations accessible to everyone.",
-    emoji: "👨‍💻",
-    gradient: "from-blue to-purple"
-  },
-  {
-    name: "Priya Mehta",
-    role: "UX Designer & Researcher",
-    bio: "Human-computer interaction specialist who ensures our tools are intuitive, accessible, and delightful to use across all devices and cultures.",
-    emoji: "🎨",
-    gradient: "from-pink to-orange"
-  },
-  {
-    name: "Rohan Das",
-    role: "Data Scientist",
-    bio: "Expert in demographic statistics and actuarial science. Ensures all our life expectancy and biological age calculations are grounded in the latest research.",
-    emoji: "📊",
-    gradient: "from-green to-teal"
-  }
-];
-
 const stats = [
   { value: "10M+", label: "Monthly Users" },
   { value: "50+", label: "Countries Served" },
   { value: "10+", label: "Calculator Tools" },
   { value: "99.9%", label: "Uptime SLA" },
 ];
-
-const milestones = [
-  { year: "2019", event: "Founded with a single age calculator tool" },
-  { year: "2020", event: "Launched birthday & pet age calculators" },
-  { year: "2021", event: "Reached 1 million monthly active users" },
-  { year: "2022", event: "Added biological age & life expectancy tools" },
-  { year: "2023", event: "Launched multi-language support for 8 languages" },
-  { year: "2024", event: "Complete redesign with life analytics platform" },
-  { year: "2025", event: "10+ million monthly users across 50+ countries" },
-];
 ---
 
 <BaseLayout
   title="About Us | AgeCalc — The Story Behind agecalconline.com"
-  description="Learn about the team behind AgeCalc. We're a passionate group of developers and data scientists dedicated to making life analytics accessible and accurate for everyone."
-  keywords="about agecalconline, age calculator team, about us, agecalc story"
+  description="Learn about AgeCalc. We're dedicated to making life analytics accessible and accurate for everyone — completely free, no sign-up required."
+  keywords="about agecalconline, age calculator about, about us, agecalc story"
 >
   <Navbar slot="nav" />
 
@@ -61,7 +27,6 @@ const milestones = [
         <p class="about-subtitle">We started AgeCalc with a simple mission: give everyone instant, accurate, and meaningful insights into their life timeline — completely free.</p>
       </div>
     </div>
-    <!-- decorative orbs -->
     <div class="about-orb about-orb-1"></div>
     <div class="about-orb about-orb-2"></div>
   </div>
@@ -111,52 +76,6 @@ const milestones = [
           <h3>Fully Accessible</h3>
           <p>Built with WCAG 2.1 AA accessibility standards so everyone can use our tools regardless of ability.</p>
         </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Timeline -->
-  <section class="about-section section band-alt">
-    <div class="container">
-      <div class="section-header" style="margin-bottom: var(--space-3xl)">
-        <span class="caption-mono">Journey</span>
-        <h2 class="display-md">How we got here.</h2>
-      </div>
-      <div class="timeline">
-        {milestones.map((m, i) => (
-          <div class="timeline-item">
-            <div class="timeline-year">{m.year}</div>
-            <div class="timeline-dot"></div>
-            <div class="timeline-content">
-              <p>{m.event}</p>
-            </div>
-          </div>
-        ))}
-      </div>
-    </div>
-  </section>
-
-  <!-- Team -->
-  <section class="about-section section band-white">
-    <div class="container">
-      <div class="section-header" style="margin-bottom: var(--space-3xl)">
-        <span class="caption-mono">The Team</span>
-        <h2 class="display-md">People behind the platform.</h2>
-        <p class="body-md" style="max-width: 540px; margin-top: var(--space-sm)">A small, dedicated team obsessed with making time meaningful.</p>
-      </div>
-      <div class="team-grid">
-        {team.map(member => (
-          <div class="team-card">
-            <div class="team-avatar">
-              <span class="team-emoji">{member.emoji}</span>
-            </div>
-            <div class="team-info">
-              <h3 class="team-name">{member.name}</h3>
-              <span class="team-role">{member.role}</span>
-              <p class="team-bio">{member.bio}</p>
-            </div>
-          </div>
-        ))}
       </div>
     </div>
   </section>
@@ -326,108 +245,6 @@ html[data-theme="dark"] .about-stat-label { color: var(--mute); }
   margin: 0;
 }
 
-/* Timeline */
-.about-section.band-alt {
-  background: var(--canvas-soft-2);
-}
-.timeline {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  gap: 0;
-  max-width: 700px;
-}
-.timeline::before {
-  content: '';
-  position: absolute;
-  left: 100px;
-  top: 0; bottom: 0;
-  width: 1px;
-  background: var(--hairline);
-}
-.timeline-item {
-  display: grid;
-  grid-template-columns: 100px 24px 1fr;
-  gap: var(--space-lg);
-  align-items: center;
-  padding: var(--space-lg) 0;
-}
-.timeline-year {
-  font-family: var(--font-mono);
-  font-size: 13px;
-  font-weight: 600;
-  color: var(--mute);
-  text-align: right;
-}
-.timeline-dot {
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  background: var(--link);
-  border: 2px solid var(--canvas-soft-2);
-  box-shadow: 0 0 0 2px var(--link);
-  flex-shrink: 0;
-  margin: 0 auto;
-}
-.timeline-content p {
-  font-size: 15px;
-  color: var(--body);
-  margin: 0;
-  line-height: 1.5;
-}
-
-/* Team */
-.team-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: var(--space-xl);
-}
-.team-card {
-  background: var(--canvas);
-  border: 1px solid var(--hairline);
-  border-radius: var(--radius-xl);
-  padding: var(--space-2xl);
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-lg);
-  transition: border-color 0.2s, transform 0.2s, box-shadow 0.2s;
-}
-.team-card:hover {
-  border-color: var(--hairline-strong);
-  transform: translateY(-4px);
-  box-shadow: var(--shadow-4);
-}
-.team-avatar {
-  width: 72px; height: 72px;
-  background: var(--canvas-soft-2);
-  border: 1px solid var(--hairline);
-  border-radius: var(--radius-xl);
-  display: flex; align-items: center; justify-content: center;
-}
-.team-emoji { font-size: 2rem; }
-.team-info { display: flex; flex-direction: column; gap: var(--space-xs); }
-.team-name {
-  font-size: 17px;
-  font-weight: 700;
-  color: var(--ink);
-  letter-spacing: -0.4px;
-  margin: 0;
-}
-.team-role {
-  font-size: 12px;
-  font-family: var(--font-mono);
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-  color: var(--link);
-  font-weight: 500;
-}
-.team-bio {
-  font-size: 14px;
-  color: var(--body);
-  line-height: 1.6;
-  margin: var(--space-xs) 0 0;
-}
-
 /* CTA */
 .about-cta {
   background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
@@ -482,13 +299,9 @@ html[data-theme="dark"] .btn-secondary-lg { background: var(--canvas-soft-2); co
 @media (max-width: 960px) {
   .about-mission-grid { grid-template-columns: 1fr; }
   .about-stats-grid { grid-template-columns: repeat(2, 1fr); }
-  .team-grid { grid-template-columns: 1fr 1fr; }
 }
 @media (max-width: 600px) {
   .about-stats-grid { grid-template-columns: repeat(2, 1fr); gap: var(--space-lg); }
-  .team-grid { grid-template-columns: 1fr; }
   .about-mission-visual { grid-template-columns: 1fr; }
-  .timeline::before { left: 80px; }
-  .timeline-item { grid-template-columns: 80px 20px 1fr; }
 }
 </style>
