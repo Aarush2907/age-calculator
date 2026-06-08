@@ -1,0 +1,250 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Navbar from '../../components/Navbar.astro';
+import Footer from '../../components/Footer.astro';
+
+const post = {
+  title: "Biological Age vs Chronological Age: What's the Difference?",
+  description: "Your birthday tells one story; your body tells another. Discover what biological age means, how science measures it, and what you can do to slow down the clock.",
+  date: 'June 3, 2026',
+  dateISO: '2026-06-03',
+  readTime: '7 min read',
+  category: 'Health',
+};
+
+const faqs = [
+  { q: "What is chronological age?", a: "Chronological age is the exact amount of time that has passed since you were born. It is determined solely by your birth date and is the age on your driver's license." },
+  { q: "What is biological age?", a: "Biological age (or physiological age) reflects how well your body functions compared to average fitness or health levels. It's influenced by genetics, lifestyle, diet, and exercise." },
+  { q: "Can my biological age be lower than my chronological age?", a: "Yes. If you maintain excellent health, exercise regularly, sleep well, and manage stress, your biological age can be significantly lower than your chronological age." },
+  { q: "How do I calculate my biological age?", a: "Clinical methods use DNA methylation (epigenetic clocks) or blood biomarkers. You can also estimate it using functional fitness tests or our online biological age calculator which uses lifestyle questionnaires." }
+];
+
+const faqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": faqs.map(faq => ({
+    "@type": "Question",
+    "name": faq.q,
+    "acceptedAnswer": {
+      "@type": "Answer",
+      "text": faq.a
+    }
+  }))
+};
+---
+
+<BaseLayout
+  title={`${post.title} | AgeCalc Blog`}
+  description={post.description}
+  keywords="biological age vs chronological age, what is biological age, how to measure biological age, epigenetic clock, slow aging"
+  ogType="article"
+>
+  <fragment slot="head">
+    <script type="application/ld+json" set:html={JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "Article",
+      "headline": post.title,
+      "description": post.description,
+      "datePublished": post.dateISO,
+      "dateModified": post.dateISO,
+      "author": { "@type": "Organization", "name": "agecalconline.com" },
+      "publisher": { "@type": "Organization", "name": "agecalconline.com", "logo": "https://agecalconline.com/favicon-96x96.png" },
+      "mainEntityOfPage": "https://agecalconline.com/blog/biological-age-vs-chronological-age"
+    })} />
+    <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
+  </fragment>
+
+  <Navbar slot="nav" />
+
+  <article class="bp-article">
+    <div class="bp-header">
+      <div class="bp-header-orb bp-header-orb-1" style="background: radial-gradient(circle, #00a878, transparent);"></div>
+      <div class="bp-header-orb bp-header-orb-2"></div>
+      <div class="container">
+        <div class="bp-header-inner">
+          <a href="/blog" class="bp-back">← All Articles</a>
+          <div class="bp-meta-top">
+            <span class="bp-category" style="color: #00a878;">{post.category}</span>
+            <span class="bp-dot">·</span>
+            <span class="bp-read">{post.readTime}</span>
+            <span class="bp-dot">·</span>
+            <time datetime={post.dateISO}>{post.date}</time>
+          </div>
+          <h1 class="bp-title">{post.title}</h1>
+          <p class="bp-lead">{post.description}</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="bp-body-wrap">
+      <div class="container">
+        <div class="bp-body">
+
+          <h2>Two Numbers, One Person</h2>
+          <p>Chronological age is simply the number of years since you were born. It's objective, fixed, and identical on everyone's birth certificate. Biological age — sometimes called physiological age — is different. It represents how well your body is actually functioning relative to the average person at your chronological age.</p>
+          <p>Two 50-year-olds can have wildly different biological ages. One might have the cardiovascular profile of a 40-year-old; the other might show organ markers typical of someone 65. Both have lived the same amount of time; their bodies are telling different stories.</p>
+
+          <div class="bp-callout">
+            <div class="bp-callout-icon">🧬</div>
+            <div><strong>Key insight:</strong> Research from the Stanford School of Medicine found that people biologically age in bursts — with notable acceleration around ages 44 and 60. This means lifestyle choices during these windows may have outsized impact.</div>
+          </div>
+
+          <h2>How Scientists Measure Biological Age</h2>
+          <p>There's no single "biological age test" — researchers use several different biomarker panels, each with trade-offs:</p>
+
+          <h3>1. Epigenetic Clocks (DNA Methylation)</h3>
+          <p>The most scientifically rigorous method. As cells age, tiny chemical tags on your DNA (methyl groups) change in predictable patterns. Steve Horvath's 2013 clock — now refined into several versions like GrimAge and DunedinPACE — can predict biological age with remarkable accuracy. It requires a blood or saliva sample sent to a lab.</p>
+
+          <h3>2. Telomere Length</h3>
+          <p>Telomeres are the protective caps on chromosomes. They shorten with each cell division. Shorter telomeres correlate with older biological age and higher disease risk. However, telomere length tests have high variability, making them less reliable than epigenetic clocks for individuals.</p>
+
+          <h3>3. Composite Biomarker Panels</h3>
+          <p>Blood tests measuring inflammation markers (CRP, IL-6), metabolic indicators (HbA1c, glucose), organ function (creatinine, ALT), and cardiovascular markers (LDL, blood pressure) can be combined into a composite biological age score. Many consumer longevity companies use this approach.</p>
+
+          <h3>4. Phenotypic Age (Levine Method)</h3>
+          <p>Dr. Morgan Levine developed a model using 9 routine clinical biomarkers from a standard blood panel to estimate biological age. It's accessible and correlates well with disease risk and mortality — and can be estimated without specialized tests.</p>
+
+          <h3>5. Functional Fitness Testing</h3>
+          <p>Grip strength, VO2 max, gait speed, and cognitive processing speed all decline predictably with age. Assessing these gives a "functional age" that is especially relevant for everyday quality of life.</p>
+
+          <div class="bp-comparison-table">
+            <div class="bp-comparison-header">
+              <span>Method</span>
+              <span>Accuracy</span>
+              <span>Cost</span>
+              <span>Accessibility</span>
+            </div>
+            {[
+              ['Epigenetic Clock', 'Very High', '$200–$500', 'Lab required'],
+              ['Telomere Length', 'Moderate', '$100–$300', 'Lab required'],
+              ['Biomarker Panel', 'High', '$50–$200', 'Standard blood test'],
+              ['Phenotypic Age', 'High', 'Free (with labs)', 'Calculator + labs'],
+              ['Functional Tests', 'Moderate', 'Free', 'At-home / gym'],
+            ].map(row => (
+              <div class="bp-comparison-row">
+                {row.map(cell => <span>{cell}</span>)}
+              </div>
+            ))}
+          </div>
+
+          <h2>What Makes Biological Age Go Up — or Down?</h2>
+          <p>The good news: unlike chronological age, biological age is modifiable. Research identifies the following as the strongest drivers:</p>
+
+          <h3>Factors That Accelerate Biological Aging</h3>
+          <ul class="bp-list">
+            <li><strong>Chronic stress</strong> — elevates cortisol, promotes inflammation, accelerates telomere shortening</li>
+            <li><strong>Poor sleep</strong> — less than 6 hours/night is associated with 1–3 extra biological years</li>
+            <li><strong>Smoking</strong> — one of the most reliably measured accelerants; adds an average of 4–5 biological years</li>
+            <li><strong>Ultra-processed diet</strong> — high glycemic load, seed oils, and additives drive inflammaging</li>
+            <li><strong>Sedentary lifestyle</strong> — even modest inactivity accelerates epigenetic aging</li>
+            <li><strong>Social isolation</strong> — loneliness is as damaging as smoking 15 cigarettes/day (Holt-Lunstad, 2015)</li>
+          </ul>
+
+          <h3>Factors That Slow Biological Aging</h3>
+          <ul class="bp-list">
+            <li><strong>Caloric restriction / time-restricted eating</strong> — shown to lower DunedinPACE scores in clinical trials</li>
+            <li><strong>Zone 2 cardio</strong> — 150+ min/week significantly improves VO2 max and metabolic health</li>
+            <li><strong>Strength training</strong> — preserves muscle mass, improves insulin sensitivity, and reduces inflammation</li>
+            <li><strong>Quality sleep (7–9 hours)</strong> — the single highest-ROI longevity intervention</li>
+            <li><strong>Mediterranean diet</strong> — associated with consistently younger epigenetic ages in large cohorts</li>
+            <li><strong>Strong social connections</strong> — the Blue Zones research consistently shows this as a top-five longevity predictor</li>
+          </ul>
+
+          <h2>Our Biological Age Calculator</h2>
+          <p>We built a <a href="/biological-age-calculator">free biological age calculator</a> that uses a phenotypic approach — combining lifestyle questionnaire data with markers like BMI, smoking status, exercise frequency, sleep quality, and diet quality — to estimate how old your body is behaving. It's not a replacement for clinical tests, but it gives a practical starting point.</p>
+
+          <div class="bp-cta-inline">
+            <a href="/biological-age-calculator" class="bp-cta-btn" style="background: #00a878;">Check My Biological Age →</a>
+          </div>
+
+          <h2 style="margin-top:var(--space-3xl)">Frequently Asked Questions</h2>
+          <div class="faq-list">
+            {faqs.map(item => (
+              <details class="faq-item">
+                <summary class="faq-question">{item.q}</summary>
+                <p class="faq-answer">{item.a}</p>
+              </details>
+            ))}
+          </div>
+
+        </div>
+
+        <aside class="bp-sidebar">
+          <div class="bp-sidebar-card">
+            <h3>Try These Calculators</h3>
+            <ul>
+              <li><a href="/biological-age-calculator">Biological Age Calculator</a></li>
+              <li><a href="/life-expectancy-calculator">Life Expectancy</a></li>
+              <li><a href="/bmi-calculator">BMI Calculator</a></li>
+              <li><a href="/">Age Calculator</a></li>
+            </ul>
+          </div>
+          <div class="bp-sidebar-card">
+            <h3>More Articles</h3>
+            <ul>
+              <li><a href="/blog/how-to-calculate-age-accurately">How Age Calculators Work</a></li>
+              <li><a href="/blog/life-expectancy-factors-that-matter">10 Longevity Factors</a></li>
+              <li><a href="/blog/how-bmi-changes-with-age">BMI Through the Ages</a></li>
+            </ul>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </article>
+
+  <Footer slot="footer" />
+</BaseLayout>
+
+<style is:global>
+.bp-comparison-table {
+  border: 1px solid var(--hairline);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  font-size: 14px;
+}
+.bp-comparison-header {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1.5fr;
+  background: var(--canvas-soft-2);
+  border-bottom: 1px solid var(--hairline);
+  padding: var(--space-sm) var(--space-md);
+  gap: var(--space-md);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--mute);
+}
+.bp-comparison-row {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1.5fr;
+  padding: var(--space-sm) var(--space-md);
+  gap: var(--space-md);
+  border-bottom: 1px solid var(--hairline);
+  color: var(--body);
+  transition: background 0.15s;
+}
+.bp-comparison-row:last-child { border-bottom: none; }
+.bp-comparison-row:hover { background: var(--canvas-soft); }
+.bp-comparison-row span:first-child { color: var(--ink); font-weight: 500; }
+@media (max-width: 600px) {
+  .bp-comparison-header,
+  .bp-comparison-row { grid-template-columns: 1fr 1fr; }
+  .bp-comparison-header span:nth-child(3),
+  .bp-comparison-header span:nth-child(4),
+  .bp-comparison-row span:nth-child(3),
+  .bp-comparison-row span:nth-child(4) { display: none; }
+}
+.faq-list { display: flex; flex-direction: column; margin-top: var(--space-lg); }
+.faq-item { border-top: 1px solid var(--hairline); }
+.faq-item:last-child { border-bottom: 1px solid var(--hairline); }
+.faq-question {
+  font-size: 16px; font-weight: 500; color: var(--ink); cursor: pointer;
+  padding: var(--space-lg) 0; list-style: none; display: flex; justify-content: space-between;
+  align-items: center; letter-spacing: -0.4px; margin: 0;
+}
+.faq-question::after { content: '+'; font-size: 20px; font-weight: 300; color: var(--mute); transition: transform 0.2s ease; flex-shrink: 0; margin-left: var(--space-md); }
+details[open] .faq-question::after { content: '−'; }
+.faq-answer { font-size: 15px; color: var(--body); line-height: 1.7; padding-bottom: var(--space-lg); margin: 0; }
+</style>

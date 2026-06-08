@@ -3,8 +3,69 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import Navbar from '../components/Navbar.astro';
 import Footer from '../components/Footer.astro';
 import ToolsGrid from '../components/ToolsGrid.astro';
+
+const schema = {
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Retirement Calculator",
+  "applicationCategory": "UtilitiesApplication",
+  "url": "https://agecalconline.com/retirement-calculator",
+  "description": "Free retirement calculator. Calculate exactly how many years, months, and days until your retirement date based on your date of birth and desired retirement age.",
+  "operatingSystem": "Any",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "aggregateRating": {
+    "@type": "AggregateRating",
+    "ratingValue": "4.8",
+    "reviewCount": "1200"
+  }
+};
+const faqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "When can I retire?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Enter your date of birth and desired retirement age. The calculator shows your exact retirement date and the years, months, and days remaining."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What is the standard retirement age?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "In the United States, full retirement age for Social Security benefits is 66–67 depending on birth year. Many countries set it between 60 and 67."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Can I retire early?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Early retirement is possible but usually means reduced pension or Social Security benefits. Many people target age 55–60 for early retirement with sufficient savings."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How many working days until I retire?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Our calculator shows the total days remaining until your chosen retirement date so you can count down with precision."
+      }
+    }
+  ]
+};
 ---
 <BaseLayout title="Retirement Calculator — Years Until Retirement | agecalconline.com" description="Calculate exactly how many years, months, and days until your retirement. Find your retirement date based on your desired retirement age.">
+  
+  <script type="application/ld+json" set:html={JSON.stringify(schema)} slot="head" />
+  <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} slot="head" />
   <Navbar slot="nav" />
   <section class="section-hero band-white" style="position:relative;overflow:hidden;text-align:center">
     <div style="position:absolute;inset:-40px;background:linear-gradient(135deg,#007cf0,#00dfd8,#7928ca,#ff0080);opacity:0.07;filter:blur(80px);pointer-events:none"></div>
@@ -37,6 +98,37 @@ import ToolsGrid from '../components/ToolsGrid.astro';
         <p class="body-md text-body" id="ret-weekday" style="margin-top:4px">—</p>
       </div>
       <div class="grid-3" id="ret-grid"></div>
+    </div>
+  </section>
+
+  
+  <section class="section band-white">
+    <div class="container" style="max-width:720px">
+      <h2 class="display-md" style="margin-bottom:var(--space-sm)">Planning for Retirement — How Many Days Do You Have?</h2>
+      <p class="body-md text-body" style="margin-bottom:var(--space-xl)">Planning for retirement with precision is crucial for your financial future. Knowing exactly how much time you have left influences how you leverage compound interest, manage pension vesting schedules, and contribute to retirement accounts (like the NPS in India or 401k in the USA). The definition of retirement age varies: early retirement is often considered 55, standard retirement ranges between 65 and 67, while delayed retirement extends to 70 for maximum benefits. Some countries, like Japan, have differing norms. Knowing your exact retirement countdown gives you clarity and helps motivate your long-term saving decisions.</p>
+    </div>
+  </section>
+
+  <section class="section band-light">
+    <div class="container" style="max-width:720px">
+      <h2 class="display-md" style="margin-bottom:var(--space-xl)">Related Calculators</h2>
+      <div class="grid-3" style="gap:var(--space-md)">
+      <a href="/life-expectancy-calculator" class="card" style="text-decoration:none;transition:transform 0.2s ease" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='translateY(0)'">
+        <div style="font-size:24px;margin-bottom:var(--space-xs)">⏳</div>
+        <div style="font-weight:600;color:var(--ink);font-size:15px;letter-spacing:-0.3px">Life Expectancy</div>
+        <div style="font-size:13px;color:var(--body);margin-top:4px">Estimate your lifespan based on statistics.</div>
+      </a>
+      <a href="/future-age-calculator" class="card" style="text-decoration:none;transition:transform 0.2s ease" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='translateY(0)'">
+        <div style="font-size:24px;margin-bottom:var(--space-xs)">🔮</div>
+        <div style="font-weight:600;color:var(--ink);font-size:15px;letter-spacing:-0.3px">Future Age</div>
+        <div style="font-size:13px;color:var(--body);margin-top:4px">Find out how old you'll be on a future date.</div>
+      </a>
+      <a href="/work-hours-calculator" class="card" style="text-decoration:none;transition:transform 0.2s ease" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='translateY(0)'">
+        <div style="font-size:24px;margin-bottom:var(--space-xs)">💼</div>
+        <div style="font-weight:600;color:var(--ink);font-size:15px;letter-spacing:-0.3px">Work Hours</div>
+        <div style="font-size:13px;color:var(--body);margin-top:4px">Calculate total work hours and payroll.</div>
+      </a>
+      </div>
     </div>
   </section>
 

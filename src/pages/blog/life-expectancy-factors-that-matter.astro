@@ -1,0 +1,329 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Navbar from '../../components/Navbar.astro';
+import Footer from '../../components/Footer.astro';
+
+const post = {
+  title: "10 Science-Backed Factors That Determine How Long You'll Live",
+  description: "Genetics, diet, sleep, social connections — longevity science has identified the key variables. We break down the top 10 factors supported by the longest-running studies.",
+  date: 'May 23, 2026',
+  dateISO: '2026-05-23',
+  readTime: '9 min read',
+  category: 'Longevity',
+};
+
+const faqs = [
+  { q: "What is the most important factor in life expectancy?", a: "Research points to strong social relationships and not smoking as two of the most critical factors. High social integration can increase survival odds by 50%." },
+  { q: "How much does genetics affect lifespan?", a: "Genetics account for about 20% to 30% of your longevity. The remaining 70% to 80% is determined by lifestyle and environmental factors." },
+  { q: "Does diet really add years to your life?", a: "Yes. Following a Mediterranean diet, rich in vegetables, legumes, and healthy fats, can add 5 to 10 years to your life expectancy compared to a Western diet." },
+  { q: "How does sleep affect longevity?", a: "Sleeping the optimal 7 to 9 hours a night is crucial. Poor sleep accelerates epigenetic aging and drastically increases the risk of chronic diseases." }
+];
+
+const faqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": faqs.map(faq => ({
+    "@type": "Question",
+    "name": faq.q,
+    "acceptedAnswer": {
+      "@type": "Answer",
+      "text": faq.a
+    }
+  }))
+};
+
+const factors = [
+  {
+    rank: 1,
+    title: 'Social Relationships',
+    icon: '🤝',
+    impact: 'Up to +7 years',
+    impactColor: '#00a878',
+    text: 'The Holt-Lunstad meta-analysis (2015) — covering 148 studies and 308,849 participants — found that strong social relationships increase the odds of survival by 50%. Social isolation carries a mortality risk comparable to smoking 15 cigarettes per day. Community, close friendships, and romantic partnerships are among the strongest longevity predictors ever identified.',
+  },
+  {
+    rank: 2,
+    title: 'Not Smoking',
+    icon: '🚭',
+    impact: '+10 years',
+    impactColor: '#00a878',
+    text: 'Smoking remains the leading preventable cause of death globally. Quitting at age 40 reduces excess mortality risk by ~90%. The British Doctors\' Study — running for 50 years — found that lifelong non-smokers lived an average of 10 years longer than smokers.',
+  },
+  {
+    rank: 3,
+    title: 'Cardiovascular Fitness (VO2 Max)',
+    icon: '❤️',
+    impact: 'Up to +5 years',
+    impactColor: '#0070f3',
+    text: 'VO2 max — your maximal oxygen uptake — is one of the strongest predictors of all-cause mortality. A 2018 JAMA Network Open study found that low cardiorespiratory fitness conferred a mortality risk comparable to smoking or diabetes. Even modest improvements (e.g., moving from "low" to "below average" fitness) produced significant survival benefits.',
+  },
+  {
+    rank: 4,
+    title: 'Diet Quality',
+    icon: '🥗',
+    impact: '+3–5 years',
+    impactColor: '#0070f3',
+    text: 'The Mediterranean diet — rich in vegetables, legumes, whole grains, olive oil, and fish — is the most studied longevity diet. A 2022 study in PLOS Medicine estimated that a sustained Mediterranean diet adopted at age 20 could add more than 10 years of life expectancy compared to a Western diet. Adopting it at 60 still yields roughly 8 additional years.',
+  },
+  {
+    rank: 5,
+    title: 'Sleep Quality and Duration',
+    icon: '😴',
+    impact: '−2 to +2 years',
+    impactColor: '#f59e0b',
+    text: 'Both too little (under 6 hours) and too much sleep (over 9 hours) are associated with increased mortality. The optimal window is 7–9 hours. Poor sleep accelerates epigenetic aging, impairs immune function, and dramatically increases risk for Alzheimer\'s, cardiovascular disease, and type 2 diabetes. Matthew Walker\'s research at UC Berkeley identifies sleep as "the single most effective thing we can do to reset our brain and body health each day."',
+  },
+  {
+    rank: 6,
+    title: 'Alcohol Moderation',
+    icon: '🍷',
+    impact: '−3 to +1 years',
+    impactColor: '#f59e0b',
+    text: 'The previous consensus that light drinking was protective has been challenged by Mendelian randomization studies. Current evidence (Lancet, 2018) suggests the safest level is zero alcohol for cancer risk, though light drinking (1–2 standard drinks/day) shows neutral to slightly negative all-cause mortality impact. Heavy drinking (3+ drinks/day) clearly reduces lifespan by 3–5 years on average.',
+  },
+  {
+    rank: 7,
+    title: 'Maintaining a Healthy Weight',
+    icon: '⚖️',
+    impact: '+2–4 years',
+    impactColor: '#0070f3',
+    text: 'Obesity (BMI ≥30) is associated with 1.5–3x higher mortality risk for numerous conditions including type 2 diabetes, heart disease, stroke, and several cancers. However, as noted in our BMI guide, the relationship is complex — slightly overweight elderly adults often fare better than underweight ones. Body composition (muscle vs fat ratio) matters more than weight alone.',
+  },
+  {
+    rank: 8,
+    title: 'Stress Management',
+    icon: '🧘',
+    impact: '+2–3 years',
+    impactColor: '#7928ca',
+    text: 'Chronic psychological stress shortens telomeres, elevates inflammatory markers, disrupts hormonal systems, and promotes cardiovascular disease. The Whitehall II Study found that high work stress in midlife was associated with 67% higher risk of metabolic syndrome. Effective management strategies — meditation, therapy, regular nature exposure, and community — each show measurable biomarker improvements.',
+  },
+  {
+    rank: 9,
+    title: 'Purpose and Meaning',
+    icon: '🎯',
+    impact: '+2 years',
+    impactColor: '#7928ca',
+    text: 'Having a sense of purpose — what the Japanese call "ikigai" — is consistently associated with longer, healthier lives. A 2019 JAMA Network Open study found that adults with a stronger sense of life purpose had lower all-cause and cardiovascular mortality, independent of other health behaviors. This effect persists across cultures and appears in the famous Blue Zones of longevity.',
+  },
+  {
+    rank: 10,
+    title: 'Genetics',
+    icon: '🧬',
+    impact: '~20–30% of variance',
+    impactColor: '#0070f3',
+    text: 'Genetics account for roughly 20–30% of longevity variance (twin studies suggest this, though newer research may lower that estimate). The remaining 70–80% is attributable to lifestyle and environment — which is why exceptional longevity isn\'t simply inherited. Family history of certain conditions is important to know and discuss with your physician, but it\'s far from destiny.',
+  },
+];
+---
+
+<BaseLayout
+  title={`${post.title} | AgeCalc Blog`}
+  description={post.description}
+  keywords="factors that determine lifespan, longevity science, how to live longer, life expectancy factors, blue zones research"
+  ogType="article"
+>
+  <fragment slot="head">
+    <script type="application/ld+json" set:html={JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "Article",
+      "headline": post.title,
+      "description": post.description,
+      "datePublished": post.dateISO,
+      "dateModified": post.dateISO,
+      "author": { "@type": "Organization", "name": "agecalconline.com" },
+      "publisher": { "@type": "Organization", "name": "agecalconline.com", "logo": "https://agecalconline.com/favicon-96x96.png" },
+      "mainEntityOfPage": "https://agecalconline.com/blog/life-expectancy-factors-that-matter"
+    })} />
+    <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
+  </fragment>
+
+  <Navbar slot="nav" />
+
+  <article class="bp-article">
+    <div class="bp-header">
+      <div class="bp-header-orb bp-header-orb-1" style="background: radial-gradient(circle, #0d9488, transparent);"></div>
+      <div class="bp-header-orb bp-header-orb-2"></div>
+      <div class="container">
+        <div class="bp-header-inner">
+          <a href="/blog" class="bp-back">← All Articles</a>
+          <div class="bp-meta-top">
+            <span class="bp-category" style="color: #0d9488;">{post.category}</span>
+            <span class="bp-dot">·</span>
+            <span class="bp-read">{post.readTime}</span>
+            <span class="bp-dot">·</span>
+            <time datetime={post.dateISO}>{post.date}</time>
+          </div>
+          <h1 class="bp-title">{post.title}</h1>
+          <p class="bp-lead">{post.description}</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="bp-body-wrap">
+      <div class="container">
+        <div class="bp-body">
+
+          <div class="bp-callout">
+            <div class="bp-callout-icon">🧠</div>
+            <div>This article draws on data from the Blue Zones research (Buettner), the British Doctors' Study, the Whitehall II Study, the Nurses' Health Study, NHANES data, and peer-reviewed meta-analyses in JAMA, The Lancet, and PLOS Medicine.</div>
+          </div>
+
+          <div class="bp-factors-list">
+            {factors.map(f => (
+              <div class="bp-factor-item" id={`factor-${f.rank}`}>
+                <div class="bp-factor-header">
+                  <div class="bp-factor-rank">{f.rank}</div>
+                  <div class="bp-factor-emoji">{f.icon}</div>
+                  <div class="bp-factor-title-wrap">
+                    <h2 class="bp-factor-title">{f.title}</h2>
+                    <span class="bp-factor-impact" style={`color: ${f.impactColor}; background: color-mix(in srgb, ${f.impactColor} 10%, transparent); border: 1px solid color-mix(in srgb, ${f.impactColor} 22%, transparent);`}>
+                      {f.impact}
+                    </span>
+                  </div>
+                </div>
+                <p class="bp-factor-text">{f.text}</p>
+              </div>
+            ))}
+          </div>
+
+          <h2>The Takeaway</h2>
+          <p>Longevity research converges on a simple but powerful message: the lifestyle factors under your control — relationships, physical activity, diet, sleep, and purpose — account for the majority of your lifespan variance. Genetics set a rough ceiling, but your daily choices determine how close to that ceiling you get.</p>
+          <p>Use our <a href="/life-expectancy-calculator">life expectancy calculator</a> to get a personalized estimate based on your current health profile. And our <a href="/biological-age-calculator">biological age calculator</a> can show how today's choices are already reflected in your body's age.</p>
+
+          <div class="bp-cta-inline">
+            <a href="/life-expectancy-calculator" class="bp-cta-btn" style="background: #0d9488;">Estimate My Life Expectancy →</a>
+          </div>
+
+          <h2 style="margin-top:var(--space-3xl)">Frequently Asked Questions</h2>
+          <div class="faq-list">
+            {faqs.map(item => (
+              <details class="faq-item">
+                <summary class="faq-question">{item.q}</summary>
+                <p class="faq-answer">{item.a}</p>
+              </details>
+            ))}
+          </div>
+
+        </div>
+
+        <aside class="bp-sidebar">
+          <div class="bp-sidebar-card">
+            <h3>Related Calculators</h3>
+            <ul>
+              <li><a href="/life-expectancy-calculator">Life Expectancy</a></li>
+              <li><a href="/biological-age-calculator">Biological Age</a></li>
+              <li><a href="/bmi-calculator">BMI Calculator</a></li>
+              <li><a href="/retirement-calculator">Retirement Calculator</a></li>
+            </ul>
+          </div>
+          <div class="bp-sidebar-card">
+            <h3>Jump to Factor</h3>
+            <ul>
+              {factors.slice(0, 6).map(f => (
+                <li><a href={`#factor-${f.rank}`}>{f.rank}. {f.title}</a></li>
+              ))}
+            </ul>
+          </div>
+          <div class="bp-sidebar-card">
+            <h3>More Articles</h3>
+            <ul>
+              <li><a href="/blog/biological-age-vs-chronological-age">Biological vs Chronological Age</a></li>
+              <li><a href="/blog/best-age-to-retire">Best Age to Retire</a></li>
+              <li><a href="/blog/how-bmi-changes-with-age">BMI Through the Ages</a></li>
+            </ul>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </article>
+
+  <Footer slot="footer" />
+</BaseLayout>
+
+<style is:global>
+.bp-factors-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xl);
+}
+.bp-factor-item {
+  border: 1px solid var(--hairline);
+  border-radius: var(--radius-lg);
+  padding: var(--space-xl);
+  background: var(--canvas);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+.bp-factor-item:hover {
+  border-color: var(--hairline-strong);
+  box-shadow: var(--shadow-2);
+}
+.bp-factor-header {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+}
+.bp-factor-rank {
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-md);
+  background: var(--canvas-soft-2);
+  border: 1px solid var(--hairline);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--mute);
+  flex-shrink: 0;
+}
+.bp-factor-emoji {
+  font-size: 1.6rem;
+  flex-shrink: 0;
+}
+.bp-factor-title-wrap {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  flex-wrap: wrap;
+  flex: 1;
+}
+.bp-factor-title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--ink);
+  letter-spacing: -0.3px;
+  margin: 0;
+  border: none;
+  padding: 0;
+}
+.bp-factor-impact {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 600;
+  padding: 3px 9px;
+  border-radius: var(--radius-full);
+  white-space: nowrap;
+}
+.bp-factor-text {
+  font-size: 15px;
+  color: var(--body);
+  line-height: 1.75;
+  margin: 0;
+}
+
+.faq-list { display: flex; flex-direction: column; margin-top: var(--space-lg); }
+.faq-item { border-top: 1px solid var(--hairline); }
+.faq-item:last-child { border-bottom: 1px solid var(--hairline); }
+.faq-question {
+  font-size: 16px; font-weight: 500; color: var(--ink); cursor: pointer;
+  padding: var(--space-lg) 0; list-style: none; display: flex; justify-content: space-between;
+  align-items: center; letter-spacing: -0.4px; margin: 0;
+}
+.faq-question::after { content: '+'; font-size: 20px; font-weight: 300; color: var(--mute); transition: transform 0.2s ease; flex-shrink: 0; margin-left: var(--space-md); }
+details[open] .faq-question::after { content: '−'; }
+.faq-answer { font-size: 15px; color: var(--body); line-height: 1.7; padding-bottom: var(--space-lg); margin: 0; }
+</style>

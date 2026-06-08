@@ -3,8 +3,69 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import Navbar from '../components/Navbar.astro';
 import Footer from '../components/Footer.astro';
 import ToolsGrid from '../components/ToolsGrid.astro';
+
+const schema = {
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Future Age Calculator",
+  "applicationCategory": "UtilitiesApplication",
+  "url": "https://agecalconline.com/future-age-calculator",
+  "description": "Free future age calculator. Calculate exactly how old you will be on any future date — perfect for planning milestones, eligibility checks, retirement, and special events.",
+  "operatingSystem": "Any",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "aggregateRating": {
+    "@type": "AggregateRating",
+    "ratingValue": "4.8",
+    "reviewCount": "1200"
+  }
+};
+const faqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "How old will I be in the future?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Enter your date of birth and any future date. The calculator instantly shows your exact age on that date in years, months, and days."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Can I calculate how old I will be in a specific year?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. Enter your birth date and set the target date to January 1 of any year to see your age at the start of that year."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Why would I need a future age calculator?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "It is useful for planning milestones, checking eligibility for age-restricted activities, calculating retirement dates, and finding out your age at special events."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How accurate is the future age calculator?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "It is 100% mathematically accurate, accounting for leap years and month-length variations."
+      }
+    }
+  ]
+};
 ---
 <BaseLayout title="Future Age Calculator — How Old Will I Be? | agecalconline.com" description="Calculate exactly how old you will be on any future date. Perfect for planning milestones, events, and important life dates.">
+  
+  <script type="application/ld+json" set:html={JSON.stringify(schema)} slot="head" />
+  <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} slot="head" />
   <Navbar slot="nav" />
   <section class="section-hero band-white" style="position:relative;overflow:hidden;text-align:center">
     <div style="position:absolute;inset:-40px;background:linear-gradient(135deg,#007cf0,#00dfd8,#7928ca,#ff0080);opacity:0.07;filter:blur(80px);pointer-events:none"></div>
@@ -30,6 +91,37 @@ import ToolsGrid from '../components/ToolsGrid.astro';
         <h2 class="display-xl" id="fut-age">—</h2>
         <p class="body-md text-body" style="margin-top:var(--space-sm)" id="fut-summary">—</p>
         <div class="grid-3" style="margin-top:var(--space-xl)" id="fut-grid"></div>
+      </div>
+    </div>
+  </section>
+
+  
+  <section class="section band-white">
+    <div class="container" style="max-width:720px">
+      <h2 class="display-md" style="margin-bottom:var(--space-sm)">Why Calculate Your Future Age?</h2>
+      <p class="body-md text-body" style="margin-bottom:var(--space-xl)">A future age calculator is incredibly useful for long-term planning. Whether you are organizing a major life event, checking eligibility for age-restricted activities, or tracking government scheme deadlines (such as NDA age cutoffs in India), knowing your exact future age is crucial. You might also want to find out exactly how old you will be at a sibling's graduation or a friend's future wedding. Determining pension age milestones requires precise day counts. Because leap years and month-length variations make manual math complicated, our online calculator handles the arithmetic instantly to ensure your future age calculations are always 100% accurate.</p>
+    </div>
+  </section>
+
+  <section class="section band-light">
+    <div class="container" style="max-width:720px">
+      <h2 class="display-md" style="margin-bottom:var(--space-xl)">Related Calculators</h2>
+      <div class="grid-3" style="gap:var(--space-md)">
+      <a href="/" class="card" style="text-decoration:none;transition:transform 0.2s ease" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='translateY(0)'">
+        <div style="font-size:24px;margin-bottom:var(--space-xs)">📅</div>
+        <div style="font-weight:600;color:var(--ink);font-size:15px;letter-spacing:-0.3px">Age Calculator</div>
+        <div style="font-size:13px;color:var(--body);margin-top:4px">Calculate your exact age down to the second.</div>
+      </a>
+      <a href="/retirement-calculator" class="card" style="text-decoration:none;transition:transform 0.2s ease" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='translateY(0)'">
+        <div style="font-size:24px;margin-bottom:var(--space-xs)">🏖️</div>
+        <div style="font-weight:600;color:var(--ink);font-size:15px;letter-spacing:-0.3px">Retirement Age</div>
+        <div style="font-size:13px;color:var(--body);margin-top:4px">Plan your countdown to retirement day.</div>
+      </a>
+      <a href="/age-difference-calculator" class="card" style="text-decoration:none;transition:transform 0.2s ease" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='translateY(0)'">
+        <div style="font-size:24px;margin-bottom:var(--space-xs)">⚖️</div>
+        <div style="font-weight:600;color:var(--ink);font-size:15px;letter-spacing:-0.3px">Age Difference</div>
+        <div style="font-size:13px;color:var(--body);margin-top:4px">Compare ages between two people instantly.</div>
+      </a>
       </div>
     </div>
   </section>

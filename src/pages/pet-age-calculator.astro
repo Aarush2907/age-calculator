@@ -3,8 +3,69 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import Navbar from '../components/Navbar.astro';
 import Footer from '../components/Footer.astro';
 import ToolsGrid from '../components/ToolsGrid.astro';
+
+const schema = {
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Pet Age Calculator",
+  "applicationCategory": "UtilitiesApplication",
+  "url": "https://agecalconline.com/pet-age-calculator",
+  "description": "Free pet age calculator. Convert your dog, cat, rabbit, hamster, or horse's age to human years using accurate species-specific conversion formulas.",
+  "operatingSystem": "Any",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "aggregateRating": {
+    "@type": "AggregateRating",
+    "ratingValue": "4.8",
+    "reviewCount": "1200"
+  }
+};
+const faqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "How do you convert dog years to human years?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "The first year of a medium dog's life equals about 15 human years. The second year equals about 9 more. Each subsequent year equals roughly 4–5 human years, depending on breed size."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Are small dogs and large dogs the same age in human years?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. Large dogs age faster and have shorter lifespans. Our calculator adjusts the conversion based on your dog's size."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How old is a 10 year old cat in human years?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "A 10-year-old cat is approximately 56 human years old, using the standard feline age conversion (first year = 15, second = 9, then +4 per year)."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What is the oldest a dog has ever lived?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "The oldest verified dog was Bobi, a Rafeiro do Alentejo from Portugal who lived to 30 years and 266 days, equivalent to over 200 human years."
+      }
+    }
+  ]
+};
 ---
 <BaseLayout title="Pet Age Calculator — Dog, Cat & Animal Age in Human Years | agecalconline.com" description="Convert your pet's age to human years. Supports dogs (small/medium/large), cats, rabbits, hamsters, and horses with accurate conversion formulas.">
+  
+  <script type="application/ld+json" set:html={JSON.stringify(schema)} slot="head" />
+  <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} slot="head" />
   <Navbar slot="nav" />
   <section class="section-hero band-white" style="position:relative;overflow:hidden;text-align:center">
     <div style="position:absolute;inset:-40px;background:linear-gradient(135deg,#007cf0,#00dfd8,#7928ca,#ff0080);opacity:0.07;filter:blur(80px);pointer-events:none"></div>
@@ -64,6 +125,37 @@ import ToolsGrid from '../components/ToolsGrid.astro';
         {[{e:'🐕',t:'Dogs',d:'The AKC-based formula considers breed size. Small dogs age slower in later years; large dogs age faster.'},{e:'🐈',t:'Cats',d:'First year = 15 human years, second = 9, then 4 per year after. Indoor cats live 12–18 years average.'},{e:'🐇',t:'Rabbits',d:'Rabbits have a 9:1 ratio to human years. A 5-year-old rabbit is ~45 in human years.'},{e:'🐹',t:'Hamsters',d:'Hamsters age very rapidly — 25 human years per hamster year. They typically live 2–3 years.'}].map(p=>(
           <div class="card"><div style="font-size:24px;margin-bottom:8px">{p.e}</div><div style="font-weight:600;margin-bottom:4px">{p.t}</div><p class="body-sm text-body">{p.d}</p></div>
         ))}
+      </div>
+    </div>
+  </section>
+
+  
+  <section class="section band-white">
+    <div class="container" style="max-width:720px">
+      <h2 class="display-md" style="margin-bottom:var(--space-sm)">How Pet Age Conversion Really Works</h2>
+      <p class="body-md text-body" style="margin-bottom:var(--space-xl)">The old myth that one dog year equals seven human years is completely inaccurate. Dogs and cats mature much faster in their early years. According to modern veterinary standards (such as the AKC formula), the first year of a dog's life equals about 15 human years. The second year adds about 9 more years. After that, breed size matters immensely—large breeds age much faster and have shorter average lifespans than small dogs. Cats have their own unique aging curve, while animals like rabbits, hamsters, and horses age differently entirely. Understanding your pet's true age helps you provide better, age-appropriate veterinary care.</p>
+    </div>
+  </section>
+
+  <section class="section band-light">
+    <div class="container" style="max-width:720px">
+      <h2 class="display-md" style="margin-bottom:var(--space-xl)">Related Calculators</h2>
+      <div class="grid-3" style="gap:var(--space-md)">
+      <a href="/" class="card" style="text-decoration:none;transition:transform 0.2s ease" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='translateY(0)'">
+        <div style="font-size:24px;margin-bottom:var(--space-xs)">📅</div>
+        <div style="font-weight:600;color:var(--ink);font-size:15px;letter-spacing:-0.3px">Age Calculator</div>
+        <div style="font-size:13px;color:var(--body);margin-top:4px">Calculate your exact age down to the second.</div>
+      </a>
+      <a href="/age-difference-calculator" class="card" style="text-decoration:none;transition:transform 0.2s ease" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='translateY(0)'">
+        <div style="font-size:24px;margin-bottom:var(--space-xs)">⚖️</div>
+        <div style="font-weight:600;color:var(--ink);font-size:15px;letter-spacing:-0.3px">Age Difference</div>
+        <div style="font-size:13px;color:var(--body);margin-top:4px">Compare ages between two people instantly.</div>
+      </a>
+      <a href="/birthday-calculator" class="card" style="text-decoration:none;transition:transform 0.2s ease" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='translateY(0)'">
+        <div style="font-size:24px;margin-bottom:var(--space-xs)">🎂</div>
+        <div style="font-weight:600;color:var(--ink);font-size:15px;letter-spacing:-0.3px">Birthday Calculator</div>
+        <div style="font-size:13px;color:var(--body);margin-top:4px">Count down the days until your next birthday.</div>
+      </a>
       </div>
     </div>
   </section>

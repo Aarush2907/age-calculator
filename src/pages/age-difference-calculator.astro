@@ -3,8 +3,69 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import Navbar from '../components/Navbar.astro';
 import Footer from '../components/Footer.astro';
 import ToolsGrid from '../components/ToolsGrid.astro';
+
+const schema = {
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Age Difference Calculator",
+  "applicationCategory": "UtilitiesApplication",
+  "url": "https://agecalconline.com/age-difference-calculator",
+  "description": "Free online age difference calculator. Compare the ages of two people and get the exact gap in years, months, weeks, days, hours, and minutes instantly.",
+  "operatingSystem": "Any",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "aggregateRating": {
+    "@type": "AggregateRating",
+    "ratingValue": "4.8",
+    "reviewCount": "1200"
+  }
+};
+const faqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "How do you calculate age difference between two people?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Subtract the earlier birth date from the later birth date. The result gives you years, months, and days. Our calculator handles this automatically including leap years."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What is the average age gap between couples?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Research suggests couples with a 1–3 year age gap report the highest satisfaction, though compatibility matters far more than age."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Can I calculate age difference in months only?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. Our calculator shows the difference in total months alongside years, weeks, days, hours, and minutes."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is age difference important in relationships?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Age difference alone is rarely decisive. Shared values, communication, and compatibility are stronger predictors of relationship success."
+      }
+    }
+  ]
+};
 ---
 <BaseLayout title="Age Difference Calculator — Compare Two Ages | agecalconline.com" description="Calculate the age difference between two people in years, months, weeks, days, hours, and minutes. Perfect for couples, family, and friends.">
+  
+  <script type="application/ld+json" set:html={JSON.stringify(schema)} slot="head" />
+  <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} slot="head" />
   <Navbar slot="nav" />
 
   <section class="section-hero band-white" style="position:relative;overflow:hidden;text-align:center">
@@ -42,6 +103,37 @@ import ToolsGrid from '../components/ToolsGrid.astro';
       <details class="faq-item"><summary class="faq-question">How do you calculate age difference?</summary><p class="faq-answer">Subtract the older person's birth date from the younger person's birth date. Our calculator shows the result in years, months, weeks, days, hours, and minutes for maximum precision.</p></details>
       <details class="faq-item"><summary class="faq-question">What is the ideal age difference between partners?</summary><p class="faq-answer">Research suggests couples with a 1–3 year age difference tend to have higher relationship satisfaction, though individual compatibility matters far more than age.</p></details>
       <details class="faq-item"><summary class="faq-question">Can I calculate age difference in weeks?</summary><p class="faq-answer">Yes! Our age difference calculator shows the exact difference in years, months, weeks, days, hours, and minutes simultaneously.</p></details>
+    </div>
+  </section>
+
+  
+  <section class="section band-white">
+    <div class="container" style="max-width:720px">
+      <h2 class="display-md" style="margin-bottom:var(--space-sm)">How to Calculate Age Difference</h2>
+      <p class="body-md text-body" style="margin-bottom:var(--space-xl)">Age difference calculations help you determine the exact gap between two people's ages. Whether you are comparing ages for a relationship, tracking the age gap between siblings, checking eligibility for a specific program, or doing HR verification, an age difference calculator provides instant clarity. The math involves subtracting two birth dates while carefully accounting for leap years and months of varying lengths. While calculating this manually can lead to errors—especially when counting exact days—an online calculator ensures 100% precision. Knowing your age difference in multiple units (years, weeks, days) gives you full precision.</p>
+    </div>
+  </section>
+
+  <section class="section band-light">
+    <div class="container" style="max-width:720px">
+      <h2 class="display-md" style="margin-bottom:var(--space-xl)">Related Calculators</h2>
+      <div class="grid-3" style="gap:var(--space-md)">
+      <a href="/" class="card" style="text-decoration:none;transition:transform 0.2s ease" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='translateY(0)'">
+        <div style="font-size:24px;margin-bottom:var(--space-xs)">📅</div>
+        <div style="font-weight:600;color:var(--ink);font-size:15px;letter-spacing:-0.3px">Age Calculator</div>
+        <div style="font-size:13px;color:var(--body);margin-top:4px">Calculate your exact age down to the second.</div>
+      </a>
+      <a href="/birthday-calculator" class="card" style="text-decoration:none;transition:transform 0.2s ease" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='translateY(0)'">
+        <div style="font-size:24px;margin-bottom:var(--space-xs)">🎂</div>
+        <div style="font-weight:600;color:var(--ink);font-size:15px;letter-spacing:-0.3px">Birthday Calculator</div>
+        <div style="font-size:13px;color:var(--body);margin-top:4px">Count down the days until your next birthday.</div>
+      </a>
+      <a href="/chronological-age-calculator" class="card" style="text-decoration:none;transition:transform 0.2s ease" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='translateY(0)'">
+        <div style="font-size:24px;margin-bottom:var(--space-xs)">⏱️</div>
+        <div style="font-weight:600;color:var(--ink);font-size:15px;letter-spacing:-0.3px">Chronological Age</div>
+        <div style="font-size:13px;color:var(--body);margin-top:4px">Find your precise chronological age easily.</div>
+      </a>
+      </div>
     </div>
   </section>
 

@@ -1,0 +1,433 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Navbar from '../../components/Navbar.astro';
+import Footer from '../../components/Footer.astro';
+
+const post = {
+  title: 'How to Calculate Your Exact Age Accurately (Years, Months & Days)',
+  description: 'Most people know their age in years — but what about months, weeks, and days? Learn how age calculators compute precise age and why leap years, time zones, and calendar systems matter.',
+  date: 'June 5, 2026',
+  dateISO: '2026-06-05',
+  readTime: '5 min read',
+  category: 'Age Calculator',
+  emoji: '🎂',
+};
+
+const faqs = [
+  { q: "How do you calculate your exact age?", a: "To calculate exact age, subtract your birth date from the current date. First compute the years, then the months, and finally the days, making sure to account for leap years and the varying number of days in each month." },
+  { q: "How many days are in a year?", a: "A standard calendar year has 365 days. A leap year, which occurs every four years, has 366 days because it adds an extra day to February." },
+  { q: "Why is a leap year age calculation different?", a: "If you were born on February 29th, an accurate age calculator will typically count your birthday as March 1st or February 28th in non-leap years. This adjustment ensures your age in days is precisely counted." },
+  { q: "Does time zone affect age calculation?", a: "Yes. If you were born in a different time zone than where you currently reside, your exact age in days may differ by one depending on the timezone used for the 'current' date." }
+];
+
+const faqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": faqs.map(faq => ({
+    "@type": "Question",
+    "name": faq.q,
+    "acceptedAnswer": {
+      "@type": "Answer",
+      "text": faq.a
+    }
+  }))
+};
+---
+
+<BaseLayout
+  title={`${post.title} | AgeCalc Blog`}
+  description={post.description}
+  keywords="how to calculate age, exact age calculation, age in days months years, leap year age calculator, precise age"
+  ogType="article"
+>
+  <fragment slot="head">
+    <script type="application/ld+json" set:html={JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "Article",
+      "headline": post.title,
+      "description": post.description,
+      "datePublished": post.dateISO,
+      "dateModified": post.dateISO,
+      "author": { "@type": "Organization", "name": "agecalconline.com" },
+      "publisher": {
+        "@type": "Organization",
+        "name": "agecalconline.com",
+        "logo": "https://agecalconline.com/favicon-96x96.png"
+      },
+      "mainEntityOfPage": "https://agecalconline.com/blog/how-to-calculate-age-accurately",
+      "image": "https://agecalconline.com/og-image.png"
+    })} />
+    <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
+  </fragment>
+
+  <Navbar slot="nav" />
+
+  <article class="bp-article">
+    <!-- Header -->
+    <div class="bp-header">
+      <div class="bp-header-orb bp-header-orb-1"></div>
+      <div class="bp-header-orb bp-header-orb-2"></div>
+      <div class="container">
+        <div class="bp-header-inner">
+          <a href="/blog" class="bp-back">← All Articles</a>
+          <div class="bp-meta-top">
+            <span class="bp-category">{post.category}</span>
+            <span class="bp-dot">·</span>
+            <span class="bp-read">{post.readTime}</span>
+            <span class="bp-dot">·</span>
+            <time datetime={post.dateISO}>{post.date}</time>
+          </div>
+          <h1 class="bp-title">{post.title}</h1>
+          <p class="bp-lead">{post.description}</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Content -->
+    <div class="bp-body-wrap">
+      <div class="container">
+        <div class="bp-body">
+
+          <h2>Why "I'm 25" is Almost Always Imprecise</h2>
+          <p>When someone asks your age, you say a number. But that number hides a lot of detail. On the day before your 26th birthday, you're still "25" — yet you've lived almost the full span of another year. The gap between a coarse age and a precise one matters more than you might think, especially in medical, legal, and financial contexts.</p>
+          <p>A true exact age calculation factors in years, months, weeks, days, hours, minutes, and even seconds — all while accounting for calendar quirks like leap years.</p>
+
+          <div class="bp-callout">
+            <div class="bp-callout-icon">💡</div>
+            <div>
+              <strong>Quick fact:</strong> If you were born on February 29 (a leap day), the Gregorian calendar only gives you a "real" birthday once every four years. Age calculators handle this by treating March 1 or February 28 as your birthday in non-leap years — but this choice can shift your computed age by a full day.
+            </div>
+          </div>
+
+          <h2>The Three Steps Inside Every Age Calculator</h2>
+          <p>Under the hood, calculating exact age involves three steps:</p>
+
+          <h3>1. Anchor to a Reference Date</h3>
+          <p>The reference date is usually "today," but it can be any target date — like a future birthday or a legal deadline. Every calculation starts here.</p>
+
+          <h3>2. Subtract in Calendar Units, Not Just Days</h3>
+          <p>Naïvely subtracting total days from a birth date gives you an approximate result, but it doesn't map cleanly to "years, months, days." The correct algorithm subtracts years first, then months, then days — each adjusted to the actual lengths of the months involved.</p>
+
+          <div class="bp-code-block">
+            <div class="bp-code-label">Example</div>
+            <p>Born: <strong>March 15, 1995</strong> → Today: <strong>June 8, 2026</strong></p>
+            <p>Years: <code>2026 − 1995 = 31</code>, but June 8 is after March 15, so ✅ full years = <strong>31</strong></p>
+            <p>Months: March → June = <strong>2 months</strong> (since we've passed the 15th)</p>
+            <p>Days: 15 → 8 of next month = <strong>24 days</strong></p>
+            <p>Result: <strong>31 years, 2 months, 24 days</strong></p>
+          </div>
+
+          <h3>3. Adjust for Leap Years</h3>
+          <p>Leap years add a 366th day to February. This means that two people born exactly one year apart may have lived a different total number of days. A robust age calculator uses actual calendar arithmetic — not a fixed "365.25 days/year" approximation.</p>
+
+          <h2>Time Zones Can Shift Your Age by a Day</h2>
+          <p>If you were born in Tokyo on January 1, 1990 at 11 PM JST, you were born on December 31, 1989 in New York. Depending on which time zone the calculator uses to define "today," your age could differ by one day — or even one year if today happens to be your birthday.</p>
+          <p>Our <a href="/">age calculator</a> defaults to your local device time zone to minimize this discrepancy.</p>
+
+          <h2>Common Mistakes in Manual Calculations</h2>
+          <ul class="bp-list">
+            <li>Forgetting that months have different lengths (28–31 days)</li>
+            <li>Using 365 days/year and rounding — introduces ~6 hours of error per year</li>
+            <li>Not checking whether the birthday has occurred yet this calendar year</li>
+            <li>Ignoring time-zone offsets for international birth records</li>
+          </ul>
+
+          <h2>Why Precision Matters</h2>
+          <p>For most people, knowing you're "31 years old" is enough. But in several contexts, the extra precision is critical:</p>
+          <ul class="bp-list">
+            <li><strong>Pediatric medicine:</strong> Drug dosages and developmental milestones are calculated in months and days for children under two.</li>
+            <li><strong>Retirement planning:</strong> Social Security benefits differ based on whether you've reached specific ages to the day.</li>
+            <li><strong>Legal documents:</strong> Contracts, visas, and licenses often specify exact age thresholds.</li>
+            <li><strong>Sports eligibility:</strong> Age-group athletics (like youth football or masters swimming) use exact birth dates.</li>
+          </ul>
+
+          <h2>Try It Yourself</h2>
+          <p>Our <a href="/">free age calculator</a> computes your age in years, months, days, hours, minutes, and seconds — with full leap-year and time-zone handling. You can also use the <a href="/chronological-age-calculator">chronological age calculator</a> for medical-style age breakdowns, or the <a href="/age-difference-calculator">age difference calculator</a> to compare ages between two people.</p>
+
+          <div class="bp-cta-inline">
+            <a href="/" class="bp-cta-btn">Calculate My Exact Age →</a>
+          </div>
+
+          <h2 style="margin-top:var(--space-3xl)">Frequently Asked Questions</h2>
+          <div class="faq-list">
+            {faqs.map(item => (
+              <details class="faq-item">
+                <summary class="faq-question">{item.q}</summary>
+                <p class="faq-answer">{item.a}</p>
+              </details>
+            ))}
+          </div>
+
+        </div>
+
+        <!-- Sidebar / Related -->
+        <aside class="bp-sidebar">
+          <div class="bp-sidebar-card">
+            <h3>Related Calculators</h3>
+            <ul>
+              <li><a href="/">Age Calculator</a></li>
+              <li><a href="/chronological-age-calculator">Chronological Age</a></li>
+              <li><a href="/age-difference-calculator">Age Difference</a></li>
+              <li><a href="/birthday-calculator">Birthday Calculator</a></li>
+              <li><a href="/reverse-age-calculator">Reverse Age</a></li>
+            </ul>
+          </div>
+          <div class="bp-sidebar-card">
+            <h3>More Articles</h3>
+            <ul>
+              <li><a href="/blog/biological-age-vs-chronological-age">Biological vs Chronological Age</a></li>
+              <li><a href="/blog/life-expectancy-factors-that-matter">10 Factors That Determine Lifespan</a></li>
+              <li><a href="/blog/generational-differences-millennials-gen-z">Millennials vs Gen Z</a></li>
+            </ul>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </article>
+
+  <Footer slot="footer" />
+</BaseLayout>
+
+<style is:global>
+/* ── Blog Post Base Styles ── */
+.bp-header {
+  position: relative;
+  overflow: hidden;
+  background: var(--canvas);
+  border-bottom: 1px solid var(--hairline);
+  padding: var(--space-5xl) 0 var(--space-4xl);
+}
+.bp-header-orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(90px);
+  opacity: 0.09;
+  pointer-events: none;
+}
+.bp-header-orb-1 {
+  width: 500px; height: 500px;
+  background: radial-gradient(circle, var(--link), transparent);
+  top: -180px; right: -60px;
+}
+.bp-header-orb-2 {
+  width: 280px; height: 280px;
+  background: radial-gradient(circle, #a78bfa, transparent);
+  bottom: -60px; left: 25%;
+}
+.bp-header-inner {
+  position: relative;
+  z-index: 2;
+  max-width: 760px;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+.bp-back {
+  font-size: 13px;
+  color: var(--body);
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.15s;
+  display: inline-block;
+}
+.bp-back:hover { color: var(--link); }
+.bp-meta-top {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--mute);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+.bp-category {
+  color: var(--link);
+  font-weight: 600;
+}
+.bp-dot { opacity: 0.4; }
+.bp-title {
+  font-size: clamp(1.8rem, 4vw, 2.8rem);
+  font-weight: 800;
+  letter-spacing: -1.5px;
+  line-height: 1.15;
+  color: var(--ink);
+  margin: 0;
+}
+.bp-lead {
+  font-size: 18px;
+  color: var(--body);
+  line-height: 1.65;
+  max-width: 660px;
+  margin: 0;
+}
+
+/* Body layout */
+.bp-body-wrap { padding: var(--space-5xl) 0; }
+.bp-body-wrap .container {
+  display: grid;
+  grid-template-columns: 1fr 300px;
+  gap: var(--space-5xl);
+  align-items: start;
+}
+.bp-body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xl);
+  max-width: 720px;
+}
+.bp-body h2 {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--ink);
+  letter-spacing: -0.5px;
+  margin-bottom: -var(--space-sm);
+  padding-bottom: 0;
+  border-bottom: 2px solid var(--hairline);
+  padding-bottom: var(--space-sm);
+}
+.bp-body h3 {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--ink);
+  letter-spacing: -0.3px;
+}
+.bp-body p {
+  font-size: 16px;
+  color: var(--body);
+  line-height: 1.75;
+}
+.bp-body a { color: var(--link); text-decoration: underline; text-underline-offset: 3px; }
+.bp-body strong { color: var(--ink); font-weight: 600; }
+
+.bp-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+  padding-left: var(--space-lg);
+}
+.bp-list li {
+  font-size: 16px;
+  color: var(--body);
+  line-height: 1.65;
+  list-style: disc;
+}
+
+.bp-callout {
+  display: flex;
+  gap: var(--space-md);
+  background: color-mix(in srgb, var(--link) 8%, transparent);
+  border: 1px solid color-mix(in srgb, var(--link) 20%, transparent);
+  border-radius: var(--radius-lg);
+  padding: var(--space-lg);
+  font-size: 15px;
+  color: var(--body);
+  line-height: 1.65;
+}
+.bp-callout-icon { font-size: 1.4rem; flex-shrink: 0; }
+.bp-callout strong { color: var(--link); }
+
+.bp-code-block {
+  background: var(--canvas-soft-2);
+  border: 1px solid var(--hairline);
+  border-radius: var(--radius-lg);
+  padding: var(--space-lg);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+}
+.bp-code-label {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--mute);
+  margin-bottom: var(--space-xs);
+}
+.bp-code-block p { font-size: 14px; font-family: var(--font-mono); margin: 0; }
+.bp-code-block code {
+  background: var(--canvas);
+  border: 1px solid var(--hairline);
+  border-radius: var(--radius-xs);
+  padding: 1px 6px;
+  font-size: 13px;
+}
+
+.bp-cta-inline { margin-top: var(--space-md); }
+.bp-cta-btn {
+  display: inline-flex;
+  align-items: center;
+  background: var(--link);
+  color: #fff;
+  font-size: 15px;
+  font-weight: 700;
+  padding: 12px 24px;
+  border-radius: var(--radius-md);
+  text-decoration: none;
+  transition: opacity 0.15s, transform 0.15s;
+}
+.bp-cta-btn:hover { opacity: 0.88; transform: translateY(-2px); }
+
+/* Sidebar */
+.bp-sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+  position: sticky;
+  top: calc(var(--nav-height) + var(--space-lg));
+}
+.bp-sidebar-card {
+  background: var(--canvas-soft-2);
+  border: 1px solid var(--hairline);
+  border-radius: var(--radius-lg);
+  padding: var(--space-lg);
+}
+.bp-sidebar-card h3 {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--ink);
+  letter-spacing: -0.2px;
+  margin-bottom: var(--space-sm);
+  padding-bottom: var(--space-xs);
+  border-bottom: 1px solid var(--hairline);
+}
+.bp-sidebar-card ul {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+}
+.bp-sidebar-card li { list-style: none; }
+.bp-sidebar-card a {
+  font-size: 14px;
+  color: var(--body);
+  text-decoration: none;
+  transition: color 0.15s;
+  display: block;
+  padding: 2px 0;
+}
+.bp-sidebar-card a:hover { color: var(--link); }
+
+@media (max-width: 960px) {
+  .bp-body-wrap .container {
+    grid-template-columns: 1fr;
+  }
+  .bp-sidebar { position: static; }
+}
+@media (max-width: 600px) {
+  .bp-title { font-size: 1.6rem; letter-spacing: -1px; }
+  .bp-lead { font-size: 16px; }
+}
+
+.faq-list { display: flex; flex-direction: column; margin-top: var(--space-lg); }
+.faq-item { border-top: 1px solid var(--hairline); }
+.faq-item:last-child { border-bottom: 1px solid var(--hairline); }
+.faq-question {
+  font-size: 16px; font-weight: 500; color: var(--ink); cursor: pointer;
+  padding: var(--space-lg) 0; list-style: none; display: flex; justify-content: space-between;
+  align-items: center; letter-spacing: -0.4px; margin: 0;
+}
+.faq-question::after { content: '+'; font-size: 20px; font-weight: 300; color: var(--mute); transition: transform 0.2s ease; flex-shrink: 0; margin-left: var(--space-md); }
+details[open] .faq-question::after { content: '−'; }
+.faq-answer { font-size: 15px; color: var(--body); line-height: 1.7; padding-bottom: var(--space-lg); margin: 0; }
+</style>

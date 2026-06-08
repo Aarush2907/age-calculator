@@ -1,0 +1,439 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Navbar from '../../components/Navbar.astro';
+import Footer from '../../components/Footer.astro';
+
+const posts = [
+  {
+    slug: 'how-to-calculate-age-accurately',
+    category: 'Age Calculator',
+    categoryColor: 'blue',
+    readTime: '5 min read',
+    date: 'June 5, 2026',
+    title: 'How to Calculate Your Exact Age Accurately (Years, Months & Days)',
+    excerpt: 'Most people know their age in years — but what about months, weeks, and days? Learn how age calculators compute your precise age and why leap years, time zones, and calendar systems matter.',
+    emoji: '🎂',
+  },
+  {
+    slug: 'biological-age-vs-chronological-age',
+    category: 'Health',
+    categoryColor: 'green',
+    readTime: '7 min read',
+    date: 'June 3, 2026',
+    title: 'Biological Age vs Chronological Age: What\'s the Difference?',
+    excerpt: 'Your birthday tells one story; your body tells another. Discover what biological age means, how science measures it, and what you can do to slow down the clock.',
+    emoji: '🧬',
+  },
+  {
+    slug: 'best-age-to-retire',
+    category: 'Retirement',
+    categoryColor: 'amber',
+    readTime: '8 min read',
+    date: 'June 1, 2026',
+    title: 'What Is the Best Age to Retire? A Data-Driven Analysis',
+    excerpt: 'From Social Security break-even points to life expectancy trends, we crunch the numbers to help you decide when retiring actually makes the most financial and personal sense.',
+    emoji: '🏖️',
+  },
+  {
+    slug: 'how-bmi-changes-with-age',
+    category: 'BMI & Health',
+    categoryColor: 'purple',
+    readTime: '6 min read',
+    date: 'May 29, 2026',
+    title: 'How Your BMI Changes With Age (And What To Do About It)',
+    excerpt: 'BMI isn\'t static — metabolism, muscle mass, and hormonal shifts mean your ideal weight range evolves over time. Here\'s what the research says at every life stage.',
+    emoji: '⚖️',
+  },
+  {
+    slug: 'generational-differences-millennials-gen-z',
+    category: 'Generations',
+    categoryColor: 'pink',
+    readTime: '6 min read',
+    date: 'May 26, 2026',
+    title: 'Millennials vs Gen Z: Key Differences, Birth Years & Defining Traits',
+    excerpt: 'Born between 1981–2012, these two generations are often lumped together — but their experiences, values, and outlook on life couldn\'t be more different. Here\'s a deep dive.',
+    emoji: '📱',
+  },
+  {
+    slug: 'life-expectancy-factors-that-matter',
+    category: 'Longevity',
+    categoryColor: 'teal',
+    readTime: '9 min read',
+    date: 'May 23, 2026',
+    title: '10 Science-Backed Factors That Determine How Long You\'ll Live',
+    excerpt: 'Genetics, diet, sleep, social connections — longevity science has identified the key variables. We break down the top 10 factors supported by the longest-running studies.',
+    emoji: '🧠',
+  },
+];
+
+const categoryColors: Record<string, string> = {
+  blue: '#0070f3',
+  green: '#00a878',
+  amber: '#f59e0b',
+  purple: '#7928ca',
+  pink: '#ff0080',
+  teal: '#0d9488',
+};
+---
+
+<BaseLayout
+  title="Blog | AgeCalc — Age, Health & Life Calculator Insights"
+  description="Expert guides on age calculation, biological age, retirement planning, BMI, generational differences, and longevity — all backed by science."
+  keywords="age calculator blog, biological age guide, when to retire, BMI by age, generational differences, life expectancy factors"
+  ogType="website"
+>
+  <fragment slot="head">
+    <script type="application/ld+json" set:html={JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "Blog",
+      "name": "AgeCalc Blog",
+      "url": "https://agecalconline.com/blog",
+      "description": "Expert guides on age calculation, biological age, retirement planning, BMI, generational differences, and longevity.",
+      "publisher": {
+        "@type": "Organization",
+        "name": "agecalconline.com",
+        "logo": "https://agecalconline.com/favicon-96x96.png"
+      }
+    })} />
+  </fragment>
+
+  <Navbar slot="nav" />
+
+  <!-- Hero -->
+  <div class="blog-hero">
+    <div class="blog-hero-orb blog-hero-orb-1"></div>
+    <div class="blog-hero-orb blog-hero-orb-2"></div>
+    <div class="container">
+      <div class="blog-hero-inner">
+        <span class="blog-badge">Our Blog</span>
+        <h1 class="blog-hero-title">Age, Health & Life <span class="blog-hero-accent">Insights</span></h1>
+        <p class="blog-hero-sub">Science-backed guides to help you understand your age, health, and longevity — written in plain language, no jargon.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Post Grid -->
+  <section class="section">
+    <div class="container">
+      <div class="blog-grid">
+        {posts.map((post, i) => (
+          <a
+            href={`/blog/${post.slug}`}
+            class={`blog-card ${i === 0 ? 'blog-card-featured' : ''}`}
+            id={`blog-card-${post.slug}`}
+          >
+            <div class="blog-card-top">
+              <div class="blog-card-emoji">{post.emoji}</div>
+              <span
+                class="blog-card-category"
+                style={`--cat-color: ${categoryColors[post.categoryColor]}`}
+              >
+                {post.category}
+              </span>
+            </div>
+            <h2 class="blog-card-title">{post.title}</h2>
+            <p class="blog-card-excerpt">{post.excerpt}</p>
+            <div class="blog-card-meta">
+              <time datetime={post.date} class="blog-card-date">{post.date}</time>
+              <span class="blog-card-dot">·</span>
+              <span class="blog-card-read">{post.readTime}</span>
+            </div>
+            <span class="blog-card-cta">Read article →</span>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Band -->
+  <section class="blog-cta-band">
+    <div class="container">
+      <div class="blog-cta-inner">
+        <div class="blog-cta-text">
+          <h2>Try our free calculators</h2>
+          <p>Apply what you've read — calculate your exact age, biological age, retirement date, and more.</p>
+        </div>
+        <div class="blog-cta-actions">
+          <a href="/" class="blog-cta-btn-primary">Age Calculator</a>
+          <a href="/biological-age-calculator" class="blog-cta-btn-secondary">Biological Age</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <Footer slot="footer" />
+</BaseLayout>
+
+<style is:global>
+/* ── Blog Hero ── */
+.blog-hero {
+  position: relative;
+  overflow: hidden;
+  background: var(--canvas);
+  border-bottom: 1px solid var(--hairline);
+  padding: var(--space-5xl) 0;
+}
+.blog-hero-orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(90px);
+  opacity: 0.10;
+  pointer-events: none;
+}
+.blog-hero-orb-1 {
+  width: 560px; height: 560px;
+  background: radial-gradient(circle, var(--link), transparent);
+  top: -200px; right: -80px;
+}
+.blog-hero-orb-2 {
+  width: 320px; height: 320px;
+  background: radial-gradient(circle, #a78bfa, transparent);
+  bottom: -80px; left: 20%;
+}
+.blog-hero-inner {
+  position: relative;
+  z-index: 2;
+  max-width: 680px;
+}
+.blog-badge {
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--link);
+  background: color-mix(in srgb, var(--link) 10%, transparent);
+  padding: 4px 12px;
+  border-radius: var(--radius-full);
+  margin-bottom: var(--space-lg);
+  border: 1px solid color-mix(in srgb, var(--link) 20%, transparent);
+}
+.blog-hero-title {
+  font-size: clamp(2.2rem, 5vw, 3.5rem);
+  font-weight: 800;
+  letter-spacing: -2px;
+  line-height: 1.1;
+  color: var(--ink);
+  margin: 0 0 var(--space-lg);
+}
+.blog-hero-accent {
+  background: linear-gradient(135deg, var(--link), #a78bfa);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.blog-hero-sub {
+  font-size: 18px;
+  color: var(--body);
+  line-height: 1.6;
+  max-width: 540px;
+  margin: 0;
+}
+
+/* ── Blog Grid ── */
+.blog-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-lg);
+}
+.blog-card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+  background: var(--canvas);
+  border: 1px solid var(--hairline);
+  border-radius: var(--radius-lg);
+  padding: var(--space-xl);
+  text-decoration: none;
+  color: inherit;
+  transition: border-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+  position: relative;
+  overflow: hidden;
+}
+.blog-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, color-mix(in srgb, var(--link) 3%, transparent), transparent);
+  opacity: 0;
+  transition: opacity 0.25s ease;
+}
+.blog-card:hover {
+  border-color: var(--hairline-strong);
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-3);
+}
+.blog-card:hover::before { opacity: 1; }
+
+.blog-card-featured {
+  grid-column: 1 / -1;
+  flex-direction: row;
+  align-items: flex-start;
+  gap: var(--space-2xl);
+}
+.blog-card-featured .blog-card-emoji {
+  font-size: 4rem;
+  flex-shrink: 0;
+  width: 100px;
+  height: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--canvas-soft-2);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--hairline);
+}
+.blog-card-featured .blog-card-title {
+  font-size: clamp(1.3rem, 2vw, 1.7rem);
+}
+.blog-card-featured .blog-card-excerpt {
+  font-size: 15px;
+}
+.blog-card-featured .blog-card-body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+.blog-card-top {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+}
+.blog-card:not(.blog-card-featured) .blog-card-emoji {
+  font-size: 2rem;
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--canvas-soft-2);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--hairline);
+  flex-shrink: 0;
+}
+.blog-card-category {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--cat-color, var(--link));
+  background: color-mix(in srgb, var(--cat-color, var(--link)) 12%, transparent);
+  padding: 3px 8px;
+  border-radius: var(--radius-full);
+  border: 1px solid color-mix(in srgb, var(--cat-color, var(--link)) 22%, transparent);
+}
+.blog-card-title {
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--ink);
+  line-height: 1.3;
+  letter-spacing: -0.4px;
+  margin: 0;
+}
+.blog-card-excerpt {
+  font-size: 14px;
+  color: var(--body);
+  line-height: 1.6;
+  margin: 0;
+  flex: 1;
+}
+.blog-card-meta {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  color: var(--mute);
+  font-family: var(--font-mono);
+}
+.blog-card-dot { opacity: 0.4; }
+.blog-card-cta {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--link);
+  margin-top: auto;
+  transition: gap 0.15s ease;
+}
+.blog-card:hover .blog-card-cta { letter-spacing: 0.02em; }
+
+/* ── Featured card layout fix ── */
+.blog-card-featured > .blog-card-emoji { order: 0; }
+.blog-card-featured > .blog-card-top { order: 1; }
+.blog-card-featured > .blog-card-title { order: 2; }
+.blog-card-featured > .blog-card-excerpt { order: 3; }
+.blog-card-featured > .blog-card-meta { order: 4; }
+.blog-card-featured > .blog-card-cta { order: 5; }
+
+/* ── CTA Band ── */
+.blog-cta-band {
+  background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+  padding: var(--space-4xl) 0;
+  margin-top: var(--space-5xl);
+}
+html[data-theme="dark"] .blog-cta-band {
+  background: var(--canvas-soft-2);
+  border-top: 1px solid var(--hairline);
+  border-bottom: 1px solid var(--hairline);
+}
+.blog-cta-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2xl);
+  flex-wrap: wrap;
+}
+.blog-cta-text h2 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #ffffff;
+  letter-spacing: -0.5px;
+  margin-bottom: var(--space-xs);
+}
+html[data-theme="dark"] .blog-cta-text h2 { color: var(--ink); }
+.blog-cta-text p {
+  font-size: 15px;
+  color: rgba(255,255,255,0.65);
+}
+html[data-theme="dark"] .blog-cta-text p { color: var(--body); }
+.blog-cta-actions {
+  display: flex;
+  gap: var(--space-sm);
+  flex-wrap: wrap;
+}
+.blog-cta-btn-primary {
+  display: inline-flex; align-items: center;
+  background: #ffffff; color: #0f172a;
+  font-size: 14px; font-weight: 700;
+  padding: 11px 22px; border-radius: var(--radius-md);
+  text-decoration: none;
+  transition: opacity 0.15s, transform 0.15s;
+}
+.blog-cta-btn-primary:hover { opacity: 0.9; transform: translateY(-1px); }
+.blog-cta-btn-secondary {
+  display: inline-flex; align-items: center;
+  background: rgba(255,255,255,0.1); color: #ffffff;
+  font-size: 14px; font-weight: 600;
+  padding: 11px 22px; border-radius: var(--radius-md);
+  text-decoration: none;
+  border: 1px solid rgba(255,255,255,0.2);
+  transition: background 0.15s, transform 0.15s;
+}
+.blog-cta-btn-secondary:hover { background: rgba(255,255,255,0.18); transform: translateY(-1px); }
+html[data-theme="dark"] .blog-cta-btn-primary { background: var(--ink); color: var(--on-primary); }
+html[data-theme="dark"] .blog-cta-btn-secondary { background: var(--canvas-soft-2); color: var(--body); border-color: var(--hairline); }
+
+/* ── Responsive ── */
+@media (max-width: 960px) {
+  .blog-grid { grid-template-columns: repeat(2, 1fr); }
+  .blog-card-featured { grid-column: 1 / -1; flex-direction: column; }
+  .blog-card-featured .blog-card-emoji { width: 64px; height: 64px; font-size: 2.5rem; }
+  .blog-cta-inner { flex-direction: column; text-align: center; }
+  .blog-cta-actions { justify-content: center; }
+}
+@media (max-width: 600px) {
+  .blog-grid { grid-template-columns: 1fr; }
+  .blog-card-featured { flex-direction: column; }
+}
+</style>

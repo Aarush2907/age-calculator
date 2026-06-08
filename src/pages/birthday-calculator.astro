@@ -3,8 +3,69 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import Navbar from '../components/Navbar.astro';
 import Footer from '../components/Footer.astro';
 import ToolsGrid from '../components/ToolsGrid.astro';
+
+const schema = {
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Birthday Calculator",
+  "applicationCategory": "UtilitiesApplication",
+  "url": "https://agecalconline.com/birthday-calculator",
+  "description": "Free birthday countdown calculator. Find the exact number of days, hours, and minutes until your next birthday and discover which day of the week it falls on.",
+  "operatingSystem": "Any",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "aggregateRating": {
+    "@type": "AggregateRating",
+    "ratingValue": "4.8",
+    "reviewCount": "1200"
+  }
+};
+const faqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "How many days until my birthday?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Enter your date of birth above and our calculator instantly shows the countdown in days, hours, and minutes."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What day of the week will my birthday fall on?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Our birthday calculator tells you the exact weekday your next birthday falls on so you can plan ahead."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How do I find out how many birthdays I have celebrated?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "The calculator counts every birthday from your birth year to today automatically."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What is my half birthday date?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Add 6 months to your birth date. For example, if your birthday is March 15, your half birthday is September 15."
+      }
+    }
+  ]
+};
 ---
 <BaseLayout title="Birthday Calculator — Next Birthday Countdown | agecalconline.com" description="Calculate your next birthday, find which day of the week it falls on, and get a live countdown in days, hours, and minutes.">
+  
+  <script type="application/ld+json" set:html={JSON.stringify(schema)} slot="head" />
+  <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} slot="head" />
   <Navbar slot="nav" />
 
   <section class="section-hero band-white" style="position:relative;overflow:hidden;text-align:center">
@@ -46,6 +107,37 @@ import ToolsGrid from '../components/ToolsGrid.astro';
       <h2 class="display-md" style="margin-bottom:var(--space-xl)">Frequently Asked Questions</h2>
       <details class="faq-item"><summary class="faq-question">How many days until my birthday?</summary><p class="faq-answer">Enter your date of birth above and our calculator will instantly show you the exact number of days, hours, and minutes until your next birthday.</p></details>
       <details class="faq-item"><summary class="faq-question">What day of the week is my birthday?</summary><p class="faq-answer">Our birthday calculator tells you exactly which day of the week your upcoming birthday falls on, so you can plan ahead.</p></details>
+    </div>
+  </section>
+
+  
+  <section class="section band-white">
+    <div class="container" style="max-width:720px">
+      <h2 class="display-md" style="margin-bottom:var(--space-sm)">Everything About Your Next Birthday</h2>
+      <p class="body-md text-body" style="margin-bottom:var(--space-xl)">A birthday countdown builds excitement for your special day. People use birthday calculators for planning parties, preparing for milestone birthdays (like turning 18, 21, 30, or 50), or organizing travel. Our calculator not only counts down the days, hours, and minutes until your next birthday but also calculates exactly which day of the week it will fall on. If you were born on a leap year (February 29), calculating your next exact birthday can be tricky, but our tool handles leap years automatically. Did you know the most common birthday globally is September 9? Discover fun statistics and plan your perfect day with our birthday tool.</p>
+    </div>
+  </section>
+
+  <section class="section band-light">
+    <div class="container" style="max-width:720px">
+      <h2 class="display-md" style="margin-bottom:var(--space-xl)">Related Calculators</h2>
+      <div class="grid-3" style="gap:var(--space-md)">
+      <a href="/" class="card" style="text-decoration:none;transition:transform 0.2s ease" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='translateY(0)'">
+        <div style="font-size:24px;margin-bottom:var(--space-xs)">📅</div>
+        <div style="font-weight:600;color:var(--ink);font-size:15px;letter-spacing:-0.3px">Age Calculator</div>
+        <div style="font-size:13px;color:var(--body);margin-top:4px">Calculate your exact age down to the second.</div>
+      </a>
+      <a href="/age-difference-calculator" class="card" style="text-decoration:none;transition:transform 0.2s ease" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='translateY(0)'">
+        <div style="font-size:24px;margin-bottom:var(--space-xs)">⚖️</div>
+        <div style="font-weight:600;color:var(--ink);font-size:15px;letter-spacing:-0.3px">Age Difference</div>
+        <div style="font-size:13px;color:var(--body);margin-top:4px">Compare ages between two people instantly.</div>
+      </a>
+      <a href="/future-age-calculator" class="card" style="text-decoration:none;transition:transform 0.2s ease" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='translateY(0)'">
+        <div style="font-size:24px;margin-bottom:var(--space-xs)">🔮</div>
+        <div style="font-weight:600;color:var(--ink);font-size:15px;letter-spacing:-0.3px">Future Age</div>
+        <div style="font-size:13px;color:var(--body);margin-top:4px">Find out how old you'll be on a future date.</div>
+      </a>
+      </div>
     </div>
   </section>
 

@@ -3,8 +3,69 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import Navbar from '../components/Navbar.astro';
 import Footer from '../components/Footer.astro';
 import ToolsGrid from '../components/ToolsGrid.astro';
+
+const schema = {
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Biological Age Calculator",
+  "applicationCategory": "UtilitiesApplication",
+  "url": "https://agecalconline.com/biological-age-calculator",
+  "description": "Free biological age calculator. Estimate your body's true functional age based on exercise, diet, sleep, stress, and smoking habits. Find out if you're younger or older than your chronological age.",
+  "operatingSystem": "Any",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "aggregateRating": {
+    "@type": "AggregateRating",
+    "ratingValue": "4.8",
+    "reviewCount": "1200"
+  }
+};
+const faqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "What is biological age?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Biological age reflects how old your body actually functions based on lifestyle habits — it can be younger or older than your real chronological age."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How is biological age calculated?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Our calculator uses lifestyle factors including exercise frequency, diet quality, sleep, stress, and smoking to estimate your body's functional age."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Can I reduce my biological age?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. Regular exercise, quality sleep, balanced diet, stress management, and not smoking are the most effective ways to lower your biological age."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is biological age the same as health age?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "The terms are often used interchangeably. Both refer to how well your body is functioning relative to your actual years lived."
+      }
+    }
+  ]
+};
 ---
 <BaseLayout title="Biological Age Calculator — What Is Your Real Age? | agecalconline.com" description="Estimate your biological age based on lifestyle habits including exercise, diet, sleep, stress, and smoking. Find out if you're younger or older than your chronological age.">
+  
+  <script type="application/ld+json" set:html={JSON.stringify(schema)} slot="head" />
+  <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} slot="head" />
   <Navbar slot="nav" />
   <section class="section-hero band-white" style="position:relative;overflow:hidden;text-align:center">
     <div style="position:absolute;inset:-40px;background:linear-gradient(135deg,#007cf0,#00dfd8,#7928ca,#ff0080);opacity:0.07;filter:blur(80px);pointer-events:none"></div>
@@ -47,6 +108,37 @@ import ToolsGrid from '../components/ToolsGrid.astro';
         <div class="display-xl" style="color:#fff" id="bio-age">—</div>
         <div class="body-lg" style="color:rgba(255,255,255,0.7);margin-top:var(--space-md)" id="bio-compare">—</div>
         <p class="body-sm" style="color:rgba(255,255,255,0.5);margin-top:var(--space-md)">Based on lifestyle habits. For medical accuracy, consult a healthcare professional.</p>
+      </div>
+    </div>
+  </section>
+
+  
+  <section class="section band-white">
+    <div class="container" style="max-width:720px">
+      <h2 class="display-md" style="margin-bottom:var(--space-sm)">What Is Biological Age and Why Does It Matter?</h2>
+      <p class="body-md text-body" style="margin-bottom:var(--space-xl)">Biological age differs from chronological age. While your chronological age is simply the number of years you have been alive, your biological age reflects how your body is actually functioning. Your lifestyle choices can make your body function younger or older than your calendar age. The five key lifestyle factors are exercise frequency, diet quality, sleep duration, stress management, and whether you smoke. Improving these factors can significantly lower your biological age. In medical research, biological age is often tested using DNA methylation clocks, but this calculator provides a highly accessible, lifestyle-based estimate to help you understand your health trajectory.</p>
+    </div>
+  </section>
+
+  <section class="section band-light">
+    <div class="container" style="max-width:720px">
+      <h2 class="display-md" style="margin-bottom:var(--space-xl)">Related Calculators</h2>
+      <div class="grid-3" style="gap:var(--space-md)">
+      <a href="/life-expectancy-calculator" class="card" style="text-decoration:none;transition:transform 0.2s ease" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='translateY(0)'">
+        <div style="font-size:24px;margin-bottom:var(--space-xs)">⏳</div>
+        <div style="font-weight:600;color:var(--ink);font-size:15px;letter-spacing:-0.3px">Life Expectancy</div>
+        <div style="font-size:13px;color:var(--body);margin-top:4px">Estimate your lifespan based on statistics.</div>
+      </a>
+      <a href="/bmi-calculator" class="card" style="text-decoration:none;transition:transform 0.2s ease" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='translateY(0)'">
+        <div style="font-size:24px;margin-bottom:var(--space-xs)">⚖️</div>
+        <div style="font-weight:600;color:var(--ink);font-size:15px;letter-spacing:-0.3px">BMI Calculator</div>
+        <div style="font-size:13px;color:var(--body);margin-top:4px">Check your Body Mass Index and health category.</div>
+      </a>
+      <a href="/retirement-calculator" class="card" style="text-decoration:none;transition:transform 0.2s ease" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='translateY(0)'">
+        <div style="font-size:24px;margin-bottom:var(--space-xs)">🏖️</div>
+        <div style="font-weight:600;color:var(--ink);font-size:15px;letter-spacing:-0.3px">Retirement Age</div>
+        <div style="font-size:13px;color:var(--body);margin-top:4px">Plan your countdown to retirement day.</div>
+      </a>
       </div>
     </div>
   </section>

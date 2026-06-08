@@ -11,7 +11,7 @@ const canonical = "https://agecalconline.com/bmi-calculator";
 
 const schema = {
   "@context": "https://schema.org",
-  "@type": "SoftwareApplication",
+  "@type": "WebApplication",
   "name": "BMI Calculator",
   "applicationCategory": "HealthApplication",
   "url": canonical,
@@ -168,6 +168,29 @@ const faqSchema = {
       <details class="faq-item"><summary class="faq-question">How do I calculate BMI manually?</summary><p class="faq-answer">Metric: BMI = weight (kg) / height² (m). Imperial: BMI = (weight (lbs) × 703) / height² (inches). For example, a person who is 5'7" (170 cm) and weighs 150 lbs (68 kg): BMI = 68 / (1.70)² = 23.5.</p></details>
       <details class="faq-item"><summary class="faq-question">Does BMI differ for men and women?</summary><p class="faq-answer">The BMI formula and categories are the same for men and women. However, women tend to have a higher body fat percentage than men at the same BMI. This is why some health professionals use waist circumference and body composition alongside BMI.</p></details>
       <details class="faq-item"><summary class="faq-question">What BMI is considered obese?</summary><p class="faq-answer">A BMI of 30 or higher is classified as obese. Obesity is further divided into Class I (BMI 30–34.9), Class II (BMI 35–39.9), and Class III/Severe Obesity (BMI 40+).</p></details>
+    </div>
+  </section>
+
+  <section class="section band-light">
+    <div class="container" style="max-width:720px">
+      <h2 class="display-md" style="margin-bottom:var(--space-xl)">Related Calculators</h2>
+      <div class="grid-3" style="gap:var(--space-md)">
+      <a href="/biological-age-calculator" class="card" style="text-decoration:none;transition:transform 0.2s ease" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='translateY(0)'">
+        <div style="font-size:24px;margin-bottom:var(--space-xs)">🧬</div>
+        <div style="font-weight:600;color:var(--ink);font-size:15px;letter-spacing:-0.3px">Biological Age</div>
+        <div style="font-size:13px;color:var(--body);margin-top:4px">Estimate your body's true biological age.</div>
+      </a>
+      <a href="/life-expectancy-calculator" class="card" style="text-decoration:none;transition:transform 0.2s ease" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='translateY(0)'">
+        <div style="font-size:24px;margin-bottom:var(--space-xs)">📊</div>
+        <div style="font-weight:600;color:var(--ink);font-size:15px;letter-spacing:-0.3px">Life Expectancy</div>
+        <div style="font-size:13px;color:var(--body);margin-top:4px">Find average life expectancy and days remaining.</div>
+      </a>
+      <a href="/" class="card" style="text-decoration:none;transition:transform 0.2s ease" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='translateY(0)'">
+        <div style="font-size:24px;margin-bottom:var(--space-xs)">📅</div>
+        <div style="font-weight:600;color:var(--ink);font-size:15px;letter-spacing:-0.3px">Age Calculator</div>
+        <div style="font-size:13px;color:var(--body);margin-top:4px">Calculate your exact age instantly.</div>
+      </a>
+      </div>
     </div>
   </section>
 

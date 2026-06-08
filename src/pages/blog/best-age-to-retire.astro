@@ -1,0 +1,240 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Navbar from '../../components/Navbar.astro';
+import Footer from '../../components/Footer.astro';
+
+const post = {
+  title: "What Is the Best Age to Retire? A Data-Driven Analysis",
+  description: "From Social Security break-even points to life expectancy trends, we crunch the numbers to help you decide when retiring actually makes the most financial and personal sense.",
+  date: 'June 1, 2026',
+  dateISO: '2026-06-01',
+  readTime: '8 min read',
+  category: 'Retirement',
+};
+
+const faqs = [
+  { q: "What is the best age to retire for maximum Social Security?", a: "To get the maximum possible Social Security benefit, you should delay claiming until age 70. This increases your monthly benefit by about 24% compared to full retirement age (FRA)." },
+  { q: "How much money do I need to retire at 55?", a: "Most experts recommend the 4% rule, which means you need 25 times your annual expenses saved. For example, if you plan to spend $60,000 a year, you need $1.5 million. You also need a plan for healthcare before Medicare kicks in at 65." },
+  { q: "What is the average retirement age in the US?", a: "According to recent Gallup data, the average retirement age is currently 62 for women and 64 for men." },
+  { q: "Should I retire at 62 or 67?", a: "Retiring at 62 reduces your Social Security benefit by up to 30%. Retiring at 67 (Full Retirement Age for most) gives you 100% of your benefit. The 'break-even' point is usually around age 79." }
+];
+
+const faqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": faqs.map(faq => ({
+    "@type": "Question",
+    "name": faq.q,
+    "acceptedAnswer": {
+      "@type": "Answer",
+      "text": faq.a
+    }
+  }))
+};
+---
+
+<BaseLayout
+  title={`${post.title} | AgeCalc Blog`}
+  description={post.description}
+  keywords="best age to retire, when to retire, social security break even, early retirement age, retirement planning age"
+  ogType="article"
+>
+  <fragment slot="head">
+    <script type="application/ld+json" set:html={JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "Article",
+      "headline": post.title,
+      "description": post.description,
+      "datePublished": post.dateISO,
+      "dateModified": post.dateISO,
+      "author": { "@type": "Organization", "name": "agecalconline.com" },
+      "publisher": { "@type": "Organization", "name": "agecalconline.com", "logo": "https://agecalconline.com/favicon-96x96.png" },
+      "mainEntityOfPage": "https://agecalconline.com/blog/best-age-to-retire"
+    })} />
+    <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
+  </fragment>
+
+  <Navbar slot="nav" />
+
+  <article class="bp-article">
+    <div class="bp-header">
+      <div class="bp-header-orb bp-header-orb-1" style="background: radial-gradient(circle, #f59e0b, transparent);"></div>
+      <div class="bp-header-orb bp-header-orb-2"></div>
+      <div class="container">
+        <div class="bp-header-inner">
+          <a href="/blog" class="bp-back">← All Articles</a>
+          <div class="bp-meta-top">
+            <span class="bp-category" style="color: #f59e0b;">{post.category}</span>
+            <span class="bp-dot">·</span>
+            <span class="bp-read">{post.readTime}</span>
+            <span class="bp-dot">·</span>
+            <time datetime={post.dateISO}>{post.date}</time>
+          </div>
+          <h1 class="bp-title">{post.title}</h1>
+          <p class="bp-lead">{post.description}</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="bp-body-wrap">
+      <div class="container">
+        <div class="bp-body">
+
+          <h2>The Retirement Age Spectrum</h2>
+          <p>There is no single "correct" retirement age — it depends on your financial situation, health, job satisfaction, and personal goals. But the data does point to clear patterns and trade-offs at three major age thresholds: early (55–62), traditional (65–67), and late (70+).</p>
+
+          <div class="bp-callout">
+            <div class="bp-callout-icon">📊</div>
+            <div><strong>By the numbers:</strong> The average retirement age in the U.S. is 62 for women and 64 for men (Gallup 2024). But the optimal age — when you maximize both financial security and healthy years — is a more personal calculation.</div>
+          </div>
+
+          <h2>The Social Security Break-Even Analysis</h2>
+          <p>In the U.S., you can claim Social Security as early as 62 or as late as 70. Your monthly benefit increases by approximately 8% for each year you delay past full retirement age (FRA). Here's what the math looks like for someone with an FRA benefit of $2,000/month:</p>
+
+          <div class="bp-stats-grid">
+            <div class="bp-stat-card">
+              <div class="bp-stat-age">Age 62</div>
+              <div class="bp-stat-benefit">$1,400/mo</div>
+              <div class="bp-stat-note">30% reduction</div>
+            </div>
+            <div class="bp-stat-card">
+              <div class="bp-stat-age">Age 67 (FRA)</div>
+              <div class="bp-stat-benefit">$2,000/mo</div>
+              <div class="bp-stat-note">Full benefit</div>
+            </div>
+            <div class="bp-stat-card">
+              <div class="bp-stat-age">Age 70</div>
+              <div class="bp-stat-benefit">$2,480/mo</div>
+              <div class="bp-stat-note">+24% delayed credit</div>
+            </div>
+          </div>
+
+          <p>The <strong>break-even point</strong> between claiming at 62 vs 67 is approximately age 79. If you expect to live past 79, delaying usually pays off financially. The break-even between 67 and 70 is around age 82–83.</p>
+          <p>Use our <a href="/retirement-calculator">retirement calculator</a> to model your own break-even point based on your expected benefit amount.</p>
+
+          <h2>Retiring at 55–62: The FIRE Movement Reality</h2>
+          <p>The "Financial Independence, Retire Early" (FIRE) movement advocates leaving the workforce in your 40s or 50s. It's possible, but requires extraordinary discipline:</p>
+          <ul class="bp-list">
+            <li><strong>The 4% rule:</strong> To fund 30+ years of retirement, you typically need 25x your annual expenses saved</li>
+            <li><strong>Healthcare gap:</strong> Medicare doesn't start until 65, so early retirees need private insurance for potentially 10+ years</li>
+            <li><strong>Sequence of returns risk:</strong> A market downturn in your first 5 retirement years is disproportionately damaging</li>
+            <li><strong>Identity and purpose:</strong> Many early retirees report unexpected dissatisfaction without the structure of work</li>
+          </ul>
+
+          <h2>The "Sweet Spot" Research: 62–65</h2>
+          <p>Several studies suggest that retiring between 62 and 65 offers the best trade-off between financial security and healthy years. A 2022 study in the <em>Journal of Epidemiology & Community Health</em> found that retiring at 63 vs. 66 was associated with better self-reported health outcomes in the subsequent five years — even after controlling for income.</p>
+          <p>However, the effect reversed for people with high job satisfaction: those who loved their work and stayed until 67–68 reported the highest life satisfaction and longevity scores.</p>
+
+          <h2>Delaying to 70: When It Makes Sense</h2>
+          <p>Delayed retirement to age 70 is optimal if:</p>
+          <ul class="bp-list">
+            <li>You have excellent health and expect to live past 82</li>
+            <li>You enjoy your work and it provides meaningful engagement</li>
+            <li>You want to maximize your Social Security benefit (especially for the higher earner in a couple)</li>
+            <li>You haven't reached your savings target yet</li>
+            <li>Your work provides benefits that would be costly to replace</li>
+          </ul>
+
+          <h2>The Non-Financial Factors That Matter Most</h2>
+          <p>Gallup's wellbeing research consistently shows that the happiest retirees share three traits regardless of when they stopped working:</p>
+          <ul class="bp-list">
+            <li><strong>They left on their own terms</strong> — forced retirements (due to layoffs or health) are associated with 20–30% higher depression rates</li>
+            <li><strong>They have strong social connections</strong> — replacing work relationships is the biggest non-financial challenge</li>
+            <li><strong>They have a sense of purpose</strong> — volunteering, part-time consulting, hobbies, or caregiving provide this for most successful retirees</li>
+          </ul>
+
+          <h2>Plan Your Retirement Timeline</h2>
+          <p>Use our <a href="/retirement-calculator">free retirement calculator</a> to find your retirement date based on current age, target retirement age, and key milestones. You can also check your <a href="/life-expectancy-calculator">life expectancy estimate</a> to see how many years you might fund in retirement.</p>
+
+          <div class="bp-cta-inline">
+            <a href="/retirement-calculator" class="bp-cta-btn" style="background: #f59e0b; color: #0f172a;">Plan My Retirement →</a>
+          </div>
+
+          <h2 style="margin-top:var(--space-3xl)">Frequently Asked Questions</h2>
+          <div class="faq-list">
+            {faqs.map(item => (
+              <details class="faq-item">
+                <summary class="faq-question">{item.q}</summary>
+                <p class="faq-answer">{item.a}</p>
+              </details>
+            ))}
+          </div>
+
+        </div>
+
+        <aside class="bp-sidebar">
+          <div class="bp-sidebar-card">
+            <h3>Related Calculators</h3>
+            <ul>
+              <li><a href="/retirement-calculator">Retirement Calculator</a></li>
+              <li><a href="/life-expectancy-calculator">Life Expectancy</a></li>
+              <li><a href="/future-age-calculator">Future Age Calculator</a></li>
+              <li><a href="/">Age Calculator</a></li>
+            </ul>
+          </div>
+          <div class="bp-sidebar-card">
+            <h3>More Articles</h3>
+            <ul>
+              <li><a href="/blog/life-expectancy-factors-that-matter">10 Longevity Factors</a></li>
+              <li><a href="/blog/biological-age-vs-chronological-age">Biological vs Chronological Age</a></li>
+              <li><a href="/blog/how-bmi-changes-with-age">BMI Through the Ages</a></li>
+            </ul>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </article>
+
+  <Footer slot="footer" />
+</BaseLayout>
+
+<style is:global>
+.bp-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-md);
+  margin: var(--space-md) 0;
+}
+.bp-stat-card {
+  background: var(--canvas-soft-2);
+  border: 1px solid var(--hairline);
+  border-radius: var(--radius-lg);
+  padding: var(--space-lg);
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+}
+.bp-stat-age {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--mute);
+}
+.bp-stat-benefit {
+  font-size: 1.6rem;
+  font-weight: 800;
+  color: var(--ink);
+  letter-spacing: -1px;
+}
+.bp-stat-note {
+  font-size: 12px;
+  color: var(--body);
+}
+@media (max-width: 600px) {
+  .bp-stats-grid { grid-template-columns: 1fr; }
+}
+.faq-list { display: flex; flex-direction: column; margin-top: var(--space-lg); }
+.faq-item { border-top: 1px solid var(--hairline); }
+.faq-item:last-child { border-bottom: 1px solid var(--hairline); }
+.faq-question {
+  font-size: 16px; font-weight: 500; color: var(--ink); cursor: pointer;
+  padding: var(--space-lg) 0; list-style: none; display: flex; justify-content: space-between;
+  align-items: center; letter-spacing: -0.4px; margin: 0;
+}
+.faq-question::after { content: '+'; font-size: 20px; font-weight: 300; color: var(--mute); transition: transform 0.2s ease; flex-shrink: 0; margin-left: var(--space-md); }
+details[open] .faq-question::after { content: '−'; }
+.faq-answer { font-size: 15px; color: var(--body); line-height: 1.7; padding-bottom: var(--space-lg); margin: 0; }
+</style>

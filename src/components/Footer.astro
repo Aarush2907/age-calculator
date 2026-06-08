@@ -25,6 +25,14 @@ const companyLinks = [
   { href: '/privacy-policy', label: 'Privacy Policy' },
   { href: '/terms-and-conditions', label: 'Terms & Conditions' },
 ];
+const blogLinks = [
+  { href: '/blog', label: 'All Articles' },
+  { href: '/blog/how-to-calculate-age-accurately', label: 'How Age Is Calculated' },
+  { href: '/blog/biological-age-vs-chronological-age', label: 'Biological vs Chronological Age' },
+  { href: '/blog/best-age-to-retire', label: 'Best Age to Retire' },
+  { href: '/blog/how-bmi-changes-with-age', label: 'BMI & Aging' },
+  { href: '/blog/life-expectancy-factors-that-matter', label: '10 Longevity Factors' },
+];
 ---
 <footer class="footer">
   <div class="divider"></div>
@@ -59,14 +67,11 @@ const companyLinks = [
     </div>
 
     <div class="footer-col">
-      <h3 class="footer-col-title">Features</h3>
+      <h3 class="footer-col-title">Blog</h3>
       <ul class="footer-links">
-        <li><a href="/#life-progress" class="footer-link">Life Progress</a></li>
-        <li><a href="/#milestones" class="footer-link">Milestone Tracker</a></li>
-        <li><a href="/#planetary" class="footer-link">Planetary Age</a></li>
-        <li><a href="/#life-calendar" class="footer-link">Life Calendar</a></li>
-        <li><a href="/#life-stats" class="footer-link">Life Statistics</a></li>
-        <li><a href="/#historical" class="footer-link">Historical Timeline</a></li>
+        {blogLinks.map(l => (
+          <li><a href={l.href} class="footer-link">{l.label}</a></li>
+        ))}
       </ul>
     </div>
 
@@ -99,7 +104,7 @@ const companyLinks = [
 .footer { background: var(--canvas); border-top: 1px solid var(--hairline); margin-top: var(--space-5xl); }
 .footer-inner {
   display: grid;
-  grid-template-columns: 2fr 1fr 1fr 1fr 1fr;
+  grid-template-columns: 2fr 1fr 1fr 1fr 1fr 1fr;
   gap: var(--space-3xl);
   padding-top: var(--space-4xl);
   padding-bottom: var(--space-4xl);
@@ -120,13 +125,16 @@ const companyLinks = [
 .footer-bottom-links { display: flex; gap: var(--space-lg); }
 .footer-bottom-link { font-size: 13px; color: var(--body); text-decoration: none; transition: color .15s ease; }
 .footer-bottom-link:hover { color: var(--ink); }
-@media (max-width: 1100px) {
-  .footer-inner { grid-template-columns: 2fr 1fr 1fr; }
+@media (max-width: 1200px) {
+  .footer-inner { grid-template-columns: 2fr 1fr 1fr 1fr; }
   .footer-brand { grid-column: 1 / -1; }
 }
 @media (max-width: 960px) {
-  .footer-inner { grid-template-columns: 1fr 1fr; }
+  .footer-inner { grid-template-columns: 1fr 1fr 1fr; }
   .footer-brand { grid-column: 1 / -1; }
+}
+@media (max-width: 700px) {
+  .footer-inner { grid-template-columns: 1fr 1fr; }
 }
 @media (max-width: 600px) {
   .footer-inner { grid-template-columns: 1fr; gap: var(--space-xl); }

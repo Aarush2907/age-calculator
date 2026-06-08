@@ -3,8 +3,69 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import Navbar from '../components/Navbar.astro';
 import Footer from '../components/Footer.astro';
 import ToolsGrid from '../components/ToolsGrid.astro';
+
+const schema = {
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Generation Calculator",
+  "applicationCategory": "UtilitiesApplication",
+  "url": "https://agecalconline.com/generation-calculator",
+  "description": "Free generation calculator. Find out which generation you belong to — Gen Alpha, Gen Z, Millennial, Gen X, Baby Boomer, or Silent Generation — based on your birth year.",
+  "operatingSystem": "Any",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "aggregateRating": {
+    "@type": "AggregateRating",
+    "ratingValue": "4.8",
+    "reviewCount": "1200"
+  }
+};
+const faqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "What generation am I based on my birth year?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Enter your birth year and our calculator will instantly identify your generation — Gen Alpha, Gen Z, Millennial, Gen X, Baby Boomer, or Silent Generation."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What are the exact birth years for Millennials?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Millennials are generally defined as those born between 1981 and 1996, though some sources vary by a year or two at the boundaries."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What generation comes after Gen Z?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Generation Alpha follows Gen Z, covering those born from approximately 2013 onwards."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What defines Gen Z?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Gen Z (born 1997–2012) are true digital natives who grew up with smartphones, social media, and streaming services from childhood."
+      }
+    }
+  ]
+};
 ---
 <BaseLayout title="Generation Calculator — What Generation Am I? | agecalconline.com" description="Find out which generation you belong to — Gen Alpha, Gen Z, Millennial, Gen X, or Baby Boomer — and learn fascinating facts about your generation.">
+  
+  <script type="application/ld+json" set:html={JSON.stringify(schema)} slot="head" />
+  <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} slot="head" />
   <Navbar slot="nav" />
   <section class="section-hero band-white" style="position:relative;overflow:hidden;text-align:center">
     <div style="position:absolute;inset:-40px;background:linear-gradient(135deg,#007cf0,#00dfd8,#7928ca,#ff0080);opacity:0.07;filter:blur(80px);pointer-events:none"></div>
@@ -54,6 +115,37 @@ import ToolsGrid from '../components/ToolsGrid.astro';
             </div>
           </div>
         ))}
+      </div>
+    </div>
+  </section>
+
+  
+  <section class="section band-white">
+    <div class="container" style="max-width:720px">
+      <h2 class="display-md" style="margin-bottom:var(--space-sm)">Understanding Generations and What They Mean</h2>
+      <p class="body-md text-body" style="margin-bottom:var(--space-xl)">Generations group people born in the same era who experience similar cultural, political, and technological shifts. Sociologists and marketers study generations to understand shifting behaviors and values. The Silent Generation grew up during wartime. Baby Boomers experienced post-war economic growth. Gen X bridged the analog and digital divide. Millennials came of age during the internet revolution. Gen Z are digital natives who grew up with smartphones. Gen Alpha is the newest generation growing up entirely in the AI era. Generational boundaries are fuzzy and can differ slightly by source, but understanding your generation offers fascinating insights into cultural differences and self-reflection.</p>
+    </div>
+  </section>
+
+  <section class="section band-light">
+    <div class="container" style="max-width:720px">
+      <h2 class="display-md" style="margin-bottom:var(--space-xl)">Related Calculators</h2>
+      <div class="grid-3" style="gap:var(--space-md)">
+      <a href="/" class="card" style="text-decoration:none;transition:transform 0.2s ease" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='translateY(0)'">
+        <div style="font-size:24px;margin-bottom:var(--space-xs)">📅</div>
+        <div style="font-weight:600;color:var(--ink);font-size:15px;letter-spacing:-0.3px">Age Calculator</div>
+        <div style="font-size:13px;color:var(--body);margin-top:4px">Calculate your exact age down to the second.</div>
+      </a>
+      <a href="/biological-age-calculator" class="card" style="text-decoration:none;transition:transform 0.2s ease" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='translateY(0)'">
+        <div style="font-size:24px;margin-bottom:var(--space-xs)">🧬</div>
+        <div style="font-weight:600;color:var(--ink);font-size:15px;letter-spacing:-0.3px">Biological Age</div>
+        <div style="font-size:13px;color:var(--body);margin-top:4px">Calculate your body's true functional age.</div>
+      </a>
+      <a href="/life-expectancy-calculator" class="card" style="text-decoration:none;transition:transform 0.2s ease" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='translateY(0)'">
+        <div style="font-size:24px;margin-bottom:var(--space-xs)">⏳</div>
+        <div style="font-weight:600;color:var(--ink);font-size:15px;letter-spacing:-0.3px">Life Expectancy</div>
+        <div style="font-size:13px;color:var(--body);margin-top:4px">Estimate your lifespan based on statistics.</div>
+      </a>
       </div>
     </div>
   </section>

@@ -4,7 +4,7 @@ const navLinks = [
   { href: '/', label: 'Age Calculator' },
   { href: '/age-difference-calculator', label: 'Age Difference' },
   { href: '/birthday-calculator', label: 'Birthday' },
-  { href: '/pet-age-calculator', label: 'Pet Age' },
+  { href: '/blog', label: 'Blog' },
   { href: '/life-expectancy-calculator', label: 'Life Expectancy' },
 ];
 const currentPath = Astro.url.pathname;
@@ -85,7 +85,8 @@ const currentPath = Astro.url.pathname;
       ))}
       <a href="/retirement-calculator" class="navbar-mobile-link">Retirement</a>
       <a href="/biological-age-calculator" class="navbar-mobile-link">Biological Age</a>
-      <a href="/generation-calculator" class="navbar-mobile-link">Generation</a>
+      <a href="/pet-age-calculator" class="navbar-mobile-link">Pet Age</a>
+      <a href="/blog" class="navbar-mobile-link">Blog</a>
       <div class="mobile-controls">
         <button class="theme-toggle theme-toggle--mobile" id="theme-toggle-mobile" aria-label="Toggle dark mode">
           <svg class="icon-sun" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/></svg>

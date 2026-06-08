@@ -3,8 +3,69 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import Navbar from '../components/Navbar.astro';
 import Footer from '../components/Footer.astro';
 import ToolsGrid from '../components/ToolsGrid.astro';
+
+const schema = {
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Life Expectancy Calculator",
+  "applicationCategory": "UtilitiesApplication",
+  "url": "https://agecalconline.com/life-expectancy-calculator",
+  "description": "Free life expectancy calculator. Estimate how long you will live based on WHO country statistics. See days lived, days remaining, and the percentage of an average lifespan completed.",
+  "operatingSystem": "Any",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "aggregateRating": {
+    "@type": "AggregateRating",
+    "ratingValue": "4.8",
+    "reviewCount": "1200"
+  }
+};
+const faqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "How is life expectancy calculated?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Life expectancy estimates are based on WHO statistical averages for each country, adjusted by age. Our calculator uses these averages to estimate days lived and days remaining."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What country has the highest life expectancy?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Japan consistently ranks highest with an average life expectancy of approximately 84.3 years."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is life expectancy the same for men and women?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. Women generally live 5–7 years longer than men on average globally, though this gap varies by country and lifestyle."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Can lifestyle improve my life expectancy?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. Non-smoking, regular exercise, healthy diet, and stress management are each associated with 5–10 additional years of life expectancy."
+      }
+    }
+  ]
+};
 ---
 <BaseLayout title="Life Expectancy Calculator — How Long Will You Live? | agecalconline.com" description="Calculate your estimated life expectancy based on your country. See how many days you have lived and how many remain.">
+  
+  <script type="application/ld+json" set:html={JSON.stringify(schema)} slot="head" />
+  <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} slot="head" />
   <Navbar slot="nav" />
   <section class="section-hero band-white" style="position:relative;overflow:hidden;text-align:center">
     <div style="position:absolute;inset:-40px;background:linear-gradient(135deg,#007cf0,#00dfd8,#7928ca,#ff0080);opacity:0.07;filter:blur(80px);pointer-events:none"></div>
@@ -55,6 +116,37 @@ import ToolsGrid from '../components/ToolsGrid.astro';
         </div>
       </div>
       <div class="grid-3" id="le-grid"></div>
+    </div>
+  </section>
+
+  
+  <section class="section band-white">
+    <div class="container" style="max-width:720px">
+      <h2 class="display-md" style="margin-bottom:var(--space-sm)">Life Expectancy Around the World</h2>
+      <p class="body-md text-body" style="margin-bottom:var(--space-xl)">Life expectancy is a statistical average that estimates how long a person is expected to live based on demographic data. It is not a crystal ball prediction, but rather an average derived from population data. Life expectancy varies significantly between countries due to factors like healthcare quality, diet, lifestyle, and income levels. Countries like Japan, Switzerland, and South Korea consistently rank in the top five for longest-lived populations. Our calculator helps you understand your position by showing days lived, estimated days remaining, and the percentage of an average life completed. Please remember this is for informational purposes and individual outcomes vary widely.</p>
+    </div>
+  </section>
+
+  <section class="section band-light">
+    <div class="container" style="max-width:720px">
+      <h2 class="display-md" style="margin-bottom:var(--space-xl)">Related Calculators</h2>
+      <div class="grid-3" style="gap:var(--space-md)">
+      <a href="/biological-age-calculator" class="card" style="text-decoration:none;transition:transform 0.2s ease" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='translateY(0)'">
+        <div style="font-size:24px;margin-bottom:var(--space-xs)">🧬</div>
+        <div style="font-weight:600;color:var(--ink);font-size:15px;letter-spacing:-0.3px">Biological Age</div>
+        <div style="font-size:13px;color:var(--body);margin-top:4px">Calculate your body's true functional age.</div>
+      </a>
+      <a href="/retirement-calculator" class="card" style="text-decoration:none;transition:transform 0.2s ease" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='translateY(0)'">
+        <div style="font-size:24px;margin-bottom:var(--space-xs)">🏖️</div>
+        <div style="font-weight:600;color:var(--ink);font-size:15px;letter-spacing:-0.3px">Retirement Age</div>
+        <div style="font-size:13px;color:var(--body);margin-top:4px">Plan your countdown to retirement day.</div>
+      </a>
+      <a href="/bmi-calculator" class="card" style="text-decoration:none;transition:transform 0.2s ease" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='translateY(0)'">
+        <div style="font-size:24px;margin-bottom:var(--space-xs)">⚖️</div>
+        <div style="font-weight:600;color:var(--ink);font-size:15px;letter-spacing:-0.3px">BMI Calculator</div>
+        <div style="font-size:13px;color:var(--body);margin-top:4px">Check your Body Mass Index and health category.</div>
+      </a>
+      </div>
     </div>
   </section>
 

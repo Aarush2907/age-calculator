@@ -1,0 +1,246 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Navbar from '../../components/Navbar.astro';
+import Footer from '../../components/Footer.astro';
+
+const post = {
+  title: "How Your BMI Changes With Age (And What To Do About It)",
+  description: "BMI isn't static — metabolism, muscle mass, and hormonal shifts mean your ideal weight range evolves over time. Here's what the research says at every life stage.",
+  date: 'May 29, 2026',
+  dateISO: '2026-05-29',
+  readTime: '6 min read',
+  category: 'BMI & Health',
+};
+
+const faqs = [
+  { q: "Does a healthy BMI change with age?", a: "Yes. While the standard 'normal' BMI is 18.5 to 24.9, research suggests that for adults over 65, a slightly higher BMI (25 to 27) may be protective against frailty and mortality." },
+  { q: "Why is BMI inaccurate for older adults?", a: "As people age, they naturally lose muscle mass and gain fat. Since BMI only measures total weight relative to height, it cannot distinguish between fat and muscle. An older adult with a 'normal' BMI might actually have dangerously low muscle mass." },
+  { q: "What should I focus on instead of BMI as I age?", a: "Focus on preserving muscle mass through resistance training, maintaining a healthy waist-to-height ratio, and keeping cardiovascular fitness (VO2 max) high." },
+  { q: "Is a BMI of 27 bad if I am 60?", a: "Not necessarily. Many studies indicate that a BMI of 25–27 in your 60s and beyond is associated with the lowest mortality risk, as the extra weight provides a metabolic reserve." }
+];
+
+const faqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": faqs.map(faq => ({
+    "@type": "Question",
+    "name": faq.q,
+    "acceptedAnswer": {
+      "@type": "Answer",
+      "text": faq.a
+    }
+  }))
+};
+---
+
+<BaseLayout
+  title={`${post.title} | AgeCalc Blog`}
+  description={post.description}
+  keywords="BMI by age, how BMI changes with age, healthy BMI for adults over 50, BMI and muscle mass, BMI limitations"
+  ogType="article"
+>
+  <fragment slot="head">
+    <script type="application/ld+json" set:html={JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "Article",
+      "headline": post.title,
+      "description": post.description,
+      "datePublished": post.dateISO,
+      "dateModified": post.dateISO,
+      "author": { "@type": "Organization", "name": "agecalconline.com" },
+      "publisher": { "@type": "Organization", "name": "agecalconline.com", "logo": "https://agecalconline.com/favicon-96x96.png" },
+      "mainEntityOfPage": "https://agecalconline.com/blog/how-bmi-changes-with-age"
+    })} />
+    <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
+  </fragment>
+
+  <Navbar slot="nav" />
+
+  <article class="bp-article">
+    <div class="bp-header">
+      <div class="bp-header-orb bp-header-orb-1" style="background: radial-gradient(circle, #7928ca, transparent);"></div>
+      <div class="bp-header-orb bp-header-orb-2"></div>
+      <div class="container">
+        <div class="bp-header-inner">
+          <a href="/blog" class="bp-back">← All Articles</a>
+          <div class="bp-meta-top">
+            <span class="bp-category" style="color: #7928ca;">{post.category}</span>
+            <span class="bp-dot">·</span>
+            <span class="bp-read">{post.readTime}</span>
+            <span class="bp-dot">·</span>
+            <time datetime={post.dateISO}>{post.date}</time>
+          </div>
+          <h1 class="bp-title">{post.title}</h1>
+          <p class="bp-lead">{post.description}</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="bp-body-wrap">
+      <div class="container">
+        <div class="bp-body">
+
+          <h2>What BMI Actually Measures</h2>
+          <p>Body Mass Index (BMI) is a simple ratio of weight to height squared (kg/m²). It's a population-level screening tool — useful for identifying broad risk categories across large groups, but notably imprecise for individuals. A 25-year-old athlete and a 70-year-old sedentary adult with the same BMI are in completely different health situations.</p>
+
+          <div class="bp-callout">
+            <div class="bp-callout-icon">⚖️</div>
+            <div><strong>The standard BMI categories</strong> (18.5–24.9 normal, 25–29.9 overweight, 30+ obese) were originally calibrated for young to middle-aged adults. Most major health bodies now recognize that these thresholds need age-based adjustment.</div>
+          </div>
+
+          <h2>BMI by Life Stage: What the Research Shows</h2>
+
+          <h3>20s and 30s: The Baseline Years</h3>
+          <p>In young adulthood, BMI tracks reasonably well with body fat percentage. Metabolism is at its peak, and muscle mass is typically highest relative to age. The standard 18.5–24.9 "normal" range applies most accurately here. However, even at this age, two people with the same BMI can have dramatically different body fat percentages (a phenomenon called "normal-weight obesity").</p>
+
+          <h3>40s: The Hormonal Shift</h3>
+          <p>Starting in the early 40s, several changes conspire to push BMI upward even without a change in habits:</p>
+          <ul class="bp-list">
+            <li>Resting metabolic rate declines roughly 1–2% per decade after 30</li>
+            <li>Muscle mass begins to decrease (sarcopenia starts around age 35–40)</li>
+            <li>Cortisol regulation shifts, promoting abdominal fat deposition</li>
+            <li>For women: perimenopause begins, with estrogen drops accelerating fat redistribution</li>
+          </ul>
+          <p>This means the same caloric intake that maintained your weight at 30 may cause weight gain at 42. BMI creep in this decade is extremely common and not entirely preventable through lifestyle alone.</p>
+
+          <h3>50s and 60s: The Muscle-Loss Problem</h3>
+          <p>After 50, sarcopenia accelerates. Adults can lose 1–2% of muscle mass per year without resistance training. Here's the insidious problem for BMI: <strong>muscle weighs more than fat.</strong> As people lose muscle and gain fat, their weight (and BMI) may stay the same — while their body composition and health risk worsen substantially.</p>
+          <p>This is why many researchers argue that for adults over 50, a BMI in the 25–27 range is actually associated with <em>lower</em> mortality than a BMI of 22–23. The extra weight provides metabolic reserve, and very low BMI often indicates muscle loss rather than leanness.</p>
+
+          <h3>70s and Beyond: The "Obesity Paradox"</h3>
+          <p>In the elderly, the BMI-mortality relationship inverts further. Studies consistently show that slightly "overweight" older adults (BMI 25–29.9) have better survival outcomes than normal-weight peers — largely because BMI conflates fat and muscle, and low BMI in the elderly often signals frailty.</p>
+
+          <div class="bp-bmi-table">
+            <div class="bp-bmi-header">
+              <span>Age Group</span>
+              <span>Optimal BMI Range</span>
+              <span>Key Concern</span>
+            </div>
+            {[
+              ['20–39', '18.5–24.9', 'Body fat %'],
+              ['40–49', '20–26', 'Abdominal fat'],
+              ['50–59', '22–27', 'Muscle preservation'],
+              ['60–69', '23–28', 'Frailty risk'],
+              ['70+', '24–29', 'Sarcopenia & reserve'],
+            ].map(row => (
+              <div class="bp-bmi-row">
+                {row.map((cell, i) => <span class={i === 0 ? 'bp-bmi-age' : ''}>{cell}</span>)}
+              </div>
+            ))}
+          </div>
+
+          <h2>The Limitations of BMI (And Better Alternatives)</h2>
+          <p>BMI's biggest flaw: it cannot distinguish between muscle and fat. A bodybuilder with 8% body fat might have a BMI of 28 — technically "overweight." A sedentary person with 35% body fat might have a BMI of 24 — technically "normal."</p>
+          <p>Better complementary metrics include:</p>
+          <ul class="bp-list">
+            <li><strong>Waist-to-height ratio</strong> — keep your waist circumference below half your height. Strongly predicts cardiometabolic risk.</li>
+            <li><strong>Body fat percentage</strong> — measured by DEXA scan, hydrostatic weighing, or BIA scales (with varying accuracy)</li>
+            <li><strong>Waist circumference alone</strong> — Men &gt;40 inches, Women &gt;35 inches signal elevated metabolic risk regardless of BMI</li>
+            <li><strong>VO2 max</strong> — perhaps the single best predictor of long-term health and mortality at any BMI</li>
+          </ul>
+
+          <h2>What You Can Actually Do</h2>
+          <p>Rather than chasing a specific BMI number, focus on these age-appropriate interventions:</p>
+          <ul class="bp-list">
+            <li><strong>Resistance training 2–3x/week</strong> — the most powerful tool against age-related muscle loss and metabolic slowdown</li>
+            <li><strong>Protein intake 1.2–1.6g/kg bodyweight</strong> — most adults over 50 are significantly under-consuming protein</li>
+            <li><strong>Track waist circumference</strong> instead of (or alongside) BMI as you age</li>
+            <li><strong>Prioritize sleep and stress management</strong> — cortisol is the silent driver of abdominal fat accumulation</li>
+            <li><strong>Zone 2 cardio</strong> — 3–5 hours/week maintains metabolic health and VO2 max through the aging process</li>
+          </ul>
+
+          <div class="bp-cta-inline">
+            <a href="/bmi-calculator" class="bp-cta-btn" style="background: #7928ca;">Calculate My BMI →</a>
+          </div>
+
+          <h2 style="margin-top:var(--space-3xl)">Frequently Asked Questions</h2>
+          <div class="faq-list">
+            {faqs.map(item => (
+              <details class="faq-item">
+                <summary class="faq-question">{item.q}</summary>
+                <p class="faq-answer">{item.a}</p>
+              </details>
+            ))}
+          </div>
+
+        </div>
+
+        <aside class="bp-sidebar">
+          <div class="bp-sidebar-card">
+            <h3>Related Calculators</h3>
+            <ul>
+              <li><a href="/bmi-calculator">BMI Calculator</a></li>
+              <li><a href="/biological-age-calculator">Biological Age</a></li>
+              <li><a href="/life-expectancy-calculator">Life Expectancy</a></li>
+              <li><a href="/">Age Calculator</a></li>
+            </ul>
+          </div>
+          <div class="bp-sidebar-card">
+            <h3>More Articles</h3>
+            <ul>
+              <li><a href="/blog/biological-age-vs-chronological-age">Biological vs Chronological Age</a></li>
+              <li><a href="/blog/life-expectancy-factors-that-matter">10 Longevity Factors</a></li>
+              <li><a href="/blog/best-age-to-retire">Best Age to Retire</a></li>
+            </ul>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </article>
+
+  <Footer slot="footer" />
+</BaseLayout>
+
+<style is:global>
+.bp-bmi-table {
+  border: 1px solid var(--hairline);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  font-size: 14px;
+  margin: var(--space-md) 0;
+}
+.bp-bmi-header {
+  display: grid;
+  grid-template-columns: 1.2fr 1.5fr 2fr;
+  background: var(--canvas-soft-2);
+  border-bottom: 1px solid var(--hairline);
+  padding: var(--space-sm) var(--space-md);
+  gap: var(--space-md);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--mute);
+}
+.bp-bmi-row {
+  display: grid;
+  grid-template-columns: 1.2fr 1.5fr 2fr;
+  padding: var(--space-sm) var(--space-md);
+  gap: var(--space-md);
+  border-bottom: 1px solid var(--hairline);
+  color: var(--body);
+  transition: background 0.15s;
+}
+.bp-bmi-row:last-child { border-bottom: none; }
+.bp-bmi-row:hover { background: var(--canvas-soft); }
+.bp-bmi-age { color: var(--ink); font-weight: 600; }
+@media (max-width: 600px) {
+  .bp-bmi-header,
+  .bp-bmi-row { grid-template-columns: 1fr 1fr; }
+  .bp-bmi-header span:last-child,
+  .bp-bmi-row span:last-child { display: none; }
+}
+
+.faq-list { display: flex; flex-direction: column; margin-top: var(--space-lg); }
+.faq-item { border-top: 1px solid var(--hairline); }
+.faq-item:last-child { border-bottom: 1px solid var(--hairline); }
+.faq-question {
+  font-size: 16px; font-weight: 500; color: var(--ink); cursor: pointer;
+  padding: var(--space-lg) 0; list-style: none; display: flex; justify-content: space-between;
+  align-items: center; letter-spacing: -0.4px; margin: 0;
+}
+.faq-question::after { content: '+'; font-size: 20px; font-weight: 300; color: var(--mute); transition: transform 0.2s ease; flex-shrink: 0; margin-left: var(--space-md); }
+details[open] .faq-question::after { content: '−'; }
+.faq-answer { font-size: 15px; color: var(--body); line-height: 1.7; padding-bottom: var(--space-lg); margin: 0; }
+</style>

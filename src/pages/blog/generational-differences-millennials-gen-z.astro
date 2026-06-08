@@ -1,0 +1,288 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Navbar from '../../components/Navbar.astro';
+import Footer from '../../components/Footer.astro';
+
+const post = {
+  title: "Millennials vs Gen Z: Key Differences, Birth Years & Defining Traits",
+  description: "Born between 1981–2012, these two generations are often lumped together — but their experiences, values, and outlook on life couldn't be more different. Here's a deep dive.",
+  date: 'May 26, 2026',
+  dateISO: '2026-05-26',
+  readTime: '6 min read',
+  category: 'Generations',
+};
+
+const faqs = [
+  { q: "What years are Millennials born in?", a: "According to the Pew Research Center, Millennials are born between 1981 and 1996." },
+  { q: "What years are Gen Z born in?", a: "Gen Z is widely defined as anyone born between 1997 and 2012." },
+  { q: "What is the main difference between Millennials and Gen Z?", a: "The most defining difference is their relationship with technology. Millennials are 'digital immigrants' who grew up as the internet became mainstream, while Gen Z are 'digital natives' who have never known a world without smartphones." },
+  { q: "What are Zillennials?", a: "Zillennials is a micro-generation (roughly 1993-1998) of individuals who feel they share traits from both Millennials and Gen Z." }
+];
+
+const faqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": faqs.map(faq => ({
+    "@type": "Question",
+    "name": faq.q,
+    "acceptedAnswer": {
+      "@type": "Answer",
+      "text": faq.a
+    }
+  }))
+};
+---
+
+<BaseLayout
+  title={`${post.title} | AgeCalc Blog`}
+  description={post.description}
+  keywords="millennials vs gen z, millennial birth years, gen z birth years, generational differences, what generation am I"
+  ogType="article"
+>
+  <fragment slot="head">
+    <script type="application/ld+json" set:html={JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "Article",
+      "headline": post.title,
+      "description": post.description,
+      "datePublished": post.dateISO,
+      "dateModified": post.dateISO,
+      "author": { "@type": "Organization", "name": "agecalconline.com" },
+      "publisher": { "@type": "Organization", "name": "agecalconline.com", "logo": "https://agecalconline.com/favicon-96x96.png" },
+      "mainEntityOfPage": "https://agecalconline.com/blog/generational-differences-millennials-gen-z"
+    })} />
+    <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
+  </fragment>
+
+  <Navbar slot="nav" />
+
+  <article class="bp-article">
+    <div class="bp-header">
+      <div class="bp-header-orb bp-header-orb-1" style="background: radial-gradient(circle, #ff0080, transparent);"></div>
+      <div class="bp-header-orb bp-header-orb-2"></div>
+      <div class="container">
+        <div class="bp-header-inner">
+          <a href="/blog" class="bp-back">← All Articles</a>
+          <div class="bp-meta-top">
+            <span class="bp-category" style="color: #ff0080;">{post.category}</span>
+            <span class="bp-dot">·</span>
+            <span class="bp-read">{post.readTime}</span>
+            <span class="bp-dot">·</span>
+            <time datetime={post.dateISO}>{post.date}</time>
+          </div>
+          <h1 class="bp-title">{post.title}</h1>
+          <p class="bp-lead">{post.description}</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="bp-body-wrap">
+      <div class="container">
+        <div class="bp-body">
+
+          <h2>First: The Official Birth Year Ranges</h2>
+          <p>Generational boundaries are somewhat fluid — different researchers use different cutoffs — but the most widely cited definitions (Pew Research Center, 2019) are:</p>
+
+          <div class="bp-gen-cards">
+            {[
+              { name: 'Baby Boomers', years: '1946–1964', age2026: 'Ages 62–80', color: '#f59e0b' },
+              { name: 'Gen X', years: '1965–1980', age2026: 'Ages 46–61', color: '#0070f3' },
+              { name: 'Millennials', years: '1981–1996', age2026: 'Ages 30–45', color: '#7928ca' },
+              { name: 'Gen Z', years: '1997–2012', age2026: 'Ages 14–29', color: '#ff0080' },
+              { name: 'Gen Alpha', years: '2013–present', age2026: 'Under 13', color: '#00a878' },
+            ].map(g => (
+              <div class="bp-gen-card" style={`--gen-color: ${g.color}`}>
+                <div class="bp-gen-name">{g.name}</div>
+                <div class="bp-gen-years">{g.years}</div>
+                <div class="bp-gen-age">{g.age2026}</div>
+              </div>
+            ))}
+          </div>
+
+          <div class="bp-callout">
+            <div class="bp-callout-icon">📱</div>
+            <div>Not sure which generation you belong to? Use our <a href="/generation-calculator">Generation Calculator</a> — enter your birth year and instantly find your generation, birth cohort details, and historical context.</div>
+          </div>
+
+          <h2>The Defining Experiences That Shaped Each Generation</h2>
+
+          <h3>Millennials (Born 1981–1996)</h3>
+          <p>Millennials grew up in the pre-internet era and remember a world before smartphones. Their formative events include 9/11 (which many experienced as teenagers or young adults), the 2008 financial crisis (which devastated early careers), and the rise of social media in their 20s (Facebook, Twitter, Instagram).</p>
+          <p>Key characteristics research consistently identifies:</p>
+          <ul class="bp-list">
+            <li>Digitally literate but not "digital natives" — learned technology, didn't grow up immersed in it</li>
+            <li>Highly credentialed yet faced with student debt and delayed homeownership</li>
+            <li>Optimistic generation at youth; now tempered by economic reality</li>
+            <li>Value work-life balance, experiences over possessions, purpose-driven careers</li>
+            <li>First generation to widely delay traditional life milestones (marriage, children, homeownership)</li>
+          </ul>
+
+          <h3>Gen Z (Born 1997–2012)</h3>
+          <p>Gen Z are true digital natives — most have never known a world without the internet or smartphones. The oldest Gen Z members were in high school when Instagram became mainstream; many grew up posting on social media before they could drive. Their defining events include the COVID-19 pandemic (which disrupted critical educational and social developmental years), climate anxiety, and unprecedented social activism.</p>
+          <ul class="bp-list">
+            <li>Pragmatic and financially cautious — shaped by watching Millennials struggle with debt</li>
+            <li>Highest mental health crisis rates of any generation on record</li>
+            <li>More entrepreneurial: 72% of Gen Z teens say they want to start a business (vs 64% of Millennials at the same age)</li>
+            <li>LGBTQ+ identity rates significantly higher than any prior generation (5.6% vs 3.8% Millennials — Gallup, 2021)</li>
+            <li>Social media-native: TikTok, YouTube, and Snapchat are primary media consumption platforms</li>
+          </ul>
+
+          <h2>Key Differences Side by Side</h2>
+
+          <div class="bp-comparison-table">
+            <div class="bp-comparison-header">
+              <span>Dimension</span>
+              <span>Millennials</span>
+              <span>Gen Z</span>
+            </div>
+            {[
+              ['Technology relationship', 'Digital immigrants → adopters', 'Digital natives'],
+              ['Economic outlook', 'Optimistic → disillusioned', 'Pragmatic from the start'],
+              ['Career priority', 'Purpose & balance', 'Stability & income'],
+              ['Communication', 'Text, email, social media', 'Video-first (TikTok, Snap)'],
+              ['Social issues', 'Activists (Occupy, BLM)', 'Climate justice, DEI focus'],
+              ['Shopping', 'E-commerce converts', 'Mobile-first shoppers'],
+              ['Mental health', 'Destigmatizing conversations', 'Open crisis — seeking help'],
+            ].map(row => (
+              <div class="bp-comparison-row">
+                {row.map((cell, i) => <span style={i === 0 ? 'font-weight: 500; color: var(--ink);' : ''}>{cell}</span>)}
+              </div>
+            ))}
+          </div>
+
+          <h2>The "Zillennial" Grey Zone</h2>
+          <p>People born between roughly 1993–1998 often identify with both generations — old enough to remember pre-smartphone childhoods, young enough to adopt social media in high school. Researchers sometimes call this micro-generation "Zillennials." If your birth year puts you near a boundary, both generational profiles may partially describe you.</p>
+
+          <h2>What Generation Am I?</h2>
+          <p>If you're unsure which cohort you fall into, our <a href="/generation-calculator">generation calculator</a> will tell you instantly — including your generation name, defining historical events, and how old you were during key cultural moments.</p>
+
+          <div class="bp-cta-inline">
+            <a href="/generation-calculator" class="bp-cta-btn" style="background: #ff0080;">Find My Generation →</a>
+          </div>
+
+          <h2 style="margin-top:var(--space-3xl)">Frequently Asked Questions</h2>
+          <div class="faq-list">
+            {faqs.map(item => (
+              <details class="faq-item">
+                <summary class="faq-question">{item.q}</summary>
+                <p class="faq-answer">{item.a}</p>
+              </details>
+            ))}
+          </div>
+
+        </div>
+
+        <aside class="bp-sidebar">
+          <div class="bp-sidebar-card">
+            <h3>Related Calculators</h3>
+            <ul>
+              <li><a href="/generation-calculator">Generation Calculator</a></li>
+              <li><a href="/">Age Calculator</a></li>
+              <li><a href="/age-difference-calculator">Age Difference</a></li>
+              <li><a href="/birthday-calculator">Birthday Calculator</a></li>
+            </ul>
+          </div>
+          <div class="bp-sidebar-card">
+            <h3>More Articles</h3>
+            <ul>
+              <li><a href="/blog/how-to-calculate-age-accurately">How Age Calculators Work</a></li>
+              <li><a href="/blog/life-expectancy-factors-that-matter">10 Longevity Factors</a></li>
+              <li><a href="/blog/best-age-to-retire">Best Age to Retire</a></li>
+            </ul>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </article>
+
+  <Footer slot="footer" />
+</BaseLayout>
+
+<style is:global>
+.bp-gen-cards {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: var(--space-sm);
+  margin: var(--space-md) 0;
+}
+.bp-gen-card {
+  border: 1px solid color-mix(in srgb, var(--gen-color) 30%, transparent);
+  background: color-mix(in srgb, var(--gen-color) 6%, transparent);
+  border-radius: var(--radius-lg);
+  padding: var(--space-md);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  text-align: center;
+}
+.bp-gen-name {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--gen-color);
+  letter-spacing: -0.2px;
+}
+.bp-gen-years {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--ink);
+}
+.bp-gen-age {
+  font-size: 11px;
+  color: var(--mute);
+}
+@media (max-width: 900px) {
+  .bp-gen-cards { grid-template-columns: repeat(3, 1fr); }
+}
+@media (max-width: 600px) {
+  .bp-gen-cards { grid-template-columns: repeat(2, 1fr); }
+}
+
+.faq-list { display: flex; flex-direction: column; margin-top: var(--space-lg); }
+.faq-item { border-top: 1px solid var(--hairline); }
+.faq-item:last-child { border-bottom: 1px solid var(--hairline); }
+.faq-question {
+  font-size: 16px; font-weight: 500; color: var(--ink); cursor: pointer;
+  padding: var(--space-lg) 0; list-style: none; display: flex; justify-content: space-between;
+  align-items: center; letter-spacing: -0.4px; margin: 0;
+}
+.faq-question::after { content: '+'; font-size: 20px; font-weight: 300; color: var(--mute); transition: transform 0.2s ease; flex-shrink: 0; margin-left: var(--space-md); }
+details[open] .faq-question::after { content: '−'; }
+.faq-answer { font-size: 15px; color: var(--body); line-height: 1.7; padding-bottom: var(--space-lg); margin: 0; }
+
+.bp-comparison-table {
+  border: 1px solid var(--hairline);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  font-size: 14px;
+}
+.bp-comparison-header {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  background: var(--canvas-soft-2);
+  border-bottom: 1px solid var(--hairline);
+  padding: var(--space-sm) var(--space-md);
+  gap: var(--space-md);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--mute);
+}
+.bp-comparison-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  padding: var(--space-sm) var(--space-md);
+  gap: var(--space-md);
+  border-bottom: 1px solid var(--hairline);
+  color: var(--body);
+  transition: background 0.15s;
+}
+.bp-comparison-row:last-child { border-bottom: none; }
+.bp-comparison-row:hover { background: var(--canvas-soft); }
+@media (max-width: 600px) {
+  .bp-comparison-header,
+  .bp-comparison-row { grid-template-columns: 1fr; gap: var(--space-xs); padding: var(--space-md); }
+}
+</style>

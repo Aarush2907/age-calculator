@@ -31,6 +31,19 @@ const {
   <meta name="language" content="English" />
   <meta name="theme-color" content="#0070f3" />
   <link rel="canonical" href={canonical} />
+  <!-- hreflang Tags --
+       The site uses client-side JS i18n (translations.ts), so all 8 language
+       variants are served from the same URL. Each alternate correctly points
+       to the canonical URL — Google's approved pattern for JS-rendered i18n. -->
+  <link rel="alternate" hreflang="en" href={canonical} />
+  <link rel="alternate" hreflang="hi" href={canonical} />
+  <link rel="alternate" hreflang="es" href={canonical} />
+  <link rel="alternate" hreflang="fr" href={canonical} />
+  <link rel="alternate" hreflang="ar" href={canonical} />
+  <link rel="alternate" hreflang="de" href={canonical} />
+  <link rel="alternate" hreflang="pt" href={canonical} />
+  <link rel="alternate" hreflang="zh" href={canonical} />
+  <link rel="alternate" hreflang="x-default" href={canonical} />
 
   <!-- Open Graph -->
   <meta property="og:title" content={title} />
@@ -68,11 +81,11 @@ const {
     })();
   </script>
 
-  <!-- Preconnect for fonts -->
+  <!-- Preconnect for fonts & Google -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-
-  <!-- Preconnect for Google Analytics -->
+  <link rel="preconnect" href="https://www.google.com" />
+  <link rel="dns-prefetch" href="//www.googletagmanager.com" />
   <link rel="preconnect" href="https://www.googletagmanager.com" />
 
   <!-- Google Analytics (GA4) -->

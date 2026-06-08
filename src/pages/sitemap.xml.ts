@@ -28,6 +28,14 @@ const pages = [
   { url: '/contact-us',                           priority: '0.60', changefreq: 'monthly' },
   { url: '/privacy-policy',                       priority: '0.40', changefreq: 'yearly'  },
   { url: '/terms-and-conditions',                 priority: '0.40', changefreq: 'yearly'  },
+  // Blog
+  { url: '/blog',                                               priority: '0.80', changefreq: 'weekly'  },
+  { url: '/blog/how-to-calculate-age-accurately',               priority: '0.75', changefreq: 'monthly' },
+  { url: '/blog/biological-age-vs-chronological-age',           priority: '0.75', changefreq: 'monthly' },
+  { url: '/blog/best-age-to-retire',                            priority: '0.75', changefreq: 'monthly' },
+  { url: '/blog/how-bmi-changes-with-age',                      priority: '0.75', changefreq: 'monthly' },
+  { url: '/blog/generational-differences-millennials-gen-z',    priority: '0.75', changefreq: 'monthly' },
+  { url: '/blog/life-expectancy-factors-that-matter',           priority: '0.75', changefreq: 'monthly' },
 ];
 
 const lastmod = new Date().toISOString().split('T')[0]; // YYYY-MM-DD
@@ -35,13 +43,17 @@ const lastmod = new Date().toISOString().split('T')[0]; // YYYY-MM-DD
 function buildSitemap(entries: typeof pages): string {
   const urls = entries
     .map(
-      ({ url, priority, changefreq }) => `
+      ({ url, priority, changefreq }) => {
+        const staticPages = ['/about-us', '/contact-us', '/privacy-policy', '/terms-and-conditions'];
+        const pageLastmod = staticPages.includes(url) ? '2025-06-06' : lastmod;
+        return `
   <url>
     <loc>${SITE}${url}</loc>
-    <lastmod>${lastmod}</lastmod>
+    <lastmod>${pageLastmod}</lastmod>
     <changefreq>${changefreq}</changefreq>
     <priority>${priority}</priority>
-  </url>`
+  </url>`;
+      }
     )
     .join('');
 

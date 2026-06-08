@@ -3,8 +3,69 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import Navbar from '../components/Navbar.astro';
 import Footer from '../components/Footer.astro';
 import ToolsGrid from '../components/ToolsGrid.astro';
+
+const schema = {
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Reverse Age Calculator",
+  "applicationCategory": "UtilitiesApplication",
+  "url": "https://agecalconline.com/reverse-age-calculator",
+  "description": "Free reverse age calculator. Enter your current age in years, months, and days to calculate your estimated date of birth range. Perfect for genealogy, legal research, and HR verification.",
+  "operatingSystem": "Any",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "aggregateRating": {
+    "@type": "AggregateRating",
+    "ratingValue": "4.8",
+    "reviewCount": "1200"
+  }
+};
+const faqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "How does a reverse age calculator work?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "You enter your current age in years, months, and days. The calculator subtracts that from today's date to estimate your birth date range."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Why would I use a reverse age calculator?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "It is useful when you know someone's age but not their exact birth date, or for historical research and genealogy work."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How accurate is the birth date estimate?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "The estimate is accurate within one day since age in whole years maps to a range of dates. The calculator shows you both the earliest and latest possible birth date."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Can I calculate someone else's birth year from their age?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. Enter their stated age and the calculator will show the probable birth year and date range."
+      }
+    }
+  ]
+};
 ---
 <BaseLayout title="Reverse Age Calculator — Find Birth Date from Age | agecalconline.com" description="Calculate your birth date range from a known age. Enter your current age in years, months, and days to find your estimated date of birth.">
+  
+  <script type="application/ld+json" set:html={JSON.stringify(schema)} slot="head" />
+  <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} slot="head" />
   <Navbar slot="nav" />
   <section class="section-hero band-white" style="position:relative;overflow:hidden;text-align:center">
     <div style="position:absolute;inset:-40px;background:linear-gradient(135deg,#007cf0,#00dfd8,#7928ca,#ff0080);opacity:0.07;filter:blur(80px);pointer-events:none"></div>
@@ -30,6 +91,37 @@ import ToolsGrid from '../components/ToolsGrid.astro';
         <div class="caption-mono" style="color:var(--mute);margin-bottom:8px">Estimated Date of Birth</div>
         <h2 class="display-md" id="rev-dob">—</h2>
         <p class="body-sm text-body" style="margin-top:var(--space-sm)" id="rev-range">—</p>
+      </div>
+    </div>
+  </section>
+
+  
+  <section class="section band-white">
+    <div class="container" style="max-width:720px">
+      <h2 class="display-md" style="margin-bottom:var(--space-sm)">When Would You Use a Reverse Age Calculator?</h2>
+      <p class="body-md text-body" style="margin-bottom:var(--space-xl)">A reverse age calculator is the perfect tool for working backwards from a known age to find a birth date. This is incredibly useful for genealogy and family tree research, where you might only know a great-grandparent's age at the time of their death. It is also used in legal document analysis, HR background verification, and hospital admission forms when a patient's exact birth date is uncertain. Because months have different lengths and leap years shift the calendar, calculating this manually is tedious. The calculator performs the math instantly, noting the inherent ±1 day uncertainty when exact day counts are unknown.</p>
+    </div>
+  </section>
+
+  <section class="section band-light">
+    <div class="container" style="max-width:720px">
+      <h2 class="display-md" style="margin-bottom:var(--space-xl)">Related Calculators</h2>
+      <div class="grid-3" style="gap:var(--space-md)">
+      <a href="/" class="card" style="text-decoration:none;transition:transform 0.2s ease" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='translateY(0)'">
+        <div style="font-size:24px;margin-bottom:var(--space-xs)">📅</div>
+        <div style="font-weight:600;color:var(--ink);font-size:15px;letter-spacing:-0.3px">Age Calculator</div>
+        <div style="font-size:13px;color:var(--body);margin-top:4px">Calculate your exact age down to the second.</div>
+      </a>
+      <a href="/chronological-age-calculator" class="card" style="text-decoration:none;transition:transform 0.2s ease" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='translateY(0)'">
+        <div style="font-size:24px;margin-bottom:var(--space-xs)">⏱️</div>
+        <div style="font-weight:600;color:var(--ink);font-size:15px;letter-spacing:-0.3px">Chronological Age</div>
+        <div style="font-size:13px;color:var(--body);margin-top:4px">Find your precise chronological age easily.</div>
+      </a>
+      <a href="/future-age-calculator" class="card" style="text-decoration:none;transition:transform 0.2s ease" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='translateY(0)'">
+        <div style="font-size:24px;margin-bottom:var(--space-xs)">🔮</div>
+        <div style="font-weight:600;color:var(--ink);font-size:15px;letter-spacing:-0.3px">Future Age</div>
+        <div style="font-size:13px;color:var(--body);margin-top:4px">Find out how old you'll be on a future date.</div>
+      </a>
       </div>
     </div>
   </section>

@@ -11,7 +11,7 @@ const canonical = "https://agecalconline.com/work-hours-calculator";
 
 const schema = {
   "@context": "https://schema.org",
-  "@type": "SoftwareApplication",
+  "@type": "WebApplication",
   "name": "Work Hours Calculator",
   "applicationCategory": "FinanceApplication",
   "url": canonical,
@@ -106,6 +106,29 @@ const faqSchema = {
       <details class="faq-item"><summary class="faq-question">How is overtime calculated?</summary><p class="faq-answer">In the US, overtime is any time worked beyond 40 hours in a single work week. Overtime is typically paid at 1.5× the regular hourly rate, though this varies by location and employment contract.</p></details>
       <details class="faq-item"><summary class="faq-question">How do I calculate my paycheck from hours?</summary><p class="faq-answer">Multiply your total hours worked by your hourly rate. For example, 42 hours at $20/hr = 40 × $20 + 2 × $30 (overtime) = $860. Our calculator includes an optional hourly rate field to estimate your earnings.</p></details>
       <details class="faq-item"><summary class="faq-question">Does the work hours calculator account for lunch breaks?</summary><p class="faq-answer">Yes! Our calculator lets you enter a break duration in minutes (e.g., 30 or 60 minutes), which will be subtracted from the total time to give you the net hours worked.</p></details>
+    </div>
+  </section>
+
+  <section class="section band-light">
+    <div class="container" style="max-width:720px">
+      <h2 class="display-md" style="margin-bottom:var(--space-xl)">Related Calculators</h2>
+      <div class="grid-3" style="gap:var(--space-md)">
+      <a href="/percentage-calculator" class="card" style="text-decoration:none;transition:transform 0.2s ease" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='translateY(0)'">
+        <div style="font-size:24px;margin-bottom:var(--space-xs)">%</div>
+        <div style="font-weight:600;color:var(--ink);font-size:15px;letter-spacing:-0.3px">Percentage Calculator</div>
+        <div style="font-size:13px;color:var(--body);margin-top:4px">Calculate percentages, changes, and fractions.</div>
+      </a>
+      <a href="/retirement-calculator" class="card" style="text-decoration:none;transition:transform 0.2s ease" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='translateY(0)'">
+        <div style="font-size:24px;margin-bottom:var(--space-xs)">🏖️</div>
+        <div style="font-weight:600;color:var(--ink);font-size:15px;letter-spacing:-0.3px">Retirement Calculator</div>
+        <div style="font-size:13px;color:var(--body);margin-top:4px">Find out exactly how many years until you retire.</div>
+      </a>
+      <a href="/" class="card" style="text-decoration:none;transition:transform 0.2s ease" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='translateY(0)'">
+        <div style="font-size:24px;margin-bottom:var(--space-xs)">📅</div>
+        <div style="font-weight:600;color:var(--ink);font-size:15px;letter-spacing:-0.3px">Age Calculator</div>
+        <div style="font-size:13px;color:var(--body);margin-top:4px">Calculate your exact age instantly.</div>
+      </a>
+      </div>
     </div>
   </section>
 
