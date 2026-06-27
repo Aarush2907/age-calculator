@@ -1,0 +1,158 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Navbar from '../../components/Navbar.astro';
+import Footer from '../../components/Footer.astro';
+
+const post = {
+  title: "Date Addition & Subtraction: Navigating Future and Past Timelines",
+  description: "Discover how to instantly calculate future deadlines and past milestones. A date addition and subtraction calculator is the ultimate tool for legal, financial, and personal planning across the globe.",
+  date: 'June 27, 2026',
+  dateISO: '2026-06-27',
+  readTime: '5 min read',
+  category: 'Date & Time',
+};
+
+const faqs = [
+  { q: "How do I add exactly 90 days to a date?", a: "You can try counting manually on a calendar, but a date addition calculator handles it instantly. Simply input your starting date, enter 90 in the 'days' field, and select 'add' to get the exact future date." },
+  { q: "Is subtracting days the same process?", a: "Yes. By selecting the subtraction operation, the calculator works backwards from your starting date, perfectly accounting for leap years and month lengths to find the exact historical date." },
+  { q: "Can I add years, months, and days at the same time?", a: "Absolutely. A robust calculator allows you to add or subtract a complex duration—like 2 years, 3 months, and 14 days—all in a single computation." }
+];
+
+const faqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": faqs.map(faq => ({
+    "@type": "Question",
+    "name": faq.q,
+    "acceptedAnswer": {
+      "@type": "Answer",
+      "text": faq.a
+    }
+  }))
+};
+---
+
+<BaseLayout
+  title={`${post.title} | AgeCalc Blog`}
+  description={post.description}
+  keywords="date calculator, add days to date, subtract days from date, date addition calculator, date math, date subtraction calculator, add days to date calculator, add or subtract from date calculator"
+  ogType="article"
+>
+  <fragment slot="head">
+    <script type="application/ld+json" set:html={JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "Article",
+      "headline": post.title,
+      "description": post.description,
+      "datePublished": post.dateISO,
+      "dateModified": post.dateISO,
+      "author": { "@type": "Organization", "name": "agecalconline.com" },
+      "publisher": { "@type": "Organization", "name": "agecalconline.com", "logo": "https://agecalconline.com/favicon-96x96.png" },
+      "mainEntityOfPage": "https://agecalconline.com/blog/date-addition-subtraction-calculator"
+    })} />
+    <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
+  </fragment>
+
+  <Navbar slot="nav" />
+
+  <article class="bp-article">
+    <div class="bp-header">
+      <div class="bp-header-orb bp-header-orb-1" style="background: radial-gradient(circle, #007cf0, transparent);"></div>
+      <div class="bp-header-orb bp-header-orb-2"></div>
+      <div class="container">
+        <div class="bp-header-inner">
+          <a href="/blog" class="bp-back">← All Articles</a>
+          <div class="bp-meta-top">
+            <span class="bp-category" style="color: #007cf0;">{post.category}</span>
+            <span class="bp-dot">·</span>
+            <span class="bp-read">{post.readTime}</span>
+            <span class="bp-dot">·</span>
+            <time datetime={post.dateISO}>{post.date}</time>
+          </div>
+          <h1 class="bp-title">{post.title}</h1>
+          <p class="bp-lead">{post.description}</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="bp-body-wrap">
+      <div class="container">
+        <div class="bp-body">
+
+          <h2>The Challenge of Date Math</h2>
+          <p>If someone asks you what the date will be exactly 45 days from today, you likely can't answer instantly. Our brains are not wired for complex <strong>date math</strong>. We have to look at a calendar, remember which upcoming months have 30 or 31 days, and carefully count forward. This manual method is slow, frustrating, and prone to error.</p>
+
+          <p>This is why a reliable <strong>date calculator</strong> is one of the most frequently used tools on the internet. Whether you are an attorney in the US calculating a 60-day legal response window, a logistics manager in the UK plotting a 14-day shipping route, or an astrologer in India setting an auspicious date by adding specific weeks, accuracy is paramount. An <strong>add days to date calculator</strong> handles all the heavy lifting for you instantly.</p>
+
+          <h2>Adding and Subtracting Time</h2>
+          <p>Using a <strong>date addition calculator</strong> allows you to jump forward in time. You can easily <strong>add days to date</strong>, or combine inputs to add years, months, and weeks simultaneously. Conversely, a <strong>date subtraction calculator</strong> lets you jump backward. If you know a contract expires today and it was a 180-day agreement, you can easily <strong>subtract days from date</strong> to find the exact day it was signed.</p>
+
+          <div class="bp-callout">
+            <div class="bp-callout-icon">⏱️</div>
+            <div><strong>Precision Matters:</strong> When dealing with legal documents, visas, or financial grace periods, being off by a single day can result in denied applications or hefty fees. An <strong>add or subtract from date calculator</strong> eliminates this risk entirely.</div>
+          </div>
+
+          <h2>Common Uses for Date Calculations</h2>
+          <ul class="bp-list">
+            <li><strong>Legal & Government Deadlines:</strong> Visas, court filings, and tax submissions often have strict 30, 60, or 90-day deadlines.</li>
+            <li><strong>Medical Planning:</strong> Calculating exact dates for follow-up appointments, vaccination schedules, or pregnancy milestones.</li>
+            <li><strong>Business & Finance:</strong> Determining invoice due dates, warranty expirations, and return policy windows (e.g., a standard 14-day return period).</li>
+            <li><strong>Personal Projects:</strong> Setting a realistic launch date for a project by adding an estimated number of weeks to today's date.</li>
+          </ul>
+
+          <h2>Automate Your Calendar</h2>
+          <p>Stop tracing your finger across a physical calendar. By utilizing a digital calculator, you can instantly find future deadlines and past milestones with perfect accuracy.</p>
+
+          <div class="bp-cta-inline">
+            <a href="/date-addition-calculator" class="bp-cta-btn" style="background: #007cf0; color: #ffffff;">Try the Date Addition Calculator →</a>
+          </div>
+
+          <h2 style="margin-top:var(--space-3xl)">Frequently Asked Questions</h2>
+          <div class="faq-list">
+            {faqs.map(item => (
+              <details class="faq-item">
+                <summary class="faq-question">{item.q}</summary>
+                <p class="faq-answer">{item.a}</p>
+              </details>
+            ))}
+          </div>
+
+        </div>
+
+        <aside class="bp-sidebar">
+          <div class="bp-sidebar-card">
+            <h3>Related Calculators</h3>
+            <ul>
+              <li><a href="/date-addition-calculator">Date Addition Calculator</a></li>
+              <li><a href="/business-days-calculator">Business Days Calculator</a></li>
+              <li><a href="/days-between-dates-calculator">Days Between Dates</a></li>
+            </ul>
+          </div>
+          <div class="bp-sidebar-card">
+            <h3>More Articles</h3>
+            <ul>
+              <li><a href="/blog/how-many-weeks-between-dates-calculator">How to Count Weeks</a></li>
+              <li><a href="/blog/how-many-months-between-dates-calculator">How to Count Months</a></li>
+            </ul>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </article>
+
+  <Footer slot="footer" />
+</BaseLayout>
+
+<style is:global>
+.faq-list { display: flex; flex-direction: column; margin-top: var(--space-lg); }
+.faq-item { border-top: 1px solid var(--hairline); }
+.faq-item:last-child { border-bottom: 1px solid var(--hairline); }
+.faq-question {
+  font-size: 16px; font-weight: 500; color: var(--ink); cursor: pointer;
+  padding: var(--space-lg) 0; list-style: none; display: flex; justify-content: space-between;
+  align-items: center; letter-spacing: -0.4px; margin: 0;
+}
+.faq-question::after { content: '+'; font-size: 20px; font-weight: 300; color: var(--mute); transition: transform 0.2s ease; flex-shrink: 0; margin-left: var(--space-md); }
+details[open] .faq-question::after { content: '−'; }
+.faq-answer { font-size: 15px; color: var(--body); line-height: 1.7; padding-bottom: var(--space-lg); margin: 0; }
+</style>

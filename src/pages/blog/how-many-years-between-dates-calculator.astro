@@ -1,0 +1,158 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Navbar from '../../components/Navbar.astro';
+import Footer from '../../components/Footer.astro';
+
+const post = {
+  title: "Mastering Long-Term Time: The Years Between Dates Calculator",
+  description: "Learn why calculating the exact duration in years, months, and days is critical for retirement planning, career tracking, and financial investments in the US, UK, and India.",
+  date: 'June 27, 2026',
+  dateISO: '2026-06-27',
+  readTime: '6 min read',
+  category: 'Date & Time',
+};
+
+const faqs = [
+  { q: "How is a year calculated exactly?", a: "An exact calendar year calculation looks at the specific date. For instance, March 5th, 2020 to March 5th, 2025 is exactly five years. Any remaining time is then broken down into months and days." },
+  { q: "Does a years calculator account for leap years?", a: "Yes. When calculating exact calendar years, the algorithm naturally accounts for the extra day in leap years, ensuring that the final output of years, months, and days is 100% accurate." },
+  { q: "Why do I need a decimal year output?", a: "A decimal year (e.g., 5.25 years) is often used in finance and HR to calculate prorated interest, bonuses, or vesting schedules." }
+];
+
+const faqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": faqs.map(faq => ({
+    "@type": "Question",
+    "name": faq.q,
+    "acceptedAnswer": {
+      "@type": "Answer",
+      "text": faq.a
+    }
+  }))
+};
+---
+
+<BaseLayout
+  title={`${post.title} | AgeCalc Blog`}
+  description={post.description}
+  keywords="years between dates calculator, count years between dates, years difference calculator, duration in years, years between days calculator, years between two dates calculator, how many years in between dates calculator"
+  ogType="article"
+>
+  <fragment slot="head">
+    <script type="application/ld+json" set:html={JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "Article",
+      "headline": post.title,
+      "description": post.description,
+      "datePublished": post.dateISO,
+      "dateModified": post.dateISO,
+      "author": { "@type": "Organization", "name": "agecalconline.com" },
+      "publisher": { "@type": "Organization", "name": "agecalconline.com", "logo": "https://agecalconline.com/favicon-96x96.png" },
+      "mainEntityOfPage": "https://agecalconline.com/blog/how-many-years-between-dates-calculator"
+    })} />
+    <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
+  </fragment>
+
+  <Navbar slot="nav" />
+
+  <article class="bp-article">
+    <div class="bp-header">
+      <div class="bp-header-orb bp-header-orb-1" style="background: radial-gradient(circle, #ff0080, transparent);"></div>
+      <div class="bp-header-orb bp-header-orb-2"></div>
+      <div class="container">
+        <div class="bp-header-inner">
+          <a href="/blog" class="bp-back">← All Articles</a>
+          <div class="bp-meta-top">
+            <span class="bp-category" style="color: #ff0080;">{post.category}</span>
+            <span class="bp-dot">·</span>
+            <span class="bp-read">{post.readTime}</span>
+            <span class="bp-dot">·</span>
+            <time datetime={post.dateISO}>{post.date}</time>
+          </div>
+          <h1 class="bp-title">{post.title}</h1>
+          <p class="bp-lead">{post.description}</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="bp-body-wrap">
+      <div class="container">
+        <div class="bp-body">
+
+          <h2>Tracking Long-Term Progress</h2>
+          <p>When you are looking back over decades, time can easily become a blur. Humans are not naturally equipped to instantly calculate the exact duration of a 15-year period down to the specific month and day, especially when you have to factor in leap years. That is why a dedicated <strong>years between dates calculator</strong> is a necessity for anyone engaging in long-term planning.</p>
+
+          <p>Whether you are in the US assessing how long you've held an investment for capital gains tax, in the UK determining your exact length of service for a pension, or in India calculating your exact age for a government exam application, precision is non-negotiable. Trying to manually <strong>count years between dates</strong> frequently leads to mistakes. People routinely turn to a reliable <strong>years between two dates calculator</strong> to give them an instant, mathematically flawless result.</p>
+
+          <h2>The Importance of Exact Breakdowns</h2>
+          <p>If you started a job on March 15, 2018, and ended on August 10, 2024, knowing you worked there for "about 6 years" isn't helpful for a resume or HR department. You need a <strong>years difference calculator</strong> that outputs exactly 6 years, 4 months, and 26 days. This level of granularity is standard in professional environments.</p>
+
+          <div class="bp-callout">
+            <div class="bp-callout-icon">📈</div>
+            <div><strong>Financial Tip:</strong> When dealing with long-term compound interest or stock vesting schedules, always use a precise tool. A <strong>years between days calculator</strong> that also provides a decimal output (e.g., 6.405 years) is critical for running accurate financial formulas.</div>
+          </div>
+
+          <h2>Global Use Cases for Year Calculators</h2>
+          <ul class="bp-list">
+            <li><strong>Retirement Planning (US/UK):</strong> Figuring out exactly how many years you have left until you hit the official retirement age to maximize social security or pension benefits.</li>
+            <li><strong>Work Experience (India & Global):</strong> Government jobs and corporate applications often require candidates to state their total <strong>duration in years</strong>, months, and days exactly.</li>
+            <li><strong>Mortgages and Loans:</strong> Understanding exactly how much time has elapsed on a 30-year mortgage to calculate equity and refinancing options.</li>
+            <li><strong>Genealogy and History:</strong> Historians and family researchers rely heavily on knowing exactly <strong>how many years in between dates calculator</strong> logic to trace timelines accurately.</li>
+          </ul>
+
+          <h2>Automate Your Time Tracking</h2>
+          <p>Don't leave important timelines up to guesswork. By leveraging an automated calculator, you instantly sidestep the complexities of leap years and uneven months, receiving an answer you can fully trust.</p>
+
+          <div class="bp-cta-inline">
+            <a href="/years-between-dates-calculator" class="bp-cta-btn" style="background: #ff0080; color: #ffffff;">Try the Years Between Dates Calculator →</a>
+          </div>
+
+          <h2 style="margin-top:var(--space-3xl)">Frequently Asked Questions</h2>
+          <div class="faq-list">
+            {faqs.map(item => (
+              <details class="faq-item">
+                <summary class="faq-question">{item.q}</summary>
+                <p class="faq-answer">{item.a}</p>
+              </details>
+            ))}
+          </div>
+
+        </div>
+
+        <aside class="bp-sidebar">
+          <div class="bp-sidebar-card">
+            <h3>Related Calculators</h3>
+            <ul>
+              <li><a href="/years-between-dates-calculator">Years Between Dates</a></li>
+              <li><a href="/chronological-age-calculator">Chronological Age</a></li>
+              <li><a href="/retirement-calculator">Retirement Calculator</a></li>
+            </ul>
+          </div>
+          <div class="bp-sidebar-card">
+            <h3>More Articles</h3>
+            <ul>
+              <li><a href="/blog/how-many-months-between-dates-calculator">How to Count Months</a></li>
+              <li><a href="/blog/how-to-calculate-age-accurately">Calculate Age Accurately</a></li>
+            </ul>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </article>
+
+  <Footer slot="footer" />
+</BaseLayout>
+
+<style is:global>
+.faq-list { display: flex; flex-direction: column; margin-top: var(--space-lg); }
+.faq-item { border-top: 1px solid var(--hairline); }
+.faq-item:last-child { border-bottom: 1px solid var(--hairline); }
+.faq-question {
+  font-size: 16px; font-weight: 500; color: var(--ink); cursor: pointer;
+  padding: var(--space-lg) 0; list-style: none; display: flex; justify-content: space-between;
+  align-items: center; letter-spacing: -0.4px; margin: 0;
+}
+.faq-question::after { content: '+'; font-size: 20px; font-weight: 300; color: var(--mute); transition: transform 0.2s ease; flex-shrink: 0; margin-left: var(--space-md); }
+details[open] .faq-question::after { content: '−'; }
+.faq-answer { font-size: 15px; color: var(--body); line-height: 1.7; padding-bottom: var(--space-lg); margin: 0; }
+</style>

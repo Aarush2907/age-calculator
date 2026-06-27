@@ -1,0 +1,159 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Navbar from '../../components/Navbar.astro';
+import Footer from '../../components/Footer.astro';
+
+const post = {
+  title: "How to Count Days Between Dates Accurately",
+  description: "Discover the easiest way to calculate the exact duration between two specific dates, understand calendar math, and learn why using a days between dates calculator is essential for planning.",
+  date: 'June 27, 2026',
+  dateISO: '2026-06-27',
+  readTime: '5 min read',
+  category: 'Date & Time',
+};
+
+const faqs = [
+  { q: "Why should I use a calculator to find days between dates?", a: "Manual calculations can easily go wrong due to leap years, varying month lengths (28, 29, 30, or 31 days), and daylight saving time changes. A calculator guarantees 100% precision instantly." },
+  { q: "Is the end date counted in the calculation?", a: "Standard date math does not count the end date (e.g., Monday to Tuesday is 1 day). However, our calculator offers a toggle to include the end date if your specific use case requires it." },
+  { q: "Can I calculate business days only?", a: "Yes, if you need to exclude weekends and public holidays, you should use a dedicated business days calculator rather than a standard calendar days calculator." }
+];
+
+const faqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": faqs.map(faq => ({
+    "@type": "Question",
+    "name": faq.q,
+    "acceptedAnswer": {
+      "@type": "Answer",
+      "text": faq.a
+    }
+  }))
+};
+---
+
+<BaseLayout
+  title={`${post.title} | AgeCalc Blog`}
+  description={post.description}
+  keywords="how many days between dates calculator, how many days between calculator, how many days between two dates calculator, how many days in between dates calculator, how many days between 2 dates calculator, how many days in between calculator"
+  ogType="article"
+>
+  <fragment slot="head">
+    <script type="application/ld+json" set:html={JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "Article",
+      "headline": post.title,
+      "description": post.description,
+      "datePublished": post.dateISO,
+      "dateModified": post.dateISO,
+      "author": { "@type": "Organization", "name": "agecalconline.com" },
+      "publisher": { "@type": "Organization", "name": "agecalconline.com", "logo": "https://agecalconline.com/favicon-96x96.png" },
+      "mainEntityOfPage": "https://agecalconline.com/blog/how-many-days-between-dates-calculator"
+    })} />
+    <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
+  </fragment>
+
+  <Navbar slot="nav" />
+
+  <article class="bp-article">
+    <div class="bp-header">
+      <div class="bp-header-orb bp-header-orb-1" style="background: radial-gradient(circle, #007cf0, transparent);"></div>
+      <div class="bp-header-orb bp-header-orb-2"></div>
+      <div class="container">
+        <div class="bp-header-inner">
+          <a href="/blog" class="bp-back">← All Articles</a>
+          <div class="bp-meta-top">
+            <span class="bp-category" style="color: #007cf0;">{post.category}</span>
+            <span class="bp-dot">·</span>
+            <span class="bp-read">{post.readTime}</span>
+            <span class="bp-dot">·</span>
+            <time datetime={post.dateISO}>{post.date}</time>
+          </div>
+          <h1 class="bp-title">{post.title}</h1>
+          <p class="bp-lead">{post.description}</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="bp-body-wrap">
+      <div class="container">
+        <div class="bp-body">
+
+          <h2>The Challenge of Date Mathematics</h2>
+          <p>Calculating the time between two specific dates sounds simple in theory, but in practice, our calendar system makes it surprisingly complex. Between varying month lengths (ranging from 28 to 31 days) and the periodic occurrence of leap years, doing the math manually leaves a lot of room for error.</p>
+
+          <div class="bp-callout">
+            <div class="bp-callout-icon">💡</div>
+            <div><strong>Did you know?</strong> Leap years happen almost every four years, adding an extra day (February 29th) to the calendar. This single day can throw off manual calculations for legal deadlines, project timelines, and event planning if not properly accounted for.</div>
+          </div>
+
+          <h2>Why You Need a Date Calculator</h2>
+          <p>When you use a <strong>how many days between dates calculator</strong>, you eliminate human error. These tools use standardized computational math to find the precise difference in milliseconds, which is then converted back into days, weeks, or months.</p>
+          
+          <p>Whether you're trying to figure out a <strong>how many days between calculator</strong> solution for an upcoming holiday, or need a <strong>how many days between two dates calculator</strong> for calculating interest on a loan, having an automated tool is essential. People frequently search for a <strong>how many days in between dates calculator</strong> because they realize halfway through counting on a calendar that they might have missed a day.</p>
+
+          <h2>Common Uses for Calculating Date Differences</h2>
+          <ul class="bp-list">
+            <li><strong>Project Management:</strong> Knowing exact project durations and tracking milestones.</li>
+            <li><strong>Legal & Financial Deadlines:</strong> Calculating precisely when a 30-day, 60-day, or 90-day grace period ends.</li>
+            <li><strong>Event Countdowns:</strong> Planning weddings, vacations, and finding out exactly <strong>how many days between 2 dates calculator</strong> logic applies to your special day.</li>
+            <li><strong>Personal Tracking:</strong> Tracking habits, relationship anniversaries, or sobriety milestones using a reliable <strong>how many days in between calculator</strong>.</li>
+          </ul>
+
+          <h2>Inclusive vs. Exclusive Dates</h2>
+          <p>One of the most common points of confusion when counting days is whether or not to include the end date. By default, finding the difference between Monday and Tuesday yields one day. However, if an event spans <em>both</em> Monday and Tuesday, it is technically a two-day event. A good calculator allows you to toggle this "inclusive" setting to ensure the result matches your exact needs.</p>
+
+          <div class="bp-cta-inline">
+            <a href="/days-between-dates-calculator" class="bp-cta-btn" style="background: #007cf0; color: #ffffff;">Try the Days Between Dates Calculator →</a>
+          </div>
+
+          <h2 style="margin-top:var(--space-3xl)">Frequently Asked Questions</h2>
+          <div class="faq-list">
+            {faqs.map(item => (
+              <details class="faq-item">
+                <summary class="faq-question">{item.q}</summary>
+                <p class="faq-answer">{item.a}</p>
+              </details>
+            ))}
+          </div>
+
+        </div>
+
+        <aside class="bp-sidebar">
+          <div class="bp-sidebar-card">
+            <h3>Related Calculators</h3>
+            <ul>
+              <li><a href="/days-between-dates-calculator">Days Between Dates</a></li>
+              <li><a href="/business-days-calculator">Business Days Calculator</a></li>
+              <li><a href="/date-addition-calculator">Date Addition Calculator</a></li>
+              <li><a href="/countdown-calculator">Countdown Calculator</a></li>
+            </ul>
+          </div>
+          <div class="bp-sidebar-card">
+            <h3>More Articles</h3>
+            <ul>
+              <li><a href="/blog/how-to-calculate-age-accurately">Calculate Age Accurately</a></li>
+              <li><a href="/blog/biological-age-vs-chronological-age">Biological vs Chronological Age</a></li>
+            </ul>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </article>
+
+  <Footer slot="footer" />
+</BaseLayout>
+
+<style is:global>
+.faq-list { display: flex; flex-direction: column; margin-top: var(--space-lg); }
+.faq-item { border-top: 1px solid var(--hairline); }
+.faq-item:last-child { border-bottom: 1px solid var(--hairline); }
+.faq-question {
+  font-size: 16px; font-weight: 500; color: var(--ink); cursor: pointer;
+  padding: var(--space-lg) 0; list-style: none; display: flex; justify-content: space-between;
+  align-items: center; letter-spacing: -0.4px; margin: 0;
+}
+.faq-question::after { content: '+'; font-size: 20px; font-weight: 300; color: var(--mute); transition: transform 0.2s ease; flex-shrink: 0; margin-left: var(--space-md); }
+details[open] .faq-question::after { content: '−'; }
+.faq-answer { font-size: 15px; color: var(--body); line-height: 1.7; padding-bottom: var(--space-lg); margin: 0; }
+</style>
