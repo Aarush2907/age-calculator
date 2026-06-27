@@ -1,0 +1,177 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Navbar from '../components/Navbar.astro';
+import Footer from '../components/Footer.astro';
+import ToolsGrid from '../components/ToolsGrid.astro';
+import RelatedArticles from '../components/RelatedArticles.astro';
+
+const title = "Conception Date Calculator | agecalconline.com";
+const description = "Calculate your exact conception date based on your due date or the first day of your last period. Find out exactly when you got pregnant.";
+const keywords = "conception date calculator, when did I conceive, reverse due date calculator, get pregnant date, conception calculator";
+const canonical = "https://agecalconline.com/conception-date-calculator";
+
+const schema = {
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Conception Date Calculator",
+  "applicationCategory": "HealthApplication",
+  "url": canonical,
+  "description": description,
+  "operatingSystem": "Any",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+};
+
+const faqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    { "@type": "Question", "name": "How is the conception date calculated?", "acceptedAnswer": { "@type": "Answer", "text": "If you know your due date, conception is typically calculated as 266 days (38 weeks) before that date. If using your last menstrual period (LMP), conception usually happens around 14 days after your period started, assuming a 28-day cycle." } },
+    { "@type": "Question", "name": "Is the conception date perfectly accurate?", "acceptedAnswer": { "@type": "Answer", "text": "Conception calculators provide a highly educated estimate. Because sperm can live in the reproductive tract for up to 5 days, and ovulation varies, the exact day of intercourse might be slightly different from the biological day of conception." } }
+  ]
+};
+---
+<BaseLayout title={title} description={description} keywords={keywords} canonical={canonical}>
+  <script type="application/ld+json" set:html={JSON.stringify(schema)} slot="head" />
+  <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} slot="head" />
+  <Navbar slot="nav" />
+
+  <section class="section-hero band-white" style="position:relative;overflow:hidden;text-align:center">
+    <div style="position:absolute;inset:-40px;background:linear-gradient(135deg,#ffafcc,#a2d2ff);opacity:0.08;filter:blur(80px);pointer-events:none"></div>
+    <div class="container" style="position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;gap:var(--space-xl)">
+      <span class="caption-mono">Pregnancy & Family</span>
+      <h1 class="display-xl">Conception Date Calculator</h1>
+      <p class="body-lg text-body" style="max-width:520px">Find out the exact week you likely conceived based on your due date or last menstrual period.</p>
+
+      <div class="card-lg" style="width:100%;max-width:600px;text-align:left">
+        <div class="form-group">
+          <label class="form-label" for="calc-method">Calculation Method</label>
+          <select id="calc-method" class="form-select form-input-lg">
+            <option value="due-date">I know my Due Date</option>
+            <option value="lmp">I know my Last Period Date</option>
+          </select>
+        </div>
+
+        <div class="form-group" style="margin-top:var(--space-md)" id="date-group">
+          <label class="form-label" id="date-label" for="base-date">Estimated Due Date</label>
+          <input type="date" id="base-date" class="form-input form-input-lg" required />
+        </div>
+
+        <div class="form-group" style="margin-top:var(--space-md);display:none" id="cycle-group">
+          <label class="form-label" for="cycle-length">Average Cycle Length (days)</label>
+          <input type="number" id="cycle-length" class="form-input form-input-lg" min="20" max="45" value="28" />
+        </div>
+
+        <button class="btn-primary" id="calc-btn" style="margin-top:var(--space-lg);width:100%;justify-content:center">Calculate Conception Date</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="section band-light hidden" id="result-section">
+    <div class="container" style="max-width:720px;text-align:center">
+      <div class="card-lg">
+        <div style="font-size:48px;margin-bottom:var(--space-md)">✨</div>
+        <div class="caption-mono" style="color:var(--mute);margin-bottom:var(--space-sm)">Estimated Date of Conception</div>
+        <div class="display-lg" style="color:var(--ink)" id="result-date">—</div>
+        
+        <div class="grid-2" style="margin-top:var(--space-2xl);text-align:left;gap:var(--space-md)">
+          <div class="card-soft">
+            <div class="caption-mono" style="color:var(--mute);margin-bottom:8px">Conception Window Starts</div>
+            <div class="display-sm" id="res-window-start" style="color:#ff6b9d">—</div>
+          </div>
+          <div class="card-soft">
+            <div class="caption-mono" style="color:var(--mute);margin-bottom:8px">Conception Window Ends</div>
+            <div class="display-sm" id="res-window-end" style="color:#ff6b9d">—</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section band-white">
+    <div class="container" style="max-width:720px">
+      <h2 class="display-md" style="margin-bottom:var(--space-xl)">Frequently Asked Questions</h2>
+      {faqSchema.mainEntity.map(faq => (
+        <details class="faq-item">
+          <summary class="faq-question">{faq.name}</summary>
+          <p class="faq-answer">{faq.acceptedAnswer.text}</p>
+        </details>
+      ))}
+    </div>
+  </section>
+
+  <RelatedArticles category="pregnancy" />
+  <ToolsGrid />
+  <Footer slot="footer" />
+</BaseLayout>
+
+<script>
+  const methodSelect = document.getElementById('calc-method') as HTMLSelectElement;
+  const label = document.getElementById('date-label')!;
+  const cycleGroup = document.getElementById('cycle-group')!;
+  const dateInput = document.getElementById('base-date') as HTMLInputElement;
+
+  methodSelect.addEventListener('change', () => {
+    if (methodSelect.value === 'due-date') {
+      label.textContent = "Estimated Due Date";
+      cycleGroup.style.display = 'none';
+      
+      const future = new Date();
+      future.setMonth(future.getMonth() + 5);
+      dateInput.value = future.toISOString().split('T')[0];
+    } else {
+      label.textContent = "First Day of Last Period";
+      cycleGroup.style.display = 'block';
+      
+      const past = new Date();
+      past.setMonth(past.getMonth() - 2);
+      dateInput.value = past.toISOString().split('T')[0];
+    }
+  });
+
+  // Default setup
+  methodSelect.dispatchEvent(new Event('change'));
+
+  document.getElementById('calc-btn')?.addEventListener('click', () => {
+    if (!dateInput.value) return alert("Please select a date.");
+
+    const baseDate = new Date(dateInput.value);
+    let conceptionDate = new Date(baseDate);
+
+    if (methodSelect.value === 'due-date') {
+      // Conception is exactly 266 days before due date
+      conceptionDate.setDate(conceptionDate.getDate() - 266);
+    } else {
+      // Based on LMP and cycle length
+      const cycleLength = parseInt((document.getElementById('cycle-length') as HTMLInputElement).value) || 28;
+      // Ovulation/Conception usually happens 14 days before the END of the cycle.
+      // So LMP + CycleLength - 14 = Conception Date
+      const daysToAdd = cycleLength - 14;
+      conceptionDate.setDate(conceptionDate.getDate() + daysToAdd);
+    }
+
+    const options: Intl.DateTimeFormatOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+    (document.getElementById('result-date') as HTMLElement).textContent = conceptionDate.toLocaleDateString(undefined, options);
+
+    // Provide a 5-day window
+    const windowStart = new Date(conceptionDate);
+    windowStart.setDate(windowStart.getDate() - 3);
+    const windowEnd = new Date(conceptionDate);
+    windowEnd.setDate(windowEnd.getDate() + 2);
+
+    const shortOptions: Intl.DateTimeFormatOptions = { month: 'short', day: 'numeric', year: 'numeric' };
+    (document.getElementById('res-window-start') as HTMLElement).textContent = windowStart.toLocaleDateString(undefined, shortOptions);
+    (document.getElementById('res-window-end') as HTMLElement).textContent = windowEnd.toLocaleDateString(undefined, shortOptions);
+
+    document.getElementById('result-section')!.classList.remove('hidden');
+    document.getElementById('result-section')!.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
+</script>
+
+<style is:global>
+.faq-item { border-top:1px solid var(--hairline); }
+.faq-item:last-child { border-bottom:1px solid var(--hairline); }
+.faq-question { font-size:16px;font-weight:500;color:var(--ink);cursor:pointer;padding:var(--space-lg) 0;list-style:none;display:flex;justify-content:space-between;align-items:center;letter-spacing:-0.4px; }
+.faq-question::after { content:'+';font-size:20px;font-weight:300;color:var(--mute); }
+details[open] .faq-question::after { content:'−'; }
+.faq-answer { font-size:15px;color:var(--body);line-height:1.7;padding-bottom:var(--space-lg); }
+</style>

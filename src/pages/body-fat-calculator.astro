@@ -1,0 +1,208 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Navbar from '../components/Navbar.astro';
+import Footer from '../components/Footer.astro';
+import ToolsGrid from '../components/ToolsGrid.astro';
+import RelatedArticles from '../components/RelatedArticles.astro';
+
+const title = "Body Fat Calculator — U.S. Navy Method | agecalconline.com";
+const description = "Calculate your body fat percentage using the U.S. Navy method. Find out your lean body mass and fat mass using just a tape measure.";
+const keywords = "body fat calculator, navy body fat formula, calculate body fat percentage, lean body mass, fat mass";
+const canonical = "https://agecalconline.com/body-fat-calculator";
+
+const schema = {
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Body Fat Calculator",
+  "applicationCategory": "HealthApplication",
+  "url": canonical,
+  "description": description,
+  "operatingSystem": "Any",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+};
+
+const faqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    { "@type": "Question", "name": "How does the U.S. Navy Body Fat method work?", "acceptedAnswer": { "@type": "Answer", "text": "The U.S. Navy method estimates body fat percentage by taking measurements of the neck, waist, and (for women) hips, comparing them against height. It is one of the most accurate tape-measure methods available." } },
+    { "@type": "Question", "name": "What is a healthy body fat percentage?", "acceptedAnswer": { "@type": "Answer", "text": "Healthy ranges vary by age and gender. Generally, for men, 10-20% is considered healthy or fit. For women, 20-30% is considered healthy or fit. Essential body fat is 2-5% for men and 10-13% for women." } }
+  ]
+};
+---
+<BaseLayout title={title} description={description} keywords={keywords} canonical={canonical}>
+  <script type="application/ld+json" set:html={JSON.stringify(schema)} slot="head" />
+  <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} slot="head" />
+  <Navbar slot="nav" />
+
+  <section class="section-hero band-white" style="position:relative;overflow:hidden;text-align:center">
+    <div style="position:absolute;inset:-40px;background:linear-gradient(135deg,#ff4d4d,#f9cb28);opacity:0.08;filter:blur(80px);pointer-events:none"></div>
+    <div class="container" style="position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;gap:var(--space-xl)">
+      <span class="caption-mono">Health & Fitness</span>
+      <h1 class="display-xl">Body Fat Calculator</h1>
+      <p class="body-lg text-body" style="max-width:520px">Estimate your body fat percentage and lean body mass using the highly accurate U.S. Navy tape measure method.</p>
+
+      <div class="card-lg" style="width:100%;max-width:600px;text-align:left">
+        <div class="grid-2" style="gap:var(--space-md)">
+          <div class="form-group">
+            <label class="form-label" for="bf-gender">Gender</label>
+            <select id="bf-gender" class="form-select form-input-lg">
+              <option value="male">Male</option>
+              <option value="female">Female</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="bf-weight">Weight (kg)</label>
+            <input type="number" id="bf-weight" class="form-input form-input-lg" min="30" max="300" value="75" />
+          </div>
+        </div>
+
+        <div class="grid-2" style="gap:var(--space-md);margin-top:var(--space-md)">
+          <div class="form-group">
+            <label class="form-label" for="bf-height">Height (cm)</label>
+            <input type="number" id="bf-height" class="form-input form-input-lg" min="100" max="250" value="175" />
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="bf-neck">Neck Circumference (cm)</label>
+            <input type="number" id="bf-neck" class="form-input form-input-lg" min="20" max="100" value="38" />
+          </div>
+        </div>
+
+        <div class="grid-2" style="gap:var(--space-md);margin-top:var(--space-md)">
+          <div class="form-group">
+            <label class="form-label" for="bf-waist">Waist Circumference (cm)</label>
+            <input type="number" id="bf-waist" class="form-input form-input-lg" min="40" max="200" value="85" />
+            <span class="body-sm text-body" style="font-size:12px;margin-top:4px;display:block">Measure at the navel</span>
+          </div>
+          <div class="form-group" id="hip-group" style="display:none">
+            <label class="form-label" for="bf-hip">Hip Circumference (cm)</label>
+            <input type="number" id="bf-hip" class="form-input form-input-lg" min="40" max="200" value="100" />
+            <span class="body-sm text-body" style="font-size:12px;margin-top:4px;display:block">Required for females</span>
+          </div>
+        </div>
+
+        <button class="btn-primary" id="calc-btn" style="margin-top:var(--space-lg);width:100%;justify-content:center">Calculate Body Fat %</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="section band-light hidden" id="result-section">
+    <div class="container" style="max-width:720px;text-align:center">
+      <div class="card-lg">
+        <div class="caption-mono" style="color:var(--mute);margin-bottom:var(--space-sm)">Estimated Body Fat</div>
+        <div class="display-xl" style="color:var(--ink)" id="result-bf">—</div>
+        
+        <div class="progress-track" style="height:12px;margin-top:var(--space-xl);background:var(--hairline)">
+          <div class="progress-fill" id="bf-progress" style="width:0%;background:linear-gradient(90deg,#ff4d4d,#f9cb28)"></div>
+        </div>
+        <div class="body-md" style="margin-top:8px;font-weight:600" id="bf-category">—</div>
+
+        <div class="grid-2" style="margin-top:var(--space-2xl);text-align:left;gap:var(--space-md)">
+          <div class="card-soft">
+            <div class="caption-mono" style="color:var(--mute);margin-bottom:8px">Fat Mass</div>
+            <div class="display-sm" id="res-fat-mass">—</div>
+          </div>
+          <div class="card-soft">
+            <div class="caption-mono" style="color:var(--mute);margin-bottom:8px">Lean Body Mass</div>
+            <div class="display-sm" id="res-lean-mass">—</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section band-white">
+    <div class="container" style="max-width:720px">
+      <h2 class="display-md" style="margin-bottom:var(--space-xl)">Frequently Asked Questions</h2>
+      {faqSchema.mainEntity.map(faq => (
+        <details class="faq-item">
+          <summary class="faq-question">{faq.name}</summary>
+          <p class="faq-answer">{faq.acceptedAnswer.text}</p>
+        </details>
+      ))}
+    </div>
+  </section>
+
+  <RelatedArticles category="bmi" />
+  <ToolsGrid />
+  <Footer slot="footer" />
+</BaseLayout>
+
+<script>
+  const genderSelect = document.getElementById('bf-gender') as HTMLSelectElement;
+  const hipGroup = document.getElementById('hip-group')!;
+
+  genderSelect.addEventListener('change', () => {
+    if (genderSelect.value === 'female') {
+      hipGroup.style.display = 'block';
+    } else {
+      hipGroup.style.display = 'none';
+    }
+  });
+
+  document.getElementById('calc-btn')?.addEventListener('click', () => {
+    const gender = genderSelect.value;
+    const weight = parseFloat((document.getElementById('bf-weight') as HTMLInputElement).value);
+    const height = parseFloat((document.getElementById('bf-height') as HTMLInputElement).value);
+    const neck = parseFloat((document.getElementById('bf-neck') as HTMLInputElement).value);
+    const waist = parseFloat((document.getElementById('bf-waist') as HTMLInputElement).value);
+    const hip = parseFloat((document.getElementById('bf-hip') as HTMLInputElement).value);
+
+    if (!weight || !height || !neck || !waist || (gender === 'female' && !hip)) {
+      return alert("Please fill in all required measurements.");
+    }
+
+    let bf = 0;
+    
+    // U.S. Navy method formulas (using metric cm)
+    if (gender === 'male') {
+      // 495 / (1.0324 - 0.19077 * log10(waist - neck) + 0.15456 * log10(height)) - 450
+      bf = 495 / (1.0324 - 0.19077 * Math.log10(waist - neck) + 0.15456 * Math.log10(height)) - 450;
+    } else {
+      // 495 / (1.29579 - 0.35004 * log10(waist + hip - neck) + 0.22100 * log10(height)) - 450
+      bf = 495 / (1.29579 - 0.35004 * Math.log10(waist + hip - neck) + 0.22100 * Math.log10(height)) - 450;
+    }
+
+    if (isNaN(bf) || bf < 1 || bf > 70) {
+      return alert("Measurements seem to be out of standard bounds. Please verify your inputs.");
+    }
+
+    const fatMass = weight * (bf / 100);
+    const leanMass = weight - fatMass;
+
+    let category = "Average";
+    if (gender === 'male') {
+      if (bf < 6) category = "Essential Fat";
+      else if (bf <= 13) category = "Athletes";
+      else if (bf <= 17) category = "Fitness";
+      else if (bf <= 24) category = "Average";
+      else category = "Obese";
+    } else {
+      if (bf < 14) category = "Essential Fat";
+      else if (bf <= 20) category = "Athletes";
+      else if (bf <= 24) category = "Fitness";
+      else if (bf <= 31) category = "Average";
+      else category = "Obese";
+    }
+
+    (document.getElementById('result-bf') as HTMLElement).textContent = bf.toFixed(1) + '%';
+    (document.getElementById('res-fat-mass') as HTMLElement).textContent = fatMass.toFixed(1) + ' kg';
+    (document.getElementById('res-lean-mass') as HTMLElement).textContent = leanMass.toFixed(1) + ' kg';
+    (document.getElementById('bf-category') as HTMLElement).textContent = `Category: ${category}`;
+    
+    const prog = Math.min(100, Math.max(0, (bf / 50) * 100)); // scale out of 50% max for visual
+    (document.getElementById('bf-progress') as HTMLElement).style.width = prog + '%';
+
+    document.getElementById('result-section')!.classList.remove('hidden');
+    document.getElementById('result-section')!.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
+</script>
+
+<style is:global>
+.faq-item { border-top:1px solid var(--hairline); }
+.faq-item:last-child { border-bottom:1px solid var(--hairline); }
+.faq-question { font-size:16px;font-weight:500;color:var(--ink);cursor:pointer;padding:var(--space-lg) 0;list-style:none;display:flex;justify-content:space-between;align-items:center;letter-spacing:-0.4px; }
+.faq-question::after { content:'+';font-size:20px;font-weight:300;color:var(--mute); }
+details[open] .faq-question::after { content:'−'; }
+.faq-answer { font-size:15px;color:var(--body);line-height:1.7;padding-bottom:var(--space-lg); }
+</style>

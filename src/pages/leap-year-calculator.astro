@@ -1,0 +1,158 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Navbar from '../components/Navbar.astro';
+import Footer from '../components/Footer.astro';
+import ToolsGrid from '../components/ToolsGrid.astro';
+import RelatedArticles from '../components/RelatedArticles.astro';
+
+const title = "Leap Year Calculator | agecalconline.com";
+const description = "Check if a specific year is a leap year. Discover the mathematical rules behind leap years and find upcoming leap years instantly.";
+const keywords = "leap year calculator, is it a leap year, next leap year, leap year rules, calculate leap year";
+const canonical = "https://agecalconline.com/leap-year-calculator";
+
+const schema = {
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Leap Year Calculator",
+  "applicationCategory": "UtilitiesApplication",
+  "url": canonical,
+  "description": description,
+  "operatingSystem": "Any",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+};
+
+const faqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    { "@type": "Question", "name": "What is the rule for a leap year?", "acceptedAnswer": { "@type": "Answer", "text": "A year is a leap year if it is divisible by 4. However, if the year is divisible by 100, it is NOT a leap year, unless it is also divisible by 400." } },
+    { "@type": "Question", "name": "Why do we have leap years?", "acceptedAnswer": { "@type": "Answer", "text": "Earth takes approximately 365.2422 days to orbit the sun. To keep our calendar aligned with the astronomical seasons, we add an extra day (February 29) almost every four years." } },
+    { "@type": "Question", "name": "When is the next leap year?", "acceptedAnswer": { "@type": "Answer", "text": "Leap years generally happen every 4 years. Recent and upcoming leap years include 2020, 2024, 2028, and 2032." } }
+  ]
+};
+---
+<BaseLayout title={title} description={description} keywords={keywords} canonical={canonical}>
+  <script type="application/ld+json" set:html={JSON.stringify(schema)} slot="head" />
+  <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} slot="head" />
+  <Navbar slot="nav" />
+
+  <section class="section-hero band-white" style="position:relative;overflow:hidden;text-align:center">
+    <div style="position:absolute;inset:-40px;background:linear-gradient(135deg,#00dfd8,#50e3c2);opacity:0.08;filter:blur(80px);pointer-events:none"></div>
+    <div class="container" style="position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;gap:var(--space-xl)">
+      <span class="caption-mono">Date & Time Utilities</span>
+      <h1 class="display-xl">Leap Year Calculator</h1>
+      <p class="body-lg text-body" style="max-width:520px">Check if any year in history or the future is a leap year, and learn the rules behind the calendar.</p>
+
+      <div class="card-lg" style="width:100%;max-width:500px;text-align:left">
+        <div class="form-group">
+          <label class="form-label" for="year-input">Enter a Year</label>
+          <input type="number" id="year-input" class="form-input form-input-lg" placeholder="e.g. 2024" min="1" max="9999" />
+        </div>
+
+        <button class="btn-primary" id="calc-btn" style="margin-top:var(--space-lg);width:100%;justify-content:center">Check Year</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="section band-light hidden" id="result-section">
+    <div class="container" style="max-width:720px;text-align:center">
+      <div class="card-lg" id="result-card" style="transition: background-color 0.3s ease;">
+        <div class="display-lg" id="result-heading" style="margin-bottom:var(--space-sm)">—</div>
+        <p class="body-lg" id="result-desc" style="color:var(--body)">—</p>
+        
+        <div class="grid-2" style="margin-top:var(--space-xl);text-align:left;gap:var(--space-md)">
+          <div class="card-soft" style="background:var(--canvas)">
+            <div class="caption-mono" style="color:var(--mute);margin-bottom:8px">Previous Leap Year</div>
+            <div class="display-sm" id="res-prev">—</div>
+          </div>
+          <div class="card-soft" style="background:var(--canvas)">
+            <div class="caption-mono" style="color:var(--mute);margin-bottom:8px">Next Leap Year</div>
+            <div class="display-sm" id="res-next">—</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section band-white">
+    <div class="container" style="max-width:720px">
+      <h2 class="display-md" style="margin-bottom:var(--space-xl)">Frequently Asked Questions</h2>
+      {faqSchema.mainEntity.map(faq => (
+        <details class="faq-item">
+          <summary class="faq-question">{faq.name}</summary>
+          <p class="faq-answer">{faq.acceptedAnswer.text}</p>
+        </details>
+      ))}
+    </div>
+  </section>
+
+  <RelatedArticles category="general" />
+  <ToolsGrid />
+  <Footer slot="footer" />
+</BaseLayout>
+
+<script>
+  function isLeapYear(year: number) {
+    if (year % 4 !== 0) return false;
+    if (year % 100 !== 0) return true;
+    if (year % 400 !== 0) return false;
+    return true;
+  }
+
+  function getPrevLeapYear(year: number) {
+    let y = year - 1;
+    while (!isLeapYear(y)) y--;
+    return y;
+  }
+
+  function getNextLeapYear(year: number) {
+    let y = year + 1;
+    while (!isLeapYear(y)) y++;
+    return y;
+  }
+
+  document.getElementById('calc-btn')?.addEventListener('click', () => {
+    const yearStr = (document.getElementById('year-input') as HTMLInputElement).value;
+    if (!yearStr) return alert("Please enter a year.");
+    
+    const year = parseInt(yearStr, 10);
+    if (isNaN(year) || year < 1) return alert("Please enter a valid positive year.");
+
+    const isLeap = isLeapYear(year);
+    const card = document.getElementById('result-card')!;
+    const heading = document.getElementById('result-heading')!;
+    const desc = document.getElementById('result-desc')!;
+    
+    if (isLeap) {
+      heading.textContent = `Yes, ${year} is a leap year! 🎉`;
+      heading.style.color = 'var(--success)';
+      desc.textContent = `It has 366 days, meaning February has 29 days.`;
+      card.style.borderColor = 'var(--success)';
+      card.style.boxShadow = '0 0 0 1px rgba(0,112,243,0.2), 0 8px 16px rgba(0,112,243,0.1)';
+    } else {
+      heading.textContent = `No, ${year} is not a leap year.`;
+      heading.style.color = 'var(--ink)';
+      desc.textContent = `It is a standard year with 365 days, and February has 28 days.`;
+      card.style.borderColor = 'var(--hairline)';
+      card.style.boxShadow = 'var(--shadow-3)';
+    }
+
+    (document.getElementById('res-prev') as HTMLElement).textContent = getPrevLeapYear(year).toString();
+    (document.getElementById('res-next') as HTMLElement).textContent = getNextLeapYear(year).toString();
+
+    document.getElementById('result-section')!.classList.remove('hidden');
+    document.getElementById('result-section')!.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
+
+  // Default to current year
+  (document.getElementById('year-input') as HTMLInputElement).value = new Date().getFullYear().toString();
+</script>
+
+<style is:global>
+.faq-item { border-top:1px solid var(--hairline); }
+.faq-item:last-child { border-bottom:1px solid var(--hairline); }
+.faq-question { font-size:16px;font-weight:500;color:var(--ink);cursor:pointer;padding:var(--space-lg) 0;list-style:none;display:flex;justify-content:space-between;align-items:center;letter-spacing:-0.4px; }
+.faq-question::after { content:'+';font-size:20px;font-weight:300;color:var(--mute); }
+details[open] .faq-question::after { content:'−'; }
+.faq-answer { font-size:15px;color:var(--body);line-height:1.7;padding-bottom:var(--space-lg); }
+</style>

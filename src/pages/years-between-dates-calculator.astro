@@ -1,0 +1,168 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Navbar from '../components/Navbar.astro';
+import Footer from '../components/Footer.astro';
+import ToolsGrid from '../components/ToolsGrid.astro';
+import RelatedArticles from '../components/RelatedArticles.astro';
+
+const title = "Years Between Dates Calculator | agecalconline.com";
+const description = "Calculate exactly how many years, months, and days are between two dates. Free online tool to find the exact calendar duration.";
+const keywords = "years between dates calculator, count years between dates, years difference calculator, duration in years";
+const canonical = "https://agecalconline.com/years-between-dates-calculator";
+
+const schema = {
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Years Between Dates Calculator",
+  "applicationCategory": "UtilitiesApplication",
+  "url": canonical,
+  "description": description,
+  "operatingSystem": "Any",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+};
+
+const faqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    { "@type": "Question", "name": "How is the exact year difference calculated?", "acceptedAnswer": { "@type": "Answer", "text": "The calculator aligns the month and day of the start date with the end date to count full years, then calculates the remaining months, and finally the remaining days." } },
+    { "@type": "Question", "name": "Does this tool account for leap years?", "acceptedAnswer": { "@type": "Answer", "text": "Yes. When calculating days and years, leap years (February 29) are fully factored into the calendar math." } }
+  ]
+};
+---
+<BaseLayout title={title} description={description} keywords={keywords} canonical={canonical}>
+  <script type="application/ld+json" set:html={JSON.stringify(schema)} slot="head" />
+  <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} slot="head" />
+  <Navbar slot="nav" />
+
+  <section class="section-hero band-white" style="position:relative;overflow:hidden;text-align:center">
+    <div style="position:absolute;inset:-40px;background:linear-gradient(135deg,#ff0080,#ff4d4d);opacity:0.08;filter:blur(80px);pointer-events:none"></div>
+    <div class="container" style="position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;gap:var(--space-xl)">
+      <span class="caption-mono">Date & Time Utilities</span>
+      <h1 class="display-xl">Years Between Dates Calculator</h1>
+      <p class="body-lg text-body" style="max-width:520px">Find out exactly how many years, months, and days exist between any two calendar dates.</p>
+
+      <div class="card-lg" style="width:100%;max-width:600px;text-align:left">
+        <div class="grid-2" style="gap:var(--space-md)">
+          <div class="form-group">
+            <label class="form-label" for="start-date">Start Date</label>
+            <input type="date" id="start-date" class="form-input form-input-lg" />
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="end-date">End Date</label>
+            <input type="date" id="end-date" class="form-input form-input-lg" />
+          </div>
+        </div>
+
+        <button class="btn-primary" id="calc-btn" style="margin-top:var(--space-lg);width:100%;justify-content:center">Calculate Years</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="section band-light hidden" id="result-section">
+    <div class="container" style="max-width:720px;text-align:center">
+      <div class="card-lg">
+        <div class="caption-mono" style="color:var(--mute);margin-bottom:var(--space-sm)">Exact Difference</div>
+        <div class="display-xl" style="color:var(--ink)" id="result-exact">—</div>
+        
+        <div class="grid-2" style="margin-top:var(--space-2xl);text-align:left;gap:var(--space-md)">
+          <div class="card-soft">
+            <div class="caption-mono" style="color:var(--mute);margin-bottom:8px">Total Years (Decimal)</div>
+            <div class="display-sm" id="res-decimal">—</div>
+          </div>
+          <div class="card-soft">
+            <div class="caption-mono" style="color:var(--mute);margin-bottom:8px">Total Days</div>
+            <div class="display-sm" id="res-days">—</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section band-white">
+    <div class="container" style="max-width:720px">
+      <h2 class="display-md" style="margin-bottom:var(--space-xl)">Frequently Asked Questions</h2>
+      {faqSchema.mainEntity.map(faq => (
+        <details class="faq-item">
+          <summary class="faq-question">{faq.name}</summary>
+          <p class="faq-answer">{faq.acceptedAnswer.text}</p>
+        </details>
+      ))}
+    </div>
+  </section>
+
+  <RelatedArticles category="general" />
+  <ToolsGrid />
+  <Footer slot="footer" />
+</BaseLayout>
+
+<script>
+  document.getElementById('calc-btn')?.addEventListener('click', () => {
+    const startStr = (document.getElementById('start-date') as HTMLInputElement).value;
+    const endStr = (document.getElementById('end-date') as HTMLInputElement).value;
+
+    if (!startStr || !endStr) return alert("Please select both dates.");
+
+    let start = new Date(startStr);
+    let end = new Date(endStr);
+    
+    if (start > end) {
+      const temp = start;
+      start = end;
+      end = temp;
+    }
+
+    let years = end.getFullYear() - start.getFullYear();
+    let months = end.getMonth() - start.getMonth();
+    let days = end.getDate() - start.getDate();
+
+    if (days < 0) {
+      months -= 1;
+      const prevMonth = new Date(end.getFullYear(), end.getMonth(), 0);
+      days += prevMonth.getDate();
+    }
+    
+    if (months < 0) {
+      years -= 1;
+      months += 12;
+    }
+
+    const utcStart = Date.UTC(start.getFullYear(), start.getMonth(), start.getDate());
+    const utcEnd = Date.UTC(end.getFullYear(), end.getMonth(), end.getDate());
+    const totalDays = Math.floor((utcEnd - utcStart) / (1000 * 60 * 60 * 24));
+    const decimalYears = totalDays / 365.2425;
+
+    let parts = [];
+    if (years > 0) parts.push(`${years} year${years !== 1 ? 's' : ''}`);
+    if (months > 0) parts.push(`${months} month${months !== 1 ? 's' : ''}`);
+    if (days > 0) parts.push(`${days} day${days !== 1 ? 's' : ''}`);
+
+    let exactStr = parts.length > 0 ? parts.join(', ') : '0 days';
+
+    (document.getElementById('result-exact') as HTMLElement).textContent = exactStr;
+    (document.getElementById('res-decimal') as HTMLElement).textContent = decimalYears.toFixed(3);
+    (document.getElementById('res-days') as HTMLElement).textContent = totalDays.toLocaleString();
+
+    document.getElementById('result-section')!.classList.remove('hidden');
+    document.getElementById('result-section')!.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
+
+  // Set default dates
+  const today = new Date();
+  const nextDates = new Date(today);
+  nextDates.setFullYear(today.getFullYear() + 5);
+  nextDates.setMonth(today.getMonth() + 2);
+  
+  const formatDate = (d: Date) => d.toISOString().split('T')[0];
+  (document.getElementById('start-date') as HTMLInputElement).value = formatDate(today);
+  (document.getElementById('end-date') as HTMLInputElement).value = formatDate(nextDates);
+</script>
+
+<style is:global>
+.faq-item { border-top:1px solid var(--hairline); }
+.faq-item:last-child { border-bottom:1px solid var(--hairline); }
+.faq-question { font-size:16px;font-weight:500;color:var(--ink);cursor:pointer;padding:var(--space-lg) 0;list-style:none;display:flex;justify-content:space-between;align-items:center;letter-spacing:-0.4px; }
+.faq-question::after { content:'+';font-size:20px;font-weight:300;color:var(--mute); }
+details[open] .faq-question::after { content:'−'; }
+.faq-answer { font-size:15px;color:var(--body);line-height:1.7;padding-bottom:var(--space-lg); }
+</style>

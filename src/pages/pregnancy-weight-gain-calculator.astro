@@ -1,0 +1,165 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Navbar from '../components/Navbar.astro';
+import Footer from '../components/Footer.astro';
+import ToolsGrid from '../components/ToolsGrid.astro';
+import RelatedArticles from '../components/RelatedArticles.astro';
+
+const title = "Pregnancy Weight Gain Calculator | agecalconline.com";
+const description = "Calculate your recommended pregnancy weight gain based on your pre-pregnancy BMI. Track your healthy weight goals week by week.";
+const keywords = "pregnancy weight gain calculator, pregnancy weight chart, healthy weight gain pregnancy, calculate pregnancy weight";
+const canonical = "https://agecalconline.com/pregnancy-weight-gain-calculator";
+
+const schema = {
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Pregnancy Weight Gain Calculator",
+  "applicationCategory": "HealthApplication",
+  "url": canonical,
+  "description": description,
+  "operatingSystem": "Any",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+};
+
+const faqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    { "@type": "Question", "name": "How much weight should I gain during pregnancy?", "acceptedAnswer": { "@type": "Answer", "text": "Recommended weight gain depends entirely on your pre-pregnancy Body Mass Index (BMI). For a normal BMI, the recommendation is typically 25-35 lbs (11-16 kg). Underweight individuals are recommended to gain more, while overweight individuals are recommended to gain less." } },
+    { "@type": "Question", "name": "When does most pregnancy weight gain happen?", "acceptedAnswer": { "@type": "Answer", "text": "Most weight gain occurs in the second and third trimesters. In the first trimester, it's common to only gain 1 to 5 pounds total." } }
+  ]
+};
+---
+<BaseLayout title={title} description={description} keywords={keywords} canonical={canonical}>
+  <script type="application/ld+json" set:html={JSON.stringify(schema)} slot="head" />
+  <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} slot="head" />
+  <Navbar slot="nav" />
+
+  <section class="section-hero band-white" style="position:relative;overflow:hidden;text-align:center">
+    <div style="position:absolute;inset:-40px;background:linear-gradient(135deg,#a2d2ff,#ffafcc);opacity:0.08;filter:blur(80px);pointer-events:none"></div>
+    <div class="container" style="position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;gap:var(--space-xl)">
+      <span class="caption-mono">Pregnancy & Family</span>
+      <h1 class="display-xl">Pregnancy Weight Gain Calculator</h1>
+      <p class="body-lg text-body" style="max-width:520px">Find out your healthy recommended pregnancy weight gain range based on your pre-pregnancy BMI.</p>
+
+      <div class="card-lg" style="width:100%;max-width:600px;text-align:left">
+        <p class="body-sm text-body" style="margin-bottom:var(--space-md)">Please enter your weight <strong>before</strong> you became pregnant.</p>
+        
+        <div class="grid-2" style="gap:var(--space-md)">
+          <div class="form-group">
+            <label class="form-label" for="pw-height">Height (cm)</label>
+            <input type="number" id="pw-height" class="form-input form-input-lg" min="100" max="250" value="165" />
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="pw-weight">Pre-pregnancy Weight (kg)</label>
+            <input type="number" id="pw-weight" class="form-input form-input-lg" min="30" max="300" value="65" />
+          </div>
+        </div>
+
+        <div class="form-group" style="margin-top:var(--space-md)">
+          <label class="form-label" for="pw-twins">Are you expecting twins?</label>
+          <select id="pw-twins" class="form-select form-input-lg">
+            <option value="no">No, a single baby</option>
+            <option value="yes">Yes, twins</option>
+          </select>
+        </div>
+
+        <button class="btn-primary" id="calc-btn" style="margin-top:var(--space-lg);width:100%;justify-content:center">Calculate Target Weight</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="section band-light hidden" id="result-section">
+    <div class="container" style="max-width:720px;text-align:center">
+      <div class="card-lg">
+        <div class="caption-mono" style="color:var(--mute);margin-bottom:var(--space-sm)">Recommended Total Weight Gain</div>
+        <div class="display-lg" style="color:var(--ink)" id="result-range">—</div>
+        
+        <div class="grid-2" style="margin-top:var(--space-2xl);text-align:left;gap:var(--space-md)">
+          <div class="card-soft">
+            <div class="caption-mono" style="color:var(--mute);margin-bottom:8px">Pre-pregnancy BMI</div>
+            <div class="display-sm" id="res-bmi">—</div>
+            <div class="body-sm text-body" id="res-bmi-cat" style="margin-top:4px">—</div>
+          </div>
+          <div class="card-soft">
+            <div class="caption-mono" style="color:var(--mute);margin-bottom:8px">Target Delivery Weight</div>
+            <div class="display-sm" id="res-target-weight" style="color:#007cf0">—</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section band-white">
+    <div class="container" style="max-width:720px">
+      <h2 class="display-md" style="margin-bottom:var(--space-xl)">Frequently Asked Questions</h2>
+      {faqSchema.mainEntity.map(faq => (
+        <details class="faq-item">
+          <summary class="faq-question">{faq.name}</summary>
+          <p class="faq-answer">{faq.acceptedAnswer.text}</p>
+        </details>
+      ))}
+    </div>
+  </section>
+
+  <RelatedArticles category="pregnancy" />
+  <ToolsGrid />
+  <Footer slot="footer" />
+</BaseLayout>
+
+<script>
+  document.getElementById('calc-btn')?.addEventListener('click', () => {
+    const heightCm = parseFloat((document.getElementById('pw-height') as HTMLInputElement).value);
+    const weightKg = parseFloat((document.getElementById('pw-weight') as HTMLInputElement).value);
+    const isTwins = (document.getElementById('pw-twins') as HTMLSelectElement).value === 'yes';
+
+    if (!heightCm || !weightKg) return alert("Please fill in all required fields.");
+
+    // Calculate BMI
+    const heightM = heightCm / 100;
+    const bmi = weightKg / (heightM * heightM);
+
+    let bmiCat = "";
+    let minGain = 0;
+    let maxGain = 0;
+
+    // Based on ACOG / IOM Guidelines
+    if (bmi < 18.5) {
+      bmiCat = "Underweight";
+      if (isTwins) { minGain = 22.5; maxGain = 28; } // roughly 50-62 lbs -> 22.5-28 kg
+      else { minGain = 12.5; maxGain = 18; }
+    } else if (bmi < 25) {
+      bmiCat = "Normal Weight";
+      if (isTwins) { minGain = 17; maxGain = 25; }
+      else { minGain = 11.5; maxGain = 16; }
+    } else if (bmi < 30) {
+      bmiCat = "Overweight";
+      if (isTwins) { minGain = 14; maxGain = 23; }
+      else { minGain = 7; maxGain = 11.5; }
+    } else {
+      bmiCat = "Obese";
+      if (isTwins) { minGain = 11; maxGain = 19; }
+      else { minGain = 5; maxGain = 9; }
+    }
+
+    const minTarget = weightKg + minGain;
+    const maxTarget = weightKg + maxGain;
+
+    (document.getElementById('result-range') as HTMLElement).textContent = `${minGain.toFixed(1)} to ${maxGain.toFixed(1)} kg`;
+    (document.getElementById('res-bmi') as HTMLElement).textContent = bmi.toFixed(1);
+    (document.getElementById('res-bmi-cat') as HTMLElement).textContent = bmiCat;
+    (document.getElementById('res-target-weight') as HTMLElement).textContent = `${minTarget.toFixed(1)} to ${maxTarget.toFixed(1)} kg`;
+
+    document.getElementById('result-section')!.classList.remove('hidden');
+    document.getElementById('result-section')!.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
+</script>
+
+<style is:global>
+.faq-item { border-top:1px solid var(--hairline); }
+.faq-item:last-child { border-bottom:1px solid var(--hairline); }
+.faq-question { font-size:16px;font-weight:500;color:var(--ink);cursor:pointer;padding:var(--space-lg) 0;list-style:none;display:flex;justify-content:space-between;align-items:center;letter-spacing:-0.4px; }
+.faq-question::after { content:'+';font-size:20px;font-weight:300;color:var(--mute); }
+details[open] .faq-question::after { content:'−'; }
+.faq-answer { font-size:15px;color:var(--body);line-height:1.7;padding-bottom:var(--space-lg); }
+</style>

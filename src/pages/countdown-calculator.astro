@@ -1,0 +1,187 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Navbar from '../components/Navbar.astro';
+import Footer from '../components/Footer.astro';
+import ToolsGrid from '../components/ToolsGrid.astro';
+import RelatedArticles from '../components/RelatedArticles.astro';
+
+const title = "Countdown Calculator | agecalconline.com";
+const description = "Create a precise countdown to any future date and time. Find out exactly how many days, hours, minutes, and seconds are left until your event.";
+const keywords = "countdown calculator, days until, time until date, event countdown, countdown timer";
+const canonical = "https://agecalconline.com/countdown-calculator";
+
+const schema = {
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Countdown Calculator",
+  "applicationCategory": "UtilitiesApplication",
+  "url": canonical,
+  "description": description,
+  "operatingSystem": "Any",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+};
+
+const faqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    { "@type": "Question", "name": "How does the countdown calculate time?", "acceptedAnswer": { "@type": "Answer", "text": "It takes your exact current local time and calculates the difference down to the second against the future date and time you provide." } },
+    { "@type": "Question", "name": "Can I leave the page open to watch the countdown?", "acceptedAnswer": { "@type": "Answer", "text": "Yes! Once you calculate the countdown, the timer will update live every second so you can watch the time tick down to your event." } }
+  ]
+};
+---
+<BaseLayout title={title} description={description} keywords={keywords} canonical={canonical}>
+  <script type="application/ld+json" set:html={JSON.stringify(schema)} slot="head" />
+  <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} slot="head" />
+  <Navbar slot="nav" />
+
+  <section class="section-hero band-white" style="position:relative;overflow:hidden;text-align:center">
+    <div style="position:absolute;inset:-40px;background:linear-gradient(135deg,#f9cb28,#ff4d4d);opacity:0.08;filter:blur(80px);pointer-events:none"></div>
+    <div class="container" style="position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;gap:var(--space-xl)">
+      <span class="caption-mono">Date & Time Utilities</span>
+      <h1 class="display-xl">Countdown Calculator</h1>
+      <p class="body-lg text-body" style="max-width:520px">Find out exactly how much time is left until your upcoming event, vacation, or deadline.</p>
+
+      <div class="card-lg" style="width:100%;max-width:600px;text-align:left">
+        <div class="form-group">
+          <label class="form-label" for="event-name">Event Name (Optional)</label>
+          <input type="text" id="event-name" class="form-input form-input-lg" placeholder="e.g., Summer Vacation" />
+        </div>
+        <div class="grid-2" style="gap:var(--space-md);margin-top:var(--space-md)">
+          <div class="form-group">
+            <label class="form-label" for="target-date">Target Date</label>
+            <input type="date" id="target-date" class="form-input form-input-lg" required />
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="target-time">Target Time (Optional)</label>
+            <input type="time" id="target-time" class="form-input form-input-lg" />
+          </div>
+        </div>
+
+        <button class="btn-primary" id="calc-btn" style="margin-top:var(--space-lg);width:100%;justify-content:center">Start Countdown</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="section band-dark hidden" id="result-section">
+    <div class="container" style="max-width:800px;text-align:center">
+      <div class="caption-mono" style="color:rgba(255,255,255,0.5);margin-bottom:var(--space-sm)">Time Remaining Until</div>
+      <h2 class="display-lg" style="color:#fff;margin-bottom:var(--space-2xl)" id="display-event-name">—</h2>
+      
+      <div class="grid-4" style="gap:var(--space-md)">
+        <div class="card-dark" style="text-align:center;padding:var(--space-lg)">
+          <div class="display-lg" style="color:#f9cb28" id="cd-days">0</div>
+          <div class="caption-mono" style="color:rgba(255,255,255,0.5);margin-top:8px">Days</div>
+        </div>
+        <div class="card-dark" style="text-align:center;padding:var(--space-lg)">
+          <div class="display-lg" style="color:#50e3c2" id="cd-hours">0</div>
+          <div class="caption-mono" style="color:rgba(255,255,255,0.5);margin-top:8px">Hours</div>
+        </div>
+        <div class="card-dark" style="text-align:center;padding:var(--space-lg)">
+          <div class="display-lg" style="color:#00dfd8" id="cd-minutes">0</div>
+          <div class="caption-mono" style="color:rgba(255,255,255,0.5);margin-top:8px">Minutes</div>
+        </div>
+        <div class="card-dark" style="text-align:center;padding:var(--space-lg)">
+          <div class="display-lg" style="color:#007cf0" id="cd-seconds">0</div>
+          <div class="caption-mono" style="color:rgba(255,255,255,0.5);margin-top:8px">Seconds</div>
+        </div>
+      </div>
+      
+      <p class="body-md" style="color:rgba(255,255,255,0.7);margin-top:var(--space-xl)" id="target-display-string"></p>
+    </div>
+  </section>
+
+  <section class="section band-white">
+    <div class="container" style="max-width:720px">
+      <h2 class="display-md" style="margin-bottom:var(--space-xl)">Frequently Asked Questions</h2>
+      {faqSchema.mainEntity.map(faq => (
+        <details class="faq-item">
+          <summary class="faq-question">{faq.name}</summary>
+          <p class="faq-answer">{faq.acceptedAnswer.text}</p>
+        </details>
+      ))}
+    </div>
+  </section>
+
+  <RelatedArticles category="general" />
+  <ToolsGrid />
+  <Footer slot="footer" />
+</BaseLayout>
+
+<script>
+  let countdownInterval: number | undefined;
+
+  document.getElementById('calc-btn')?.addEventListener('click', () => {
+    const dateStr = (document.getElementById('target-date') as HTMLInputElement).value;
+    const timeStr = (document.getElementById('target-time') as HTMLInputElement).value || "00:00";
+    let eventName = (document.getElementById('event-name') as HTMLInputElement).value.trim();
+
+    if (!dateStr) return alert("Please select a target date.");
+
+    // Parse the target date and time in the user's local timezone
+    const targetDate = new Date(`${dateStr}T${timeStr}:00`);
+
+    if (isNaN(targetDate.getTime())) return alert("Invalid date or time.");
+
+    if (!eventName) {
+      const options: Intl.DateTimeFormatOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: '2-digit' };
+      eventName = "The Event";
+      (document.getElementById('target-display-string') as HTMLElement).textContent = `Target: ${targetDate.toLocaleString(undefined, options)}`;
+    } else {
+      (document.getElementById('target-display-string') as HTMLElement).textContent = `Target Date: ${targetDate.toLocaleString()}`;
+    }
+
+    (document.getElementById('display-event-name') as HTMLElement).textContent = eventName;
+
+    const updateCountdown = () => {
+      const now = new Date();
+      const diffMs = targetDate.getTime() - now.getTime();
+
+      if (diffMs <= 0) {
+        (document.getElementById('cd-days') as HTMLElement).textContent = "0";
+        (document.getElementById('cd-hours') as HTMLElement).textContent = "0";
+        (document.getElementById('cd-minutes') as HTMLElement).textContent = "0";
+        (document.getElementById('cd-seconds') as HTMLElement).textContent = "0";
+        (document.getElementById('display-event-name') as HTMLElement).textContent = `${eventName} has arrived! 🎉`;
+        if (countdownInterval) clearInterval(countdownInterval);
+        return;
+      }
+
+      const days = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((diffMs % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      const minutes = Math.floor((diffMs % (1000 * 60 * 60)) / (1000 * 60));
+      const seconds = Math.floor((diffMs % (1000 * 60)) / 1000);
+
+      (document.getElementById('cd-days') as HTMLElement).textContent = days.toString();
+      (document.getElementById('cd-hours') as HTMLElement).textContent = hours.toString();
+      (document.getElementById('cd-minutes') as HTMLElement).textContent = minutes.toString();
+      (document.getElementById('cd-seconds') as HTMLElement).textContent = seconds.toString();
+    };
+
+    if (countdownInterval) clearInterval(countdownInterval);
+    updateCountdown(); // Run once immediately
+    countdownInterval = window.setInterval(updateCountdown, 1000);
+
+    document.getElementById('result-section')!.classList.remove('hidden');
+    document.getElementById('result-section')!.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
+
+  // Set default to next year's new year
+  const today = new Date();
+  const nextYear = today.getFullYear() + 1;
+  (document.getElementById('target-date') as HTMLInputElement).value = `${nextYear}-01-01`;
+  (document.getElementById('target-time') as HTMLInputElement).value = "00:00";
+  (document.getElementById('event-name') as HTMLInputElement).value = "New Year's Day";
+</script>
+
+<style is:global>
+.faq-item { border-top:1px solid var(--hairline); }
+.faq-item:last-child { border-bottom:1px solid var(--hairline); }
+.faq-question { font-size:16px;font-weight:500;color:var(--ink);cursor:pointer;padding:var(--space-lg) 0;list-style:none;display:flex;justify-content:space-between;align-items:center;letter-spacing:-0.4px; }
+.faq-question::after { content:'+';font-size:20px;font-weight:300;color:var(--mute); }
+details[open] .faq-question::after { content:'−'; }
+.faq-answer { font-size:15px;color:var(--body);line-height:1.7;padding-bottom:var(--space-lg); }
+.grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--space-md); }
+@media (max-width: 768px) { .grid-4 { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 480px) { .grid-4 { grid-template-columns: 1fr; } }
+</style>

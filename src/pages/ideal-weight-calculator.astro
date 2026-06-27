@@ -1,0 +1,147 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Navbar from '../components/Navbar.astro';
+import Footer from '../components/Footer.astro';
+import ToolsGrid from '../components/ToolsGrid.astro';
+import RelatedArticles from '../components/RelatedArticles.astro';
+
+const title = "Ideal Weight Calculator | agecalconline.com";
+const description = "Calculate your ideal body weight (IBW) based on your height, gender, and age using multiple scientific formulas (Robinson, Miller, Devine, Hamwi).";
+const keywords = "ideal weight calculator, IBW calculator, healthy weight range, calculate ideal body weight";
+const canonical = "https://agecalconline.com/ideal-weight-calculator";
+
+const schema = {
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Ideal Weight Calculator",
+  "applicationCategory": "HealthApplication",
+  "url": canonical,
+  "description": description,
+  "operatingSystem": "Any",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+};
+
+const faqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    { "@type": "Question", "name": "What is considered an ideal weight?", "acceptedAnswer": { "@type": "Answer", "text": "Ideal weight is an estimate of a healthy body weight based on your height and gender. It is calculated using formulas developed by medical professionals (like Devine, Robinson, and Miller) primarily to determine medical dosages." } },
+    { "@type": "Question", "name": "Is the ideal weight formula perfect?", "acceptedAnswer": { "@type": "Answer", "text": "No. Ideal weight formulas do not account for muscle mass, bone density, or body composition. An athlete might weigh more than their 'ideal' weight but still be perfectly healthy." } }
+  ]
+};
+---
+<BaseLayout title={title} description={description} keywords={keywords} canonical={canonical}>
+  <script type="application/ld+json" set:html={JSON.stringify(schema)} slot="head" />
+  <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} slot="head" />
+  <Navbar slot="nav" />
+
+  <section class="section-hero band-white" style="position:relative;overflow:hidden;text-align:center">
+    <div style="position:absolute;inset:-40px;background:linear-gradient(135deg,#007cf0,#00dfd8);opacity:0.08;filter:blur(80px);pointer-events:none"></div>
+    <div class="container" style="position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;gap:var(--space-xl)">
+      <span class="caption-mono">Health & Fitness</span>
+      <h1 class="display-xl">Ideal Weight Calculator</h1>
+      <p class="body-lg text-body" style="max-width:520px">Calculate your Ideal Body Weight (IBW) based on multiple scientific formulas and discover your healthy BMI range.</p>
+
+      <div class="card-lg" style="width:100%;max-width:600px;text-align:left">
+        <div class="grid-2" style="gap:var(--space-md)">
+          <div class="form-group">
+            <label class="form-label" for="iw-gender">Gender</label>
+            <select id="iw-gender" class="form-select form-input-lg">
+              <option value="male">Male</option>
+              <option value="female">Female</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="iw-height">Height (cm)</label>
+            <input type="number" id="iw-height" class="form-input form-input-lg" min="100" max="250" value="175" />
+          </div>
+        </div>
+
+        <button class="btn-primary" id="calc-btn" style="margin-top:var(--space-lg);width:100%;justify-content:center">Calculate Ideal Weight</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="section band-light hidden" id="result-section">
+    <div class="container" style="max-width:720px;text-align:center">
+      <div class="card-lg">
+        <div class="caption-mono" style="color:var(--mute);margin-bottom:var(--space-sm)">Robinson Formula Estimate</div>
+        <div class="display-xl" style="color:var(--ink)" id="result-iw">—</div>
+        <div class="body-lg text-body" style="margin-top:var(--space-xs)">kg</div>
+        
+        <div class="grid-2" style="margin-top:var(--space-2xl);text-align:left;gap:var(--space-md)">
+          <div class="card-soft">
+            <div class="caption-mono" style="color:var(--mute);margin-bottom:8px">Healthy BMI Range (18.5 - 25)</div>
+            <div class="display-sm" id="res-bmi-range" style="color:#007cf0">—</div>
+          </div>
+          <div class="card-soft">
+            <div class="caption-mono" style="color:var(--mute);margin-bottom:8px">Miller Formula Estimate</div>
+            <div class="display-sm" id="res-miller">—</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section band-white">
+    <div class="container" style="max-width:720px">
+      <h2 class="display-md" style="margin-bottom:var(--space-xl)">Frequently Asked Questions</h2>
+      {faqSchema.mainEntity.map(faq => (
+        <details class="faq-item">
+          <summary class="faq-question">{faq.name}</summary>
+          <p class="faq-answer">{faq.acceptedAnswer.text}</p>
+        </details>
+      ))}
+    </div>
+  </section>
+
+  <RelatedArticles category="bmi" />
+  <ToolsGrid />
+  <Footer slot="footer" />
+</BaseLayout>
+
+<script>
+  document.getElementById('calc-btn')?.addEventListener('click', () => {
+    const gender = (document.getElementById('iw-gender') as HTMLSelectElement).value;
+    const heightCm = parseFloat((document.getElementById('iw-height') as HTMLInputElement).value);
+
+    if (!heightCm) return alert("Please enter your height.");
+
+    // Convert cm to inches for the formulas
+    const heightInches = heightCm / 2.54;
+    const heightOver5Ft = Math.max(0, heightInches - 60);
+
+    let robinson = 0;
+    let miller = 0;
+
+    if (gender === 'male') {
+      robinson = 52 + (1.9 * heightOver5Ft);
+      miller = 56.2 + (1.41 * heightOver5Ft);
+    } else {
+      robinson = 49 + (1.7 * heightOver5Ft);
+      miller = 53.1 + (1.36 * heightOver5Ft);
+    }
+
+    // BMI range: 18.5 to 24.99
+    // Weight = BMI * (height in meters)^2
+    const heightM = heightCm / 100;
+    const minWeight = 18.5 * (heightM * heightM);
+    const maxWeight = 24.9 * (heightM * heightM);
+
+    (document.getElementById('result-iw') as HTMLElement).textContent = robinson.toFixed(1);
+    (document.getElementById('res-miller') as HTMLElement).textContent = miller.toFixed(1) + ' kg';
+    (document.getElementById('res-bmi-range') as HTMLElement).textContent = `${minWeight.toFixed(1)} - ${maxWeight.toFixed(1)} kg`;
+
+    document.getElementById('result-section')!.classList.remove('hidden');
+    document.getElementById('result-section')!.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
+</script>
+
+<style is:global>
+.faq-item { border-top:1px solid var(--hairline); }
+.faq-item:last-child { border-bottom:1px solid var(--hairline); }
+.faq-question { font-size:16px;font-weight:500;color:var(--ink);cursor:pointer;padding:var(--space-lg) 0;list-style:none;display:flex;justify-content:space-between;align-items:center;letter-spacing:-0.4px; }
+.faq-question::after { content:'+';font-size:20px;font-weight:300;color:var(--mute); }
+details[open] .faq-question::after { content:'−'; }
+.faq-answer { font-size:15px;color:var(--body);line-height:1.7;padding-bottom:var(--space-lg); }
+</style>

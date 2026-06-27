@@ -1,0 +1,154 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Navbar from '../components/Navbar.astro';
+import Footer from '../components/Footer.astro';
+import ToolsGrid from '../components/ToolsGrid.astro';
+import RelatedArticles from '../components/RelatedArticles.astro';
+
+const title = "Ovulation Calculator & Fertility Tracker | agecalconline.com";
+const description = "Calculate your exact ovulation day and fertile window based on your menstrual cycle length. Find the best days to conceive.";
+const keywords = "ovulation calculator, fertile window, when do I ovulate, best days to get pregnant, ovulation tracker";
+const canonical = "https://agecalconline.com/ovulation-calculator";
+
+const schema = {
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Ovulation Calculator",
+  "applicationCategory": "HealthApplication",
+  "url": canonical,
+  "description": description,
+  "operatingSystem": "Any",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+};
+
+const faqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    { "@type": "Question", "name": "What is a fertile window?", "acceptedAnswer": { "@type": "Answer", "text": "Your fertile window is the roughly 6-day period each month when intercourse can lead to pregnancy. It includes the 5 days before ovulation and the day of ovulation itself, because sperm can live inside the female body for up to 5 days." } },
+    { "@type": "Question", "name": "When does ovulation usually happen?", "acceptedAnswer": { "@type": "Answer", "text": "For a typical 28-day cycle, ovulation usually happens on day 14. However, it generally happens 14 days BEFORE your next period begins, regardless of how long your cycle is." } }
+  ]
+};
+---
+<BaseLayout title={title} description={description} keywords={keywords} canonical={canonical}>
+  <script type="application/ld+json" set:html={JSON.stringify(schema)} slot="head" />
+  <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} slot="head" />
+  <Navbar slot="nav" />
+
+  <section class="section-hero band-white" style="position:relative;overflow:hidden;text-align:center">
+    <div style="position:absolute;inset:-40px;background:linear-gradient(135deg,#ff8fab,#50e3c2);opacity:0.08;filter:blur(80px);pointer-events:none"></div>
+    <div class="container" style="position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;gap:var(--space-xl)">
+      <span class="caption-mono">Pregnancy & Family</span>
+      <h1 class="display-xl">Ovulation Calculator</h1>
+      <p class="body-lg text-body" style="max-width:520px">Find your exact ovulation day and 6-day fertile window to know your best days to conceive.</p>
+
+      <div class="card-lg" style="width:100%;max-width:500px;text-align:left">
+        <div class="form-group">
+          <label class="form-label" for="ov-lmp">First Day of Last Period</label>
+          <input type="date" id="ov-lmp" class="form-input form-input-lg" required />
+        </div>
+        
+        <div class="form-group" style="margin-top:var(--space-md)">
+          <label class="form-label" for="ov-cycle">Average Cycle Length (days)</label>
+          <input type="number" id="ov-cycle" class="form-input form-input-lg" min="20" max="45" value="28" />
+        </div>
+
+        <button class="btn-primary" id="calc-btn" style="margin-top:var(--space-lg);width:100%;justify-content:center">Calculate Fertile Window</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="section band-light hidden" id="result-section">
+    <div class="container" style="max-width:720px;text-align:center">
+      <div class="card-lg" style="border-top:4px solid #ff6b9d">
+        <div class="caption-mono" style="color:var(--mute);margin-bottom:var(--space-sm)">Most Likely Ovulation Date</div>
+        <div class="display-lg" style="color:var(--ink)" id="result-ovulation">—</div>
+        
+        <div style="margin-top:var(--space-xl);padding:var(--space-md);background:rgba(255,107,157,0.1);border-radius:var(--radius-md);border:1px dashed #ff6b9d">
+          <div class="caption-mono" style="color:#ff6b9d;margin-bottom:4px">Your 6-Day Fertile Window</div>
+          <div class="display-sm" style="color:var(--ink)" id="res-window">—</div>
+          <p class="body-sm" style="color:var(--body);margin-top:4px">These are your best days to conceive.</p>
+        </div>
+
+        <div class="grid-2" style="margin-top:var(--space-xl);text-align:left;gap:var(--space-md)">
+          <div class="card-soft">
+            <div class="caption-mono" style="color:var(--mute);margin-bottom:8px">Next Period Starts</div>
+            <div class="display-sm" id="res-next-period">—</div>
+          </div>
+          <div class="card-soft">
+            <div class="caption-mono" style="color:var(--mute);margin-bottom:8px">Pregnancy Test Date</div>
+            <div class="display-sm" id="res-test-date">—</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section band-white">
+    <div class="container" style="max-width:720px">
+      <h2 class="display-md" style="margin-bottom:var(--space-xl)">Frequently Asked Questions</h2>
+      {faqSchema.mainEntity.map(faq => (
+        <details class="faq-item">
+          <summary class="faq-question">{faq.name}</summary>
+          <p class="faq-answer">{faq.acceptedAnswer.text}</p>
+        </details>
+      ))}
+    </div>
+  </section>
+
+  <RelatedArticles category="pregnancy" />
+  <ToolsGrid />
+  <Footer slot="footer" />
+</BaseLayout>
+
+<script>
+  // Set default to 10 days ago
+  const d = new Date();
+  d.setDate(d.getDate() - 10);
+  (document.getElementById('ov-lmp') as HTMLInputElement).value = d.toISOString().split('T')[0];
+
+  document.getElementById('calc-btn')?.addEventListener('click', () => {
+    const lmpStr = (document.getElementById('ov-lmp') as HTMLInputElement).value;
+    const cycleLength = parseInt((document.getElementById('ov-cycle') as HTMLInputElement).value) || 28;
+
+    if (!lmpStr) return alert("Please select the first day of your last period.");
+
+    const lmp = new Date(lmpStr);
+    
+    // Ovulation is usually 14 days before the next period
+    const daysToOvulation = cycleLength - 14;
+    
+    const ovulationDate = new Date(lmp);
+    ovulationDate.setDate(ovulationDate.getDate() + daysToOvulation);
+
+    // Fertile window: 5 days before + ovulation day
+    const windowStart = new Date(ovulationDate);
+    windowStart.setDate(windowStart.getDate() - 5);
+
+    const nextPeriod = new Date(lmp);
+    nextPeriod.setDate(nextPeriod.getDate() + cycleLength);
+
+    const testDate = new Date(nextPeriod);
+    testDate.setDate(testDate.getDate() + 1);
+
+    const optionsFull: Intl.DateTimeFormatOptions = { weekday: 'long', month: 'long', day: 'numeric' };
+    const optionsShort: Intl.DateTimeFormatOptions = { month: 'short', day: 'numeric' };
+
+    (document.getElementById('result-ovulation') as HTMLElement).textContent = ovulationDate.toLocaleDateString(undefined, optionsFull);
+    (document.getElementById('res-window') as HTMLElement).textContent = `${windowStart.toLocaleDateString(undefined, optionsShort)}  —  ${ovulationDate.toLocaleDateString(undefined, optionsShort)}`;
+    (document.getElementById('res-next-period') as HTMLElement).textContent = nextPeriod.toLocaleDateString(undefined, optionsFull);
+    (document.getElementById('res-test-date') as HTMLElement).textContent = testDate.toLocaleDateString(undefined, optionsFull);
+
+    document.getElementById('result-section')!.classList.remove('hidden');
+    document.getElementById('result-section')!.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
+</script>
+
+<style is:global>
+.faq-item { border-top:1px solid var(--hairline); }
+.faq-item:last-child { border-bottom:1px solid var(--hairline); }
+.faq-question { font-size:16px;font-weight:500;color:var(--ink);cursor:pointer;padding:var(--space-lg) 0;list-style:none;display:flex;justify-content:space-between;align-items:center;letter-spacing:-0.4px; }
+.faq-question::after { content:'+';font-size:20px;font-weight:300;color:var(--mute); }
+details[open] .faq-question::after { content:'−'; }
+.faq-answer { font-size:15px;color:var(--body);line-height:1.7;padding-bottom:var(--space-lg); }
+</style>

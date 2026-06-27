@@ -3,6 +3,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import Navbar from '../components/Navbar.astro';
 import Footer from '../components/Footer.astro';
 import ToolsGrid from '../components/ToolsGrid.astro';
+import RelatedArticles from '../components/RelatedArticles.astro';
 
 const title = "Pregnancy Due Date Calculator — When Will My Baby Arrive? | agecalconline.com";
 const description = "Calculate your pregnancy due date, current trimester, weeks pregnant, and days remaining. Enter your last menstrual period or conception date for an instant result.";
@@ -142,6 +143,8 @@ const faqSchema = {
       </div>
     </div>
   </section>
+
+  <RelatedArticles category="pregnancy" />
 
   <ToolsGrid />
   <Footer slot="footer" />

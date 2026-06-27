@@ -1,0 +1,133 @@
+---
+// src/components/RelatedArticles.astro
+export interface Props {
+  category?: string;
+  articles?: { title: string; href: string; image?: string; readTime?: string }[];
+}
+
+const { category, articles: customArticles } = Astro.props;
+
+// Mock database of articles categorized by topics
+const articleDB: Record<string, { title: string; href: string; image?: string; readTime?: string }[]> = {
+  bmi: [
+    { title: 'Understanding BMI', href: '/blog/how-bmi-changes-with-age', readTime: '5 min read' },
+    { title: 'Healthy Weight Ranges', href: '/blog/how-bmi-changes-with-age', readTime: '4 min read' },
+    { title: 'How to Reduce Body Fat', href: '/blog/how-bmi-changes-with-age', readTime: '7 min read' },
+  ],
+  pregnancy: [
+    { title: 'Pregnancy Week by Week', href: '/blog', readTime: '10 min read' },
+    { title: 'Signs of Early Pregnancy', href: '/blog', readTime: '4 min read' },
+    { title: 'Nutrition During Pregnancy', href: '/blog', readTime: '6 min read' },
+  ],
+  life_expectancy: [
+    { title: 'Factors Affecting Longevity', href: '/blog/life-expectancy-factors-that-matter', readTime: '8 min read' },
+    { title: 'Biological Age vs Chronological Age', href: '/blog/biological-age-vs-chronological-age', readTime: '6 min read' },
+    { title: 'Healthy Aging Habits', href: '/blog/life-expectancy-factors-that-matter', readTime: '5 min read' },
+  ],
+  retirement: [
+    { title: 'Retirement Planning Guide', href: '/blog/best-age-to-retire', readTime: '9 min read' },
+    { title: 'Saving Strategies', href: '/blog/best-age-to-retire', readTime: '6 min read' },
+    { title: 'Investment Basics', href: '/blog/best-age-to-retire', readTime: '7 min read' },
+  ],
+  general: [
+    { title: 'How to Calculate Age Accurately', href: '/blog/how-to-calculate-age-accurately', readTime: '4 min read' },
+    { title: 'Generational Divides: Millennials vs Gen Z', href: '/blog/generational-differences-millennials-gen-z', readTime: '8 min read' },
+    { title: 'Biological Age vs Chronological Age', href: '/blog/biological-age-vs-chronological-age', readTime: '6 min read' }
+  ]
+};
+
+// Use provided articles or fallback to category or general
+let displayArticles = customArticles || (category && articleDB[category]) || articleDB['general'];
+
+// Make sure we only display up to 3 articles
+displayArticles = displayArticles.slice(0, 3);
+---
+
+{displayArticles && displayArticles.length > 0 && (
+  <section class="related-articles section band-light" style="padding-top: var(--space-4xl)">
+    <div class="container" style="max-width:800px">
+      <div class="section-header" style="margin-bottom:var(--space-2xl); text-align: left">
+        <h2 class="display-md">Related Articles</h2>
+        <p class="body-sm text-body">Deep dive into topics related to your calculation.</p>
+      </div>
+      
+      <div class="related-articles-grid">
+        {displayArticles.map(article => (
+          <a href={article.href} class="related-article-card">
+            <div class="related-article-content">
+              <h3 class="related-article-title">{article.title}</h3>
+              {article.readTime && <span class="related-article-meta">{article.readTime}</span>}
+            </div>
+            <div class="related-article-arrow">→</div>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+)}
+
+<style>
+.related-articles-grid {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+.related-article-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--space-md) var(--space-lg);
+  background: var(--canvas);
+  border: 1px solid var(--hairline);
+  border-radius: var(--radius-md);
+  text-decoration: none;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.related-article-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-2);
+  border-color: var(--hairline-strong);
+}
+
+.related-article-card:hover .related-article-title {
+  color: var(--link);
+}
+
+.related-article-card:hover .related-article-arrow {
+  transform: translateX(4px);
+  color: var(--link);
+}
+
+.related-article-content {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.related-article-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--ink);
+  margin: 0;
+  transition: color 0.2s ease;
+}
+
+.related-article-meta {
+  font-size: 13px;
+  color: var(--mute);
+}
+
+.related-article-arrow {
+  color: var(--mute);
+  font-weight: 600;
+  transition: transform 0.2s ease, color 0.2s ease;
+}
+
+@media (max-width: 600px) {
+  .related-article-card {
+    padding: var(--space-md);
+  }
+}
+</style>

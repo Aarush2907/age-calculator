@@ -3,6 +3,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import Navbar from '../components/Navbar.astro';
 import Footer from '../components/Footer.astro';
 import ToolsGrid from '../components/ToolsGrid.astro';
+import RelatedArticles from '../components/RelatedArticles.astro';
 
 const title = "Chronological Age Calculator — Exact Age in Years, Months & Days | agecalconline.com";
 const description = "Calculate your exact chronological age in years, months, weeks, days, hours, minutes, and seconds. Free online chronological age calculator for any date of birth.";
@@ -116,6 +117,8 @@ const faqSchema = {
       </div>
     </div>
   </section>
+
+  <RelatedArticles category="general" />
 
   <ToolsGrid />
   <Footer slot="footer" />

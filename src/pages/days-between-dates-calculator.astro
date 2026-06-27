@@ -1,0 +1,157 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Navbar from '../components/Navbar.astro';
+import Footer from '../components/Footer.astro';
+import ToolsGrid from '../components/ToolsGrid.astro';
+import RelatedArticles from '../components/RelatedArticles.astro';
+
+const title = "Days Between Dates Calculator — Count Days Online | agecalconline.com";
+const description = "Calculate exactly how many days are between two dates. Free online tool to find the duration between any start and end date, including or excluding the end date.";
+const keywords = "days between dates calculator, count days between dates, date duration calculator, days between two dates, calculate days from date";
+const canonical = "https://agecalconline.com/days-between-dates-calculator";
+
+const schema = {
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Days Between Dates Calculator",
+  "applicationCategory": "UtilitiesApplication",
+  "url": canonical,
+  "description": description,
+  "operatingSystem": "Any",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+};
+
+const faqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    { "@type": "Question", "name": "How do you calculate days between two dates?", "acceptedAnswer": { "@type": "Answer", "text": "To find the days between two dates mathematically, you subtract the start date from the end date. Our calculator handles leap years and different month lengths automatically for 100% precision." } },
+    { "@type": "Question", "name": "Does the calculator include the end date?", "acceptedAnswer": { "@type": "Answer", "text": "By default, calculating the difference between dates does not count the end date. For example, Monday to Tuesday is 1 day. However, our calculator provides a toggle to 'Include end date' which would make it 2 days." } },
+    { "@type": "Question", "name": "Are leap years accounted for?", "acceptedAnswer": { "@type": "Answer", "text": "Yes, the calculator uses standard calendar math which automatically accounts for February 29th in leap years." } }
+  ]
+};
+---
+<BaseLayout title={title} description={description} keywords={keywords} canonical={canonical}>
+  <script type="application/ld+json" set:html={JSON.stringify(schema)} slot="head" />
+  <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} slot="head" />
+  <Navbar slot="nav" />
+
+  <section class="section-hero band-white" style="position:relative;overflow:hidden;text-align:center">
+    <div style="position:absolute;inset:-40px;background:linear-gradient(135deg,#007cf0,#00dfd8);opacity:0.08;filter:blur(80px);pointer-events:none"></div>
+    <div class="container" style="position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;gap:var(--space-xl)">
+      <span class="caption-mono">Date & Time Utilities</span>
+      <h1 class="display-xl">Days Between Dates Calculator</h1>
+      <p class="body-lg text-body" style="max-width:520px">Calculate the exact number of days between any two dates. Perfect for project planning, event countdowns, or tracking durations.</p>
+
+      <div class="card-lg" style="width:100%;max-width:600px;text-align:left">
+        <div class="grid-2" style="gap:var(--space-md)">
+          <div class="form-group">
+            <label class="form-label" for="start-date">Start Date</label>
+            <input type="date" id="start-date" class="form-input form-input-lg" />
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="end-date">End Date</label>
+            <input type="date" id="end-date" class="form-input form-input-lg" />
+          </div>
+        </div>
+
+        <div style="margin-top:var(--space-md);display:flex;align-items:center;gap:8px">
+          <input type="checkbox" id="include-end" style="width:18px;height:18px;cursor:pointer" />
+          <label for="include-end" class="body-sm text-body" style="cursor:pointer;user-select:none">Include the end date (+1 day)</label>
+        </div>
+
+        <button class="btn-primary" id="calc-btn" style="margin-top:var(--space-lg);width:100%;justify-content:center">Calculate Days</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="section band-light hidden" id="result-section">
+    <div class="container" style="max-width:720px;text-align:center">
+      <div class="card-lg">
+        <div class="caption-mono" style="color:var(--mute);margin-bottom:var(--space-sm)">Result</div>
+        <div class="display-xl" style="color:var(--ink)" id="result-days">—</div>
+        <div class="body-lg text-body" style="margin-top:var(--space-xs)">days</div>
+        
+        <div class="grid-3" style="margin-top:var(--space-2xl);text-align:left;gap:var(--space-md)">
+          <div class="card-soft">
+            <div class="caption-mono" style="color:var(--mute);margin-bottom:8px">In Weeks</div>
+            <div class="display-sm" id="res-weeks">—</div>
+          </div>
+          <div class="card-soft">
+            <div class="caption-mono" style="color:var(--mute);margin-bottom:8px">In Months (Approx)</div>
+            <div class="display-sm" id="res-months">—</div>
+          </div>
+          <div class="card-soft">
+            <div class="caption-mono" style="color:var(--mute);margin-bottom:8px">In Years (Approx)</div>
+            <div class="display-sm" id="res-years">—</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section band-white">
+    <div class="container" style="max-width:720px">
+      <h2 class="display-md" style="margin-bottom:var(--space-xl)">Frequently Asked Questions</h2>
+      {faqSchema.mainEntity.map(faq => (
+        <details class="faq-item">
+          <summary class="faq-question">{faq.name}</summary>
+          <p class="faq-answer">{faq.acceptedAnswer.text}</p>
+        </details>
+      ))}
+    </div>
+  </section>
+
+  <RelatedArticles category="general" />
+  <ToolsGrid />
+  <Footer slot="footer" />
+</BaseLayout>
+
+<script>
+  document.getElementById('calc-btn')?.addEventListener('click', () => {
+    const startStr = (document.getElementById('start-date') as HTMLInputElement).value;
+    const endStr = (document.getElementById('end-date') as HTMLInputElement).value;
+    const includeEnd = (document.getElementById('include-end') as HTMLInputElement).checked;
+
+    if (!startStr || !endStr) return alert("Please select both dates.");
+
+    const start = new Date(startStr);
+    const end = new Date(endStr);
+    
+    // Normalize to midnight UTC to avoid daylight saving issues
+    const utcStart = Date.UTC(start.getFullYear(), start.getMonth(), start.getDate());
+    const utcEnd = Date.UTC(end.getFullYear(), end.getMonth(), end.getDate());
+
+    const msPerDay = 1000 * 60 * 60 * 24;
+    let diffDays = Math.floor((utcEnd - utcStart) / msPerDay);
+    
+    if (diffDays < 0) diffDays = Math.abs(diffDays); // Handle reverse dates
+    if (includeEnd) diffDays += 1;
+
+    (document.getElementById('result-days') as HTMLElement).textContent = diffDays.toLocaleString();
+    (document.getElementById('res-weeks') as HTMLElement).textContent = (diffDays / 7).toFixed(1);
+    (document.getElementById('res-months') as HTMLElement).textContent = (diffDays / 30.436875).toFixed(1);
+    (document.getElementById('res-years') as HTMLElement).textContent = (diffDays / 365.25).toFixed(2);
+
+    document.getElementById('result-section')!.classList.remove('hidden');
+    document.getElementById('result-section')!.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
+
+  // Set default dates (Today and +30 days)
+  const today = new Date();
+  const nextMonth = new Date(today);
+  nextMonth.setDate(today.getDate() + 30);
+  
+  const formatDate = (d: Date) => d.toISOString().split('T')[0];
+  (document.getElementById('start-date') as HTMLInputElement).value = formatDate(today);
+  (document.getElementById('end-date') as HTMLInputElement).value = formatDate(nextMonth);
+</script>
+
+<style is:global>
+.faq-item { border-top:1px solid var(--hairline); }
+.faq-item:last-child { border-bottom:1px solid var(--hairline); }
+.faq-question { font-size:16px;font-weight:500;color:var(--ink);cursor:pointer;padding:var(--space-lg) 0;list-style:none;display:flex;justify-content:space-between;align-items:center;letter-spacing:-0.4px; }
+.faq-question::after { content:'+';font-size:20px;font-weight:300;color:var(--mute); }
+details[open] .faq-question::after { content:'−'; }
+.faq-answer { font-size:15px;color:var(--body);line-height:1.7;padding-bottom:var(--space-lg); }
+</style>

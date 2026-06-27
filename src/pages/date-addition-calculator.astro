@@ -1,0 +1,159 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Navbar from '../components/Navbar.astro';
+import Footer from '../components/Footer.astro';
+import ToolsGrid from '../components/ToolsGrid.astro';
+import RelatedArticles from '../components/RelatedArticles.astro';
+
+const title = "Date Addition/Subtraction Calculator | agecalconline.com";
+const description = "Add or subtract days, weeks, months, or years from a specific date. Find out what date it will be or what date it was in the past.";
+const keywords = "date calculator, add days to date, subtract days from date, date addition calculator, date math";
+const canonical = "https://agecalconline.com/date-addition-calculator";
+
+const schema = {
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Date Addition Calculator",
+  "applicationCategory": "UtilitiesApplication",
+  "url": canonical,
+  "description": description,
+  "operatingSystem": "Any",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+};
+
+const faqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    { "@type": "Question", "name": "How does the date calculator work?", "acceptedAnswer": { "@type": "Answer", "text": "It takes a starting date and adds or subtracts the exact number of years, months, weeks, and days you specify, accounting for leap years and varying month lengths." } },
+    { "@type": "Question", "name": "Can I add and subtract at the same time?", "acceptedAnswer": { "@type": "Answer", "text": "Our calculator requires you to choose an operation (Add or Subtract) for the entire group of values to ensure mathematical accuracy." } }
+  ]
+};
+---
+<BaseLayout title={title} description={description} keywords={keywords} canonical={canonical}>
+  <script type="application/ld+json" set:html={JSON.stringify(schema)} slot="head" />
+  <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} slot="head" />
+  <Navbar slot="nav" />
+
+  <section class="section-hero band-white" style="position:relative;overflow:hidden;text-align:center">
+    <div style="position:absolute;inset:-40px;background:linear-gradient(135deg,#7928ca,#ff0080);opacity:0.08;filter:blur(80px);pointer-events:none"></div>
+    <div class="container" style="position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;gap:var(--space-xl)">
+      <span class="caption-mono">Date & Time Utilities</span>
+      <h1 class="display-xl">Date Addition Calculator</h1>
+      <p class="body-lg text-body" style="max-width:520px">Add or subtract years, months, weeks, and days from any date to find the exact resulting calendar date.</p>
+
+      <div class="card-lg" style="width:100%;max-width:600px;text-align:left">
+        <div class="form-group">
+          <label class="form-label" for="start-date">Start Date</label>
+          <input type="date" id="start-date" class="form-input form-input-lg" required />
+        </div>
+        
+        <div class="grid-2" style="gap:var(--space-md);margin-top:var(--space-md)">
+          <div class="form-group">
+            <label class="form-label" for="operation">Operation</label>
+            <select id="operation" class="form-select form-input-lg">
+              <option value="add">➕ Add to date</option>
+              <option value="subtract">➖ Subtract from date</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="grid-4" style="gap:var(--space-md);margin-top:var(--space-md)">
+          <div class="form-group">
+            <label class="form-label" for="years">Years</label>
+            <input type="number" id="years" class="form-input" min="0" value="0" />
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="months">Months</label>
+            <input type="number" id="months" class="form-input" min="0" value="0" />
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="weeks">Weeks</label>
+            <input type="number" id="weeks" class="form-input" min="0" value="0" />
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="days">Days</label>
+            <input type="number" id="days" class="form-input" min="0" value="30" />
+          </div>
+        </div>
+
+        <button class="btn-primary" id="calc-btn" style="margin-top:var(--space-lg);width:100%;justify-content:center">Calculate New Date</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="section band-light hidden" id="result-section">
+    <div class="container" style="max-width:720px;text-align:center">
+      <div class="card-lg">
+        <div class="caption-mono" style="color:var(--mute);margin-bottom:var(--space-sm)">Resulting Date</div>
+        <div class="display-lg" style="color:var(--ink)" id="result-date">—</div>
+        <p class="body-md text-body" style="margin-top:var(--space-sm)" id="result-weekday">—</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section band-white">
+    <div class="container" style="max-width:720px">
+      <h2 class="display-md" style="margin-bottom:var(--space-xl)">Frequently Asked Questions</h2>
+      {faqSchema.mainEntity.map(faq => (
+        <details class="faq-item">
+          <summary class="faq-question">{faq.name}</summary>
+          <p class="faq-answer">{faq.acceptedAnswer.text}</p>
+        </details>
+      ))}
+    </div>
+  </section>
+
+  <RelatedArticles category="general" />
+  <ToolsGrid />
+  <Footer slot="footer" />
+</BaseLayout>
+
+<script>
+  document.getElementById('calc-btn')?.addEventListener('click', () => {
+    const dateStr = (document.getElementById('start-date') as HTMLInputElement).value;
+    if (!dateStr) return alert("Please select a start date.");
+
+    const op = (document.getElementById('operation') as HTMLSelectElement).value;
+    const y = parseInt((document.getElementById('years') as HTMLInputElement).value) || 0;
+    const m = parseInt((document.getElementById('months') as HTMLInputElement).value) || 0;
+    const w = parseInt((document.getElementById('weeks') as HTMLInputElement).value) || 0;
+    const d = parseInt((document.getElementById('days') as HTMLInputElement).value) || 0;
+
+    if (y === 0 && m === 0 && w === 0 && d === 0) return alert("Please enter a value to add or subtract.");
+
+    const date = new Date(dateStr);
+    const sign = op === 'add' ? 1 : -1;
+
+    // Add years and months
+    date.setFullYear(date.getFullYear() + (y * sign));
+    date.setMonth(date.getMonth() + (m * sign));
+    
+    // Add weeks and days
+    const totalDaysToAdd = (w * 7) + d;
+    date.setDate(date.getDate() + (totalDaysToAdd * sign));
+
+    const options: Intl.DateTimeFormatOptions = { year: 'numeric', month: 'long', day: 'numeric' };
+    (document.getElementById('result-date') as HTMLElement).textContent = date.toLocaleDateString(undefined, options);
+    
+    const weekdays = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+    (document.getElementById('result-weekday') as HTMLElement).textContent = `Falls on a ${weekdays[date.getDay()]}`;
+
+    document.getElementById('result-section')!.classList.remove('hidden');
+    document.getElementById('result-section')!.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
+
+  // Default to today
+  (document.getElementById('start-date') as HTMLInputElement).value = new Date().toISOString().split('T')[0];
+</script>
+
+<style is:global>
+.faq-item { border-top:1px solid var(--hairline); }
+.faq-item:last-child { border-bottom:1px solid var(--hairline); }
+.faq-question { font-size:16px;font-weight:500;color:var(--ink);cursor:pointer;padding:var(--space-lg) 0;list-style:none;display:flex;justify-content:space-between;align-items:center;letter-spacing:-0.4px; }
+.faq-question::after { content:'+';font-size:20px;font-weight:300;color:var(--mute); }
+details[open] .faq-question::after { content:'−'; }
+.faq-answer { font-size:15px;color:var(--body);line-height:1.7;padding-bottom:var(--space-lg); }
+.grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--space-md); }
+@media (max-width: 600px) { .grid-4 { grid-template-columns: repeat(2, 1fr); } }
+</style>

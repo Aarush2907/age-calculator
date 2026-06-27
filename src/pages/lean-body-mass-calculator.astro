@@ -1,0 +1,162 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Navbar from '../components/Navbar.astro';
+import Footer from '../components/Footer.astro';
+import ToolsGrid from '../components/ToolsGrid.astro';
+import RelatedArticles from '../components/RelatedArticles.astro';
+
+const title = "Lean Body Mass Calculator | agecalconline.com";
+const description = "Calculate your Lean Body Mass (LBM). Find out how much of your body weight is made up of muscle, bone, and organs versus fat.";
+const keywords = "lean body mass calculator, lbm calculator, calculate lean mass, fat free mass, boer formula";
+const canonical = "https://agecalconline.com/lean-body-mass-calculator";
+
+const schema = {
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Lean Body Mass Calculator",
+  "applicationCategory": "HealthApplication",
+  "url": canonical,
+  "description": description,
+  "operatingSystem": "Any",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+};
+
+const faqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    { "@type": "Question", "name": "What is Lean Body Mass (LBM)?", "acceptedAnswer": { "@type": "Answer", "text": "Lean Body Mass is the amount of weight you carry on your body that isn't fat. It includes your bones, organs, muscles, blood, skin, and water." } },
+    { "@type": "Question", "name": "Why is Lean Body Mass important?", "acceptedAnswer": { "@type": "Answer", "text": "Knowing your LBM is crucial for athletes, bodybuilders, and anyone looking to accurately prescribe their protein intake or basal metabolic rate. Preserving LBM while losing fat is the key to healthy weight loss." } }
+  ]
+};
+---
+<BaseLayout title={title} description={description} keywords={keywords} canonical={canonical}>
+  <script type="application/ld+json" set:html={JSON.stringify(schema)} slot="head" />
+  <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} slot="head" />
+  <Navbar slot="nav" />
+
+  <section class="section-hero band-white" style="position:relative;overflow:hidden;text-align:center">
+    <div style="position:absolute;inset:-40px;background:linear-gradient(135deg,#007cf0,#00dfd8);opacity:0.08;filter:blur(80px);pointer-events:none"></div>
+    <div class="container" style="position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;gap:var(--space-xl)">
+      <span class="caption-mono">Health & Fitness</span>
+      <h1 class="display-xl">Lean Body Mass Calculator</h1>
+      <p class="body-lg text-body" style="max-width:520px">Find out how much of your total weight is lean tissue (muscle, bone, water) versus body fat using the Boer formula.</p>
+
+      <div class="card-lg" style="width:100%;max-width:600px;text-align:left">
+        <div class="grid-2" style="gap:var(--space-md)">
+          <div class="form-group">
+            <label class="form-label" for="lbm-gender">Gender</label>
+            <select id="lbm-gender" class="form-select form-input-lg">
+              <option value="male">Male</option>
+              <option value="female">Female</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="grid-2" style="gap:var(--space-md);margin-top:var(--space-md)">
+          <div class="form-group">
+            <label class="form-label" for="lbm-height">Height (cm)</label>
+            <input type="number" id="lbm-height" class="form-input form-input-lg" min="100" max="250" value="175" />
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="lbm-weight">Weight (kg)</label>
+            <input type="number" id="lbm-weight" class="form-input form-input-lg" min="30" max="300" value="75" />
+          </div>
+        </div>
+
+        <button class="btn-primary" id="calc-btn" style="margin-top:var(--space-lg);width:100%;justify-content:center">Calculate Lean Mass</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="section band-light hidden" id="result-section">
+    <div class="container" style="max-width:720px;text-align:center">
+      <div class="card-lg">
+        <div class="caption-mono" style="color:var(--mute);margin-bottom:var(--space-sm)">Your Lean Body Mass</div>
+        <div class="display-xl" style="color:var(--ink)" id="result-lbm">—</div>
+        
+        <div class="progress-track" style="height:16px;margin-top:var(--space-xl);background:rgba(255,77,77,0.2);display:flex;overflow:hidden">
+          <div class="progress-fill" id="lbm-bar" style="background:#007cf0;height:100%"></div>
+          <div class="progress-fill" id="fat-bar" style="background:#ff4d4d;height:100%"></div>
+        </div>
+        
+        <div style="display:flex;justify-content:space-between;margin-top:8px">
+          <div class="caption-mono" style="color:#007cf0">Lean Mass</div>
+          <div class="caption-mono" style="color:#ff4d4d">Fat Mass</div>
+        </div>
+
+        <div class="grid-2" style="margin-top:var(--space-2xl);text-align:left;gap:var(--space-md)">
+          <div class="card-soft">
+            <div class="caption-mono" style="color:var(--mute);margin-bottom:8px">Estimated Body Fat %</div>
+            <div class="display-sm" id="res-bf">—</div>
+          </div>
+          <div class="card-soft">
+            <div class="caption-mono" style="color:var(--mute);margin-bottom:8px">Fat Mass</div>
+            <div class="display-sm" id="res-fat">—</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section band-white">
+    <div class="container" style="max-width:720px">
+      <h2 class="display-md" style="margin-bottom:var(--space-xl)">Frequently Asked Questions</h2>
+      {faqSchema.mainEntity.map(faq => (
+        <details class="faq-item">
+          <summary class="faq-question">{faq.name}</summary>
+          <p class="faq-answer">{faq.acceptedAnswer.text}</p>
+        </details>
+      ))}
+    </div>
+  </section>
+
+  <RelatedArticles category="health" />
+  <ToolsGrid />
+  <Footer slot="footer" />
+</BaseLayout>
+
+<script>
+  document.getElementById('calc-btn')?.addEventListener('click', () => {
+    const gender = (document.getElementById('lbm-gender') as HTMLSelectElement).value;
+    const height = parseFloat((document.getElementById('lbm-height') as HTMLInputElement).value);
+    const weight = parseFloat((document.getElementById('lbm-weight') as HTMLInputElement).value);
+
+    if (!height || !weight) return alert("Please fill in height and weight.");
+
+    // Boer Formula
+    let lbm = 0;
+    if (gender === 'male') {
+      lbm = (0.407 * weight) + (0.267 * height) - 19.2;
+    } else {
+      lbm = (0.252 * weight) + (0.473 * height) - 48.3;
+    }
+
+    if (lbm < 0 || lbm > weight) {
+      return alert("Invalid measurements. Please check your inputs.");
+    }
+
+    const fatMass = weight - lbm;
+    const bfPercent = (fatMass / weight) * 100;
+    const lbmPercent = (lbm / weight) * 100;
+
+    (document.getElementById('result-lbm') as HTMLElement).textContent = lbm.toFixed(1) + ' kg';
+    (document.getElementById('res-bf') as HTMLElement).textContent = bfPercent.toFixed(1) + '%';
+    (document.getElementById('res-fat') as HTMLElement).textContent = fatMass.toFixed(1) + ' kg';
+
+    (document.getElementById('lbm-bar') as HTMLElement).style.width = `${lbmPercent}%`;
+    (document.getElementById('fat-bar') as HTMLElement).style.width = `${bfPercent}%`;
+
+    document.getElementById('result-section')!.classList.remove('hidden');
+    document.getElementById('result-section')!.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
+</script>
+
+<style is:global>
+.faq-item { border-top:1px solid var(--hairline); }
+.faq-item:last-child { border-bottom:1px solid var(--hairline); }
+.faq-question { font-size:16px;font-weight:500;color:var(--ink);cursor:pointer;padding:var(--space-lg) 0;list-style:none;display:flex;justify-content:space-between;align-items:center;letter-spacing:-0.4px; }
+.faq-question::after { content:'+';font-size:20px;font-weight:300;color:var(--mute); }
+details[open] .faq-question::after { content:'−'; }
+.faq-answer { font-size:15px;color:var(--body);line-height:1.7;padding-bottom:var(--space-lg); }
+</style>

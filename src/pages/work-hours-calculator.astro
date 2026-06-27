@@ -3,6 +3,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import Navbar from '../components/Navbar.astro';
 import Footer from '../components/Footer.astro';
 import ToolsGrid from '../components/ToolsGrid.astro';
+import RelatedArticles from '../components/RelatedArticles.astro';
 
 const title = "Work Hours Calculator — Calculate Total Hours Worked | agecalconline.com";
 const description = "Calculate total work hours between two dates and times. Subtract lunch breaks, calculate overtime, and estimate your earnings. Free online work hours calculator.";
@@ -131,6 +132,8 @@ const faqSchema = {
       </div>
     </div>
   </section>
+
+  <RelatedArticles category="general" />
 
   <ToolsGrid />
   <Footer slot="footer" />

@@ -1,6 +1,7 @@
 ---
 // BaseLayout.astro
 import '../styles/global.css';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
 export interface Props {
   title: string;
   description: string;
@@ -127,6 +128,7 @@ const {
 </head>
 <body>
   <slot name="nav" />
+  <Breadcrumbs />
   <main>
     <slot />
   </main>

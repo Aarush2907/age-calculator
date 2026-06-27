@@ -1,0 +1,150 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Navbar from '../components/Navbar.astro';
+import Footer from '../components/Footer.astro';
+import ToolsGrid from '../components/ToolsGrid.astro';
+import RelatedArticles from '../components/RelatedArticles.astro';
+
+const title = "Macro Calculator | agecalconline.com";
+const description = "Calculate your ideal macronutrient split. Find out exactly how many grams of carbs, protein, and fat you need daily to reach your fitness goals.";
+const keywords = "macro calculator, macronutrient breakdown, count macros, iifym calculator, carb protein fat ratio";
+const canonical = "https://agecalconline.com/macro-calculator";
+
+const schema = {
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Macro Calculator",
+  "applicationCategory": "HealthApplication",
+  "url": canonical,
+  "description": description,
+  "operatingSystem": "Any",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+};
+
+const faqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    { "@type": "Question", "name": "What are macros?", "acceptedAnswer": { "@type": "Answer", "text": "Macros (macronutrients) are the three main components of food that provide energy: Carbohydrates, Proteins, and Fats. Every food is made up of a combination of these three." } },
+    { "@type": "Question", "name": "What is the best macro ratio for fat loss?", "acceptedAnswer": { "@type": "Answer", "text": "While overall calorie deficit is what drives fat loss, a common successful macro ratio for fat loss while preserving muscle is 40% Protein, 30% Carbs, and 30% Fat." } }
+  ]
+};
+---
+<BaseLayout title={title} description={description} keywords={keywords} canonical={canonical}>
+  <script type="application/ld+json" set:html={JSON.stringify(schema)} slot="head" />
+  <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} slot="head" />
+  <Navbar slot="nav" />
+
+  <section class="section-hero band-white" style="position:relative;overflow:hidden;text-align:center">
+    <div style="position:absolute;inset:-40px;background:linear-gradient(135deg,#50e3c2,#f9cb28);opacity:0.08;filter:blur(80px);pointer-events:none"></div>
+    <div class="container" style="position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;gap:var(--space-xl)">
+      <span class="caption-mono">Health & Fitness</span>
+      <h1 class="display-xl">Macro Calculator</h1>
+      <p class="body-lg text-body" style="max-width:520px">Break down your daily calories into exact grams of protein, carbs, and fat to hit your body goals.</p>
+
+      <div class="card-lg" style="width:100%;max-width:500px;text-align:left">
+        <div class="form-group">
+          <label class="form-label" for="mac-calories">Daily Calorie Target</label>
+          <input type="number" id="mac-calories" class="form-input form-input-lg" min="1000" max="6000" value="2000" />
+          <span class="body-sm text-body" style="font-size:12px;margin-top:4px;display:block">Don't know this? Use our TDEE Calculator first.</span>
+        </div>
+        
+        <div class="form-group" style="margin-top:var(--space-md)">
+          <label class="form-label" for="mac-diet">Diet Preference</label>
+          <select id="mac-diet" class="form-select form-input-lg">
+            <option value="balanced">Balanced (30% P, 35% C, 35% F)</option>
+            <option value="lowcarb">Low Carb (40% P, 20% C, 40% F)</option>
+            <option value="highprotein">High Protein (40% P, 30% C, 30% F)</option>
+            <option value="keto">Keto (20% P, 5% C, 75% F)</option>
+            <option value="highcarb">High Carb / Athlete (25% P, 55% C, 20% F)</option>
+          </select>
+        </div>
+
+        <button class="btn-primary" id="calc-btn" style="margin-top:var(--space-lg);width:100%;justify-content:center">Calculate Macros</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="section band-light hidden" id="result-section">
+    <div class="container" style="max-width:720px;text-align:center">
+      <div class="card-lg">
+        <div class="caption-mono" style="color:var(--mute);margin-bottom:var(--space-sm)">Your Daily Macronutrients</div>
+        
+        <div class="grid-3" style="margin-top:var(--space-xl);text-align:center;gap:var(--space-md)">
+          <div class="card-soft" style="background:rgba(255,107,157,0.1);border-color:rgba(255,107,157,0.3)">
+            <div class="caption-mono" style="color:#ff6b9d;margin-bottom:8px">Protein</div>
+            <div class="display-md" id="res-p" style="color:var(--ink)">—</div>
+            <div class="body-sm" style="color:var(--body)">grams</div>
+          </div>
+          <div class="card-soft" style="background:rgba(0,124,240,0.1);border-color:rgba(0,124,240,0.3)">
+            <div class="caption-mono" style="color:#007cf0;margin-bottom:8px">Carbs</div>
+            <div class="display-md" id="res-c" style="color:var(--ink)">—</div>
+            <div class="body-sm" style="color:var(--body)">grams</div>
+          </div>
+          <div class="card-soft" style="background:rgba(249,203,40,0.1);border-color:rgba(249,203,40,0.5)">
+            <div class="caption-mono" style="color:#e6b800;margin-bottom:8px">Fat</div>
+            <div class="display-md" id="res-f" style="color:var(--ink)">—</div>
+            <div class="body-sm" style="color:var(--body)">grams</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section band-white">
+    <div class="container" style="max-width:720px">
+      <h2 class="display-md" style="margin-bottom:var(--space-xl)">Frequently Asked Questions</h2>
+      {faqSchema.mainEntity.map(faq => (
+        <details class="faq-item">
+          <summary class="faq-question">{faq.name}</summary>
+          <p class="faq-answer">{faq.acceptedAnswer.text}</p>
+        </details>
+      ))}
+    </div>
+  </section>
+
+  <RelatedArticles category="health" />
+  <ToolsGrid />
+  <Footer slot="footer" />
+</BaseLayout>
+
+<script>
+  document.getElementById('calc-btn')?.addEventListener('click', () => {
+    const calories = parseFloat((document.getElementById('mac-calories') as HTMLInputElement).value);
+    const diet = (document.getElementById('mac-diet') as HTMLSelectElement).value;
+
+    if (!calories) return alert("Please enter your daily calories.");
+
+    let pRatio, cRatio, fRatio;
+
+    switch(diet) {
+      case 'balanced': pRatio = 0.30; cRatio = 0.35; fRatio = 0.35; break;
+      case 'lowcarb': pRatio = 0.40; cRatio = 0.20; fRatio = 0.40; break;
+      case 'highprotein': pRatio = 0.40; cRatio = 0.30; fRatio = 0.30; break;
+      case 'keto': pRatio = 0.20; cRatio = 0.05; fRatio = 0.75; break;
+      case 'highcarb': pRatio = 0.25; cRatio = 0.55; fRatio = 0.20; break;
+      default: pRatio = 0.3; cRatio = 0.35; fRatio = 0.35;
+    }
+
+    // Protein: 4 cal/g, Carbs: 4 cal/g, Fat: 9 cal/g
+    const proteinGrams = (calories * pRatio) / 4;
+    const carbGrams = (calories * cRatio) / 4;
+    const fatGrams = (calories * fRatio) / 9;
+
+    (document.getElementById('res-p') as HTMLElement).textContent = Math.round(proteinGrams).toString();
+    (document.getElementById('res-c') as HTMLElement).textContent = Math.round(carbGrams).toString();
+    (document.getElementById('res-f') as HTMLElement).textContent = Math.round(fatGrams).toString();
+
+    document.getElementById('result-section')!.classList.remove('hidden');
+    document.getElementById('result-section')!.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
+</script>
+
+<style is:global>
+.faq-item { border-top:1px solid var(--hairline); }
+.faq-item:last-child { border-bottom:1px solid var(--hairline); }
+.faq-question { font-size:16px;font-weight:500;color:var(--ink);cursor:pointer;padding:var(--space-lg) 0;list-style:none;display:flex;justify-content:space-between;align-items:center;letter-spacing:-0.4px; }
+.faq-question::after { content:'+';font-size:20px;font-weight:300;color:var(--mute); }
+details[open] .faq-question::after { content:'−'; }
+.faq-answer { font-size:15px;color:var(--body);line-height:1.7;padding-bottom:var(--space-lg); }
+</style>

@@ -1,0 +1,174 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Navbar from '../components/Navbar.astro';
+import Footer from '../components/Footer.astro';
+import ToolsGrid from '../components/ToolsGrid.astro';
+import RelatedArticles from '../components/RelatedArticles.astro';
+
+const title = "Baby Blood Type Calculator | agecalconline.com";
+const description = "Predict your baby's blood type based on the parents' blood types. Discover the possible blood groups and Rh factors your child could inherit.";
+const keywords = "baby blood type calculator, blood type genetics, child blood type predictor, parents blood type to baby";
+const canonical = "https://agecalconline.com/baby-blood-type-calculator";
+
+const schema = {
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Baby Blood Type Calculator",
+  "applicationCategory": "HealthApplication",
+  "url": canonical,
+  "description": description,
+  "operatingSystem": "Any",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+};
+
+const faqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    { "@type": "Question", "name": "How is a baby's blood type determined?", "acceptedAnswer": { "@type": "Answer", "text": "A baby inherits one blood type gene from the mother and one from the father. The combination of these two genes determines the baby's actual blood type (A, B, AB, or O)." } },
+    { "@type": "Question", "name": "Can two Rh-positive parents have an Rh-negative child?", "acceptedAnswer": { "@type": "Answer", "text": "Yes! If both parents carry a hidden Rh-negative gene, they can pass it down to their child, resulting in an Rh-negative baby." } }
+  ]
+};
+---
+<BaseLayout title={title} description={description} keywords={keywords} canonical={canonical}>
+  <script type="application/ld+json" set:html={JSON.stringify(schema)} slot="head" />
+  <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} slot="head" />
+  <Navbar slot="nav" />
+
+  <section class="section-hero band-white" style="position:relative;overflow:hidden;text-align:center">
+    <div style="position:absolute;inset:-40px;background:linear-gradient(135deg,#ff4d4d,#ffafcc);opacity:0.08;filter:blur(80px);pointer-events:none"></div>
+    <div class="container" style="position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;gap:var(--space-xl)">
+      <span class="caption-mono">Pregnancy & Family</span>
+      <h1 class="display-xl">Baby Blood Type Calculator</h1>
+      <p class="body-lg text-body" style="max-width:520px">Predict the possible blood groups and Rh factors your child could inherit based on the parents' blood types.</p>
+
+      <div class="card-lg" style="width:100%;max-width:600px;text-align:left">
+        <div class="grid-2" style="gap:var(--space-md)">
+          <div class="form-group">
+            <label class="form-label" for="mom-blood">Mother's Blood Type</label>
+            <select id="mom-blood" class="form-select form-input-lg">
+              <option value="A">A</option>
+              <option value="B">B</option>
+              <option value="AB">AB</option>
+              <option value="O">O</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="mom-rh">Mother's Rh Factor</label>
+            <select id="mom-rh" class="form-select form-input-lg">
+              <option value="+">Positive (+)</option>
+              <option value="-">Negative (-)</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="grid-2" style="gap:var(--space-md);margin-top:var(--space-md)">
+          <div class="form-group">
+            <label class="form-label" for="dad-blood">Father's Blood Type</label>
+            <select id="dad-blood" class="form-select form-input-lg">
+              <option value="A">A</option>
+              <option value="B">B</option>
+              <option value="AB">AB</option>
+              <option value="O">O</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="dad-rh">Father's Rh Factor</label>
+            <select id="dad-rh" class="form-select form-input-lg">
+              <option value="+">Positive (+)</option>
+              <option value="-">Negative (-)</option>
+            </select>
+          </div>
+        </div>
+
+        <button class="btn-primary" id="calc-btn" style="margin-top:var(--space-lg);width:100%;justify-content:center">Predict Baby's Blood Type</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="section band-light hidden" id="result-section">
+    <div class="container" style="max-width:720px;text-align:center">
+      <div class="card-lg">
+        <div class="caption-mono" style="color:var(--mute);margin-bottom:var(--space-sm)">Possible Blood Types</div>
+        <div class="display-lg" style="color:var(--ink)" id="result-types">—</div>
+        
+        <div class="grid-2" style="margin-top:var(--space-2xl);text-align:left;gap:var(--space-md)">
+          <div class="card-soft">
+            <div class="caption-mono" style="color:var(--mute);margin-bottom:8px">Possible Rh Factors</div>
+            <div class="display-sm" id="res-rh">—</div>
+          </div>
+          <div class="card-soft" style="background:#fff0f0;border-color:#ffb3b3">
+            <div class="caption-mono" style="color:#cc0000;margin-bottom:8px">Impossible Blood Types</div>
+            <div class="display-sm" id="res-impossible" style="color:#cc0000;font-size:16px">—</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section band-white">
+    <div class="container" style="max-width:720px">
+      <h2 class="display-md" style="margin-bottom:var(--space-xl)">Frequently Asked Questions</h2>
+      {faqSchema.mainEntity.map(faq => (
+        <details class="faq-item">
+          <summary class="faq-question">{faq.name}</summary>
+          <p class="faq-answer">{faq.acceptedAnswer.text}</p>
+        </details>
+      ))}
+    </div>
+  </section>
+
+  <RelatedArticles category="family" />
+  <ToolsGrid />
+  <Footer slot="footer" />
+</BaseLayout>
+
+<script>
+  // Blood type genetics logic
+  const aboMatrix: Record<string, Record<string, string[]>> = {
+    'A': { 'A': ['A', 'O'], 'B': ['A', 'B', 'AB', 'O'], 'AB': ['A', 'B', 'AB'], 'O': ['A', 'O'] },
+    'B': { 'A': ['A', 'B', 'AB', 'O'], 'B': ['B', 'O'], 'AB': ['A', 'B', 'AB'], 'O': ['B', 'O'] },
+    'AB': { 'A': ['A', 'B', 'AB'], 'B': ['A', 'B', 'AB'], 'AB': ['A', 'B', 'AB'], 'O': ['A', 'B'] },
+    'O': { 'A': ['A', 'O'], 'B': ['B', 'O'], 'AB': ['A', 'B'], 'O': ['O'] }
+  };
+
+  const rhMatrix: Record<string, Record<string, string[]>> = {
+    '+': { '+': ['+', '-'], '-': ['+', '-'] },
+    '-': { '+': ['+', '-'], '-': ['-'] }
+  };
+
+  document.getElementById('calc-btn')?.addEventListener('click', () => {
+    const momB = (document.getElementById('mom-blood') as HTMLSelectElement).value;
+    const momRh = (document.getElementById('mom-rh') as HTMLSelectElement).value;
+    const dadB = (document.getElementById('dad-blood') as HTMLSelectElement).value;
+    const dadRh = (document.getElementById('dad-rh') as HTMLSelectElement).value;
+
+    const possibleABO = aboMatrix[momB][dadB];
+    const possibleRh = rhMatrix[momRh][dadRh];
+
+    const allABO = ['A', 'B', 'AB', 'O'];
+    const impossibleABO = allABO.filter(t => !possibleABO.includes(t));
+
+    (document.getElementById('result-types') as HTMLElement).textContent = possibleABO.join(', ');
+    
+    let rhStr = "";
+    if (possibleRh.includes('+') && possibleRh.includes('-')) rhStr = "Positive (+) or Negative (-)";
+    else if (possibleRh.includes('+')) rhStr = "Positive (+) only";
+    else rhStr = "Negative (-) only";
+
+    (document.getElementById('res-rh') as HTMLElement).textContent = rhStr;
+    (document.getElementById('res-impossible') as HTMLElement).textContent = impossibleABO.length > 0 ? impossibleABO.join(', ') : "None";
+
+    document.getElementById('result-section')!.classList.remove('hidden');
+    document.getElementById('result-section')!.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
+</script>
+
+<style is:global>
+.faq-item { border-top:1px solid var(--hairline); }
+.faq-item:last-child { border-bottom:1px solid var(--hairline); }
+.faq-question { font-size:16px;font-weight:500;color:var(--ink);cursor:pointer;padding:var(--space-lg) 0;list-style:none;display:flex;justify-content:space-between;align-items:center;letter-spacing:-0.4px; }
+.faq-question::after { content:'+';font-size:20px;font-weight:300;color:var(--mute); }
+details[open] .faq-question::after { content:'−'; }
+.faq-answer { font-size:15px;color:var(--body);line-height:1.7;padding-bottom:var(--space-lg); }
+</style>

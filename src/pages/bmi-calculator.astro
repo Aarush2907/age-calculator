@@ -3,6 +3,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import Navbar from '../components/Navbar.astro';
 import Footer from '../components/Footer.astro';
 import ToolsGrid from '../components/ToolsGrid.astro';
+import RelatedArticles from '../components/RelatedArticles.astro';
 
 const title = "BMI Calculator — Body Mass Index Calculator | agecalconline.com";
 const description = "Calculate your Body Mass Index (BMI) instantly using height and weight. Supports metric and imperial units. See your BMI category, healthy weight range, and what it means.";
@@ -193,6 +194,8 @@ const faqSchema = {
       </div>
     </div>
   </section>
+
+  <RelatedArticles category="bmi" />
 
   <ToolsGrid />
   <Footer slot="footer" />

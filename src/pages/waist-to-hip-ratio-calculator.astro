@@ -1,0 +1,141 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Navbar from '../components/Navbar.astro';
+import Footer from '../components/Footer.astro';
+import ToolsGrid from '../components/ToolsGrid.astro';
+import RelatedArticles from '../components/RelatedArticles.astro';
+
+const title = "Waist-to-Hip Ratio Calculator | agecalconline.com";
+const description = "Calculate your Waist-to-Hip Ratio (WHR) to assess your health risk. Find out if your body fat distribution puts you at risk for cardiovascular diseases.";
+const keywords = "waist to hip ratio calculator, whr calculator, body fat distribution, health risk calculator, waist hip ratio chart";
+const canonical = "https://agecalconline.com/waist-to-hip-ratio-calculator";
+
+const schema = {
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Waist-to-Hip Ratio Calculator",
+  "applicationCategory": "HealthApplication",
+  "url": canonical,
+  "description": description,
+  "operatingSystem": "Any",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+};
+
+const faqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    { "@type": "Question", "name": "Why is the Waist-to-Hip Ratio important?", "acceptedAnswer": { "@type": "Answer", "text": "WHR is a quick measure of fat distribution. People who carry more weight around their waist (apple shape) are at higher risk for heart disease, type 2 diabetes, and premature death compared to those carrying it in their hips/thighs (pear shape)." } },
+    { "@type": "Question", "name": "What is a healthy Waist-to-Hip Ratio?", "acceptedAnswer": { "@type": "Answer", "text": "According to the World Health Organization (WHO), a healthy WHR is 0.90 or less for men, and 0.85 or less for women." } }
+  ]
+};
+---
+<BaseLayout title={title} description={description} keywords={keywords} canonical={canonical}>
+  <script type="application/ld+json" set:html={JSON.stringify(schema)} slot="head" />
+  <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} slot="head" />
+  <Navbar slot="nav" />
+
+  <section class="section-hero band-white" style="position:relative;overflow:hidden;text-align:center">
+    <div style="position:absolute;inset:-40px;background:linear-gradient(135deg,#ffafcc,#ff4d4d);opacity:0.08;filter:blur(80px);pointer-events:none"></div>
+    <div class="container" style="position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;gap:var(--space-xl)">
+      <span class="caption-mono">Health & Fitness</span>
+      <h1 class="display-xl">Waist-to-Hip Ratio Calculator</h1>
+      <p class="body-lg text-body" style="max-width:520px">Assess your health risk based on where your body stores fat. Calculate your WHR instantly.</p>
+
+      <div class="card-lg" style="width:100%;max-width:600px;text-align:left">
+        <div class="form-group">
+          <label class="form-label" for="whr-gender">Gender</label>
+          <select id="whr-gender" class="form-select form-input-lg">
+            <option value="male">Male</option>
+            <option value="female">Female</option>
+          </select>
+        </div>
+
+        <div class="grid-2" style="gap:var(--space-md);margin-top:var(--space-md)">
+          <div class="form-group">
+            <label class="form-label" for="whr-waist">Waist Circumference (cm)</label>
+            <input type="number" id="whr-waist" class="form-input form-input-lg" min="40" max="200" value="85" />
+            <span class="body-sm text-body" style="font-size:12px;margin-top:4px;display:block">Measure at the narrowest point</span>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="whr-hip">Hip Circumference (cm)</label>
+            <input type="number" id="whr-hip" class="form-input form-input-lg" min="40" max="250" value="100" />
+            <span class="body-sm text-body" style="font-size:12px;margin-top:4px;display:block">Measure at the widest point</span>
+          </div>
+        </div>
+
+        <button class="btn-primary" id="calc-btn" style="margin-top:var(--space-lg);width:100%;justify-content:center">Calculate Ratio</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="section band-light hidden" id="result-section">
+    <div class="container" style="max-width:720px;text-align:center">
+      <div class="card-lg">
+        <div class="caption-mono" style="color:var(--mute);margin-bottom:var(--space-sm)">Your Waist-to-Hip Ratio</div>
+        <div class="display-xl" style="color:var(--ink)" id="result-whr">—</div>
+        <div class="body-lg" style="margin-top:var(--space-xs);font-weight:600" id="res-risk">—</div>
+        
+        <p class="body-md text-body" style="margin-top:var(--space-lg)" id="res-desc"></p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section band-white">
+    <div class="container" style="max-width:720px">
+      <h2 class="display-md" style="margin-bottom:var(--space-xl)">Frequently Asked Questions</h2>
+      {faqSchema.mainEntity.map(faq => (
+        <details class="faq-item">
+          <summary class="faq-question">{faq.name}</summary>
+          <p class="faq-answer">{faq.acceptedAnswer.text}</p>
+        </details>
+      ))}
+    </div>
+  </section>
+
+  <RelatedArticles category="bmi" />
+  <ToolsGrid />
+  <Footer slot="footer" />
+</BaseLayout>
+
+<script>
+  document.getElementById('calc-btn')?.addEventListener('click', () => {
+    const gender = (document.getElementById('whr-gender') as HTMLSelectElement).value;
+    const waist = parseFloat((document.getElementById('whr-waist') as HTMLInputElement).value);
+    const hip = parseFloat((document.getElementById('whr-hip') as HTMLInputElement).value);
+
+    if (!waist || !hip) return alert("Please enter both waist and hip measurements.");
+
+    const whr = waist / hip;
+
+    let risk = "Low Risk (Healthy)";
+    let color = "var(--success)";
+    let desc = "You have a pear-shaped body. You store more fat in your hips and thighs rather than your abdomen, which is associated with a lower risk of metabolic diseases.";
+
+    if (gender === 'male') {
+      if (whr > 0.90 && whr <= 0.99) { risk = "Moderate Risk"; color = "#f9cb28"; }
+      else if (whr > 0.99) { risk = "High Risk"; color = "#ff4d4d"; desc = "You have an apple-shaped body. Storing fat around the abdomen is linked to a higher risk of heart disease and diabetes."; }
+    } else {
+      if (whr > 0.80 && whr <= 0.84) { risk = "Moderate Risk"; color = "#f9cb28"; }
+      else if (whr > 0.84) { risk = "High Risk"; color = "#ff4d4d"; desc = "You have an apple-shaped body. Storing fat around the abdomen is linked to a higher risk of heart disease and diabetes."; }
+    }
+
+    (document.getElementById('result-whr') as HTMLElement).textContent = whr.toFixed(2);
+    const riskEl = document.getElementById('res-risk') as HTMLElement;
+    riskEl.textContent = risk;
+    riskEl.style.color = color;
+    (document.getElementById('res-desc') as HTMLElement).textContent = desc;
+
+    document.getElementById('result-section')!.classList.remove('hidden');
+    document.getElementById('result-section')!.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
+</script>
+
+<style is:global>
+.faq-item { border-top:1px solid var(--hairline); }
+.faq-item:last-child { border-bottom:1px solid var(--hairline); }
+.faq-question { font-size:16px;font-weight:500;color:var(--ink);cursor:pointer;padding:var(--space-lg) 0;list-style:none;display:flex;justify-content:space-between;align-items:center;letter-spacing:-0.4px; }
+.faq-question::after { content:'+';font-size:20px;font-weight:300;color:var(--mute); }
+details[open] .faq-question::after { content:'−'; }
+.faq-answer { font-size:15px;color:var(--body);line-height:1.7;padding-bottom:var(--space-lg); }
+</style>

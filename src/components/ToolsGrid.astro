@@ -1,60 +1,217 @@
 ---
 // src/components/ToolsGrid.astro
-const tools = [
-  { href:'/age-difference-calculator', icon:'↔️', title:'Age Difference', desc:'Compare ages of two people in years, months, weeks, and days.' },
-  { href:'/birthday-calculator', icon:'🎂', title:'Birthday Calculator', desc:'Countdown to your next birthday and find your birthday twins.' },
-  { href:'/chronological-age-calculator', icon:'🕐', title:'Chronological Age', desc:'Calculate your exact age in years, months, days, hours, and seconds.' },
-  { href:'/pregnancy-due-date-calculator', icon:'🤱', title:'Pregnancy Due Date', desc:'Calculate your estimated due date, trimester, and weeks pregnant.' },
-  { href:'/menstrual-cycle-calculator', icon:'📅', title:'Menstrual Cycle', desc:'Predict your next period, fertile window, and ovulation date.' },
-  { href:'/bmi-calculator', icon:'⚖️', title:'BMI Calculator', desc:'Calculate your Body Mass Index in metric or imperial units.' },
-  { href:'/work-hours-calculator', icon:'⏱️', title:'Work Hours', desc:'Calculate total hours worked, subtract breaks, and estimate earnings.' },
-  { href:'/percentage-calculator', icon:'%', title:'Percentage Calculator', desc:'Find X% of Y, what % one number is of another, or % change.' },
-  { href:'/pet-age-calculator', icon:'🐾', title:'Pet Age Calculator', desc:'Convert your pet\'s age to human years — dogs, cats, rabbits & more.' },
-  { href:'/retirement-calculator', icon:'🏖️', title:'Retirement Calculator', desc:'Find out exactly how many years until your retirement date.' },
-  { href:'/life-expectancy-calculator', icon:'📊', title:'Life Expectancy', desc:'Country-specific life expectancy and estimated days remaining.' },
-  { href:'/biological-age-calculator', icon:'🧬', title:'Biological Age', desc:'Estimate your biological age based on your lifestyle habits.' },
-  { href:'/generation-calculator', icon:'👥', title:'Generation Calculator', desc:'Discover your generation and what makes it unique.' },
-  { href:'/future-age-calculator', icon:'🔮', title:'Future Age', desc:'Calculate exactly how old you\'ll be on any future date.' },
-  { href:'/reverse-age-calculator', icon:'↩️', title:'Reverse Age', desc:'Find your birth date from a known age.' },
+
+const categories = [
+  {
+    name: "Age & Time",
+    icon: "🕐",
+    desc: "Calculate exact chronological age, future dates, and time differences.",
+    tools: [
+      { href:'/days-between-dates-calculator', icon:'📅', title:'Days Between Dates', desc:'Calculate exactly how many days are between two dates.' },
+      { href:'/weeks-between-dates-calculator', icon:'📅', title:'Weeks Between Dates', desc:'Find the exact duration in weeks and days between dates.' },
+      { href:'/months-between-dates-calculator', icon:'📅', title:'Months Between Dates', desc:'Calculate the exact months and days between two dates.' },
+      { href:'/years-between-dates-calculator', icon:'📅', title:'Years Between Dates', desc:'Find out the exact years, months, and days between dates.' },
+      { href:'/business-days-calculator', icon:'💼', title:'Business Days', desc:'Calculate working days between dates, excluding weekends.' },
+      { href:'/date-addition-calculator', icon:'➕', title:'Date Addition / Subtraction', desc:'Add or subtract days, months, and years from any date.' },
+      { href:'/time-duration-calculator', icon:'⏱️', title:'Time Duration', desc:'Calculate exact hours and minutes elapsed between two times.' },
+      { href:'/countdown-calculator', icon:'⏳', title:'Countdown Calculator', desc:'Create a live countdown timer to any future date and time.' },
+      { href:'/anniversary-calculator', icon:'❤️', title:'Anniversary Calculator', desc:'Calculate exactly how long you have been together.' },
+      { href:'/leap-year-calculator', icon:'🐸', title:'Leap Year Calculator', desc:'Check if any year is a leap year and find the next one.' },
+      { href:'/chronological-age-calculator', icon:'🕐', title:'Chronological Age', desc:'Calculate your exact age in years, months, days, hours, and seconds.' },
+      { href:'/age-difference-calculator', icon:'↔️', title:'Age Difference', desc:'Compare ages of two people in years, months, weeks, and days.' },
+      { href:'/birthday-calculator', icon:'🎂', title:'Birthday Calculator', desc:'Countdown to your next birthday and find your birthday twins.' },
+      { href:'/future-age-calculator', icon:'🔮', title:'Future Age', desc:'Calculate exactly how old you\'ll be on any future date.' },
+      { href:'/reverse-age-calculator', icon:'↩️', title:'Reverse Age', desc:'Find your birth date from a known age.' },
+      { href:'/generation-calculator', icon:'👥', title:'Generation Calculator', desc:'Discover your generation and what makes it unique.' },
+    ]
+  },
+  {
+    name: "Health & Fitness",
+    icon: "⚖️",
+    desc: "Tools to track body metrics and physical wellness.",
+    tools: [
+      { href:'/bmi-calculator', icon:'⚖️', title:'BMI Calculator', desc:'Calculate your Body Mass Index in metric or imperial units.' },
+      { href:'/bmr-calculator', icon:'🔥', title:'BMR Calculator', desc:'Find out how many calories your body burns at rest.' },
+      { href:'/tdee-calculator', icon:'⚡', title:'TDEE Calculator', desc:'Calculate your Total Daily Energy Expenditure based on activity.' },
+      { href:'/body-fat-calculator', icon:'📏', title:'Body Fat Calculator', desc:'Estimate your body fat percentage using the U.S. Navy method.' },
+      { href:'/ideal-weight-calculator', icon:'⚖️', title:'Ideal Weight Calculator', desc:'Calculate your Ideal Body Weight (IBW) based on height.' },
+      { href:'/water-intake-calculator', icon:'💧', title:'Water Intake Calculator', desc:'Find out how much water you need daily to stay hydrated.' },
+      { href:'/protein-intake-calculator', icon:'🥩', title:'Protein Intake Calculator', desc:'Calculate optimal daily protein based on your fitness goals.' },
+      { href:'/macro-calculator', icon:'🥑', title:'Macro Calculator', desc:'Find your exact daily breakdown of carbs, protein, and fat.' },
+      { href:'/waist-to-hip-ratio-calculator', icon:'📏', title:'Waist-to-Hip Ratio', desc:'Assess health risk based on your body fat distribution.' },
+      { href:'/calorie-burn-calculator', icon:'🔥', title:'Calorie Burn Calculator', desc:'Find out exactly how many calories you burn doing various activities.' },
+      { href:'/lean-body-mass-calculator', icon:'💪', title:'Lean Body Mass', desc:'Calculate how much of your weight is lean tissue vs body fat.' },
+    ]
+  },
+  {
+    name: "Pregnancy & Family",
+    icon: "🤱",
+    desc: "Calculators for family planning and pregnancy tracking.",
+    tools: [
+      { href:'/pregnancy-due-date-calculator', icon:'🤱', title:'Pregnancy Due Date', desc:'Calculate your estimated due date, trimester, and weeks pregnant.' },
+      { href:'/menstrual-cycle-calculator', icon:'📅', title:'Menstrual Cycle', desc:'Predict your next period, fertile window, and ovulation date.' },
+      { href:'/conception-date-calculator', icon:'✨', title:'Conception Date', desc:'Find out the exact week you likely conceived based on your due date.' },
+      { href:'/pregnancy-weight-gain-calculator', icon:'⚖️', title:'Pregnancy Weight Gain', desc:'Calculate recommended weight gain based on pre-pregnancy BMI.' },
+      { href:'/ovulation-calculator', icon:'🌸', title:'Ovulation Calculator', desc:'Find your exact ovulation day and fertile window.' },
+      { href:'/baby-blood-type-calculator', icon:'🩸', title:'Baby Blood Type', desc:'Predict your child\'s blood type based on parents\' genetics.' },
+      { href:'/ivf-due-date-calculator', icon:'👶', title:'IVF Due Date', desc:'Calculate due date based on embryo transfer and embryo age.' },
+    ]
+  },
+  {
+    name: "Longevity",
+    icon: "🧬",
+    desc: "Analytics for life expectancy and biological aging.",
+    tools: [
+      { href:'/life-expectancy-calculator', icon:'📊', title:'Life Expectancy', desc:'Country-specific life expectancy and estimated days remaining.' },
+      { href:'/biological-age-calculator', icon:'🧬', title:'Biological Age', desc:'Estimate your biological age based on your lifestyle habits.' },
+    ]
+  },
+  {
+    name: "Finance",
+    icon: "💰",
+    desc: "Calculators for financial planning and retirement.",
+    tools: [
+      { href:'/retirement-calculator', icon:'🏖️', title:'Retirement Calculator', desc:'Find out exactly how many years until your retirement date.' },
+    ]
+  },
+  {
+    name: "Productivity",
+    icon: "⏱️",
+    desc: "Tools to manage work hours and time efficiency.",
+    tools: [
+      { href:'/work-hours-calculator', icon:'⏱️', title:'Work Hours', desc:'Calculate total hours worked, subtract breaks, and estimate earnings.' },
+    ]
+  },
+  {
+    name: "Math & Utilities",
+    icon: "🔢",
+    desc: "Everyday mathematical calculations and percentage tools.",
+    tools: [
+      { href:'/percentage-calculator', icon:'%', title:'Percentage Calculator', desc:'Find X% of Y, what % one number is of another, or % change.' },
+    ]
+  },
+  {
+    name: "Pets",
+    icon: "🐾",
+    desc: "Convert animal ages to human years.",
+    tools: [
+      { href:'/pet-age-calculator', icon:'🐾', title:'Pet Age Calculator', desc:'Convert your pet\'s age to human years — dogs, cats, rabbits & more.' },
+    ]
+  }
 ];
 ---
-<section class="tools-grid section band-light">
+<section class="tools-grid section band-light" id="calculators">
   <div class="container">
-    <div class="section-header section-header--center" style="margin-bottom:var(--space-3xl)">
-      <span class="caption-mono" data-i18n="tools_label">More Tools</span>
-      <h2 class="display-lg" data-i18n="tools_heading">Explore all calculators.</h2>
-      <p class="body-md text-body" data-i18n="tools_sub">Each tool is SEO-optimized and designed for a specific life calculation need.</p>
+    <div class="section-header section-header--center" style="margin-bottom:var(--space-2xl)">
+      <span class="caption-mono" data-i18n="tools_label">All Calculators</span>
+      <h2 class="display-lg" data-i18n="tools_heading">Explore our specialized tools.</h2>
+      <p class="body-md text-body" data-i18n="tools_sub">Find the exact calculator you need, organized by category.</p>
     </div>
-    <div class="grid-3 tg-grid">
-      {tools.map(t => (
-        <a href={t.href} class="tg-card">
-          <div class="tg-card__icon">{t.icon}</div>
-          <div class="tg-card__title">{t.title}</div>
-          <div class="tg-card__desc">{t.desc}</div>
-          <div class="tg-card__cta" data-i18n="tools_cta">Calculate →</div>
-        </a>
+
+    <div class="search-container" style="max-width:600px; margin: 0 auto var(--space-4xl) auto;">
+      <input type="text" id="tools-search" class="form-input form-input-lg" placeholder="Search for a calculator... (e.g. BMI, Age, Ovulation)" style="width:100%; border-radius: 100px; padding-left: 24px; box-shadow: var(--shadow-2);" />
+    </div>
+
+    <div class="categories-list" id="categories-container">
+      {categories.map(cat => (
+        <div class="category-section">
+          <div class="category-header">
+            <div class="category-icon">{cat.icon}</div>
+            <div>
+              <h3 class="display-sm">{cat.name}</h3>
+              <p class="body-sm text-body">{cat.desc}</p>
+            </div>
+          </div>
+          <div class="grid-3 tg-grid">
+            {cat.tools.map(t => (
+              <a href={t.href} class="tg-card card-soft">
+                <div class="tg-card__icon">{t.icon}</div>
+                <div class="tg-card__title">{t.title}</div>
+                <div class="tg-card__desc">{t.desc}</div>
+                <div class="tg-card__cta">Calculate →</div>
+              </a>
+            ))}
+          </div>
+        </div>
       ))}
     </div>
   </div>
 </section>
 
 <style>
-.tg-card {
-  background: var(--canvas); border-radius: var(--radius-md);
-  padding: var(--space-lg); box-shadow: var(--shadow-2);
+.categories-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5xl);
+}
+.category-header {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+  margin-bottom: var(--space-xl);
+  padding-bottom: var(--space-sm);
+  border-bottom: 1px solid var(--hairline);
+}
+.category-icon {
+  font-size: 32px;
+  background: var(--canvas);
+  width: 64px;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-lg);
   border: 1px solid var(--hairline);
-  display: flex; flex-direction: column; gap: var(--space-xs);
+  box-shadow: var(--shadow-1);
+}
+.tg-card {
   text-decoration: none; color: inherit;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
+  display: flex; flex-direction: column; height: 100%;
 }
-.tg-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-4); }
+.tg-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-3); border-color: var(--hairline-strong); }
 .tg-card__icon { font-size: 28px; margin-bottom: 4px; }
 .tg-card__title { font-size: 16px; font-weight: 600; color: var(--ink); letter-spacing: -0.4px; }
-.tg-card__desc { font-size: 14px; color: var(--body); line-height: 1.5; flex: 1; }
-.tg-card__cta { font-size: 13px; color: var(--link); font-weight: 500; margin-top: var(--space-xs); }
+.tg-card__desc { font-size: 14px; color: var(--body); line-height: 1.5; flex: 1; margin-top: var(--space-xs); }
+.tg-card__cta { font-size: 13px; color: var(--link); font-weight: 600; margin-top: var(--space-md); }
 .section-header--center { text-align: center; }
 @media (max-width: 600px) {
   .section-header--center { text-align: left; }
-  .tg-card { padding: var(--space-md); }
+  .category-header { flex-direction: column; align-items: flex-start; gap: var(--space-sm); }
 }
 </style>
+
+<script>
+  // Live Search Filtering for Tools
+  const searchInput = document.getElementById('tools-search') as HTMLInputElement;
+  if (searchInput) {
+    searchInput.addEventListener('input', (e) => {
+      const query = (e.target as HTMLInputElement).value.toLowerCase();
+      const categories = document.querySelectorAll('.category-section');
+
+      categories.forEach(category => {
+        let hasVisibleCards = false;
+        const cards = category.querySelectorAll('.tg-card');
+        
+        cards.forEach(card => {
+          const title = card.querySelector('.tg-card__title')?.textContent?.toLowerCase() || '';
+          const desc = card.querySelector('.tg-card__desc')?.textContent?.toLowerCase() || '';
+          
+          if (title.includes(query) || desc.includes(query)) {
+            (card as HTMLElement).style.display = 'flex';
+            hasVisibleCards = true;
+          } else {
+            (card as HTMLElement).style.display = 'none';
+          }
+        });
+
+        // Hide the entire category if no cards match
+        if (hasVisibleCards) {
+          (category as HTMLElement).style.display = 'block';
+        } else {
+          (category as HTMLElement).style.display = 'none';
+        }
+      });
+    });
+  }
+</script>

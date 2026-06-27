@@ -1,0 +1,259 @@
+---
+// src/components/BlogSection.astro
+
+const articles = [
+  {
+    href: '/blog/biological-age-vs-chronological-age',
+    image: 'https://images.unsplash.com/photo-1576671081837-49000212a370?auto=format&fit=crop&w=800&q=80',
+    category: 'Longevity',
+    readTime: '6 min read',
+    date: 'Oct 12, 2023',
+    title: 'Biological Age vs Chronological Age: What\'s the Difference?',
+    desc: 'Understanding why your cells might be older or younger than your birth certificate says, and how you can influence it.'
+  },
+  {
+    href: '/blog/how-to-calculate-age-accurately',
+    image: 'https://images.unsplash.com/photo-1506784983877-45594efa4cbe?auto=format&fit=crop&w=800&q=80',
+    category: 'Guides',
+    readTime: '4 min read',
+    date: 'Nov 05, 2023',
+    title: 'The Math Behind Accurate Age Calculation',
+    desc: 'Leap years, different month lengths, and timezones make calculating exact age surprisingly complex. Here is how it works.'
+  },
+  {
+    href: '/blog/generational-differences-millennials-gen-z',
+    image: 'https://images.unsplash.com/photo-1529156069898-49953eb1b5ae?auto=format&fit=crop&w=800&q=80',
+    category: 'Society',
+    readTime: '8 min read',
+    date: 'Dec 18, 2023',
+    title: 'Generational Divides: Millennials vs Gen Z',
+    desc: 'How the year you were born shapes your worldview, tech habits, and economic realities in the modern era.'
+  }
+];
+
+const featuredArticle = {
+  href: '/blog/life-expectancy-factors-that-matter',
+  image: 'https://images.unsplash.com/photo-1505576399279-565b52d4ac71?auto=format&fit=crop&w=1200&q=80',
+  category: 'Health',
+  readTime: '10 min read',
+  date: 'Jan 22, 2024',
+  title: '7 Crucial Factors That Influence Your Life Expectancy',
+  desc: 'From zip codes to sleep habits, explore the latest research on what actually moves the needle when it comes to living a longer, healthier life.'
+};
+---
+
+<section class="blog-section section band-white">
+  <div class="container">
+    <div class="blog-header" style="margin-bottom:var(--space-4xl)">
+      <h2 class="display-lg">Health & Longevity Blog</h2>
+      <p class="body-lg text-body" style="margin-top:var(--space-sm);max-width:600px">Articles on health, aging, longevity, nutrition, fitness, and lifestyle.</p>
+    </div>
+
+    <!-- Featured Article -->
+    <a href={featuredArticle.href} class="featured-post">
+      <div class="featured-image">
+        <img src={featuredArticle.image} alt={featuredArticle.title} loading="lazy" />
+      </div>
+      <div class="featured-content">
+        <div class="post-meta">
+          <span class="badge badge-blue">{featuredArticle.category}</span>
+          <span class="meta-text">{featuredArticle.readTime} • {featuredArticle.date}</span>
+        </div>
+        <h3 class="display-md featured-title">{featuredArticle.title}</h3>
+        <p class="body-md text-body featured-desc">{featuredArticle.desc}</p>
+        <span class="read-btn">Read Article →</span>
+      </div>
+    </a>
+
+    <!-- Standard Articles Grid -->
+    <div class="blog-grid" style="margin-top:var(--space-3xl)">
+      {articles.map((article) => (
+        <a href={article.href} class="blog-card">
+          <div class="blog-card-image">
+            <img src={article.image} alt={article.title} loading="lazy" />
+          </div>
+          <div class="blog-card-content">
+            <div class="post-meta">
+              <span class="badge">{article.category}</span>
+              <span class="meta-text">{article.readTime}</span>
+            </div>
+            <h4 class="blog-card-title">{article.title}</h4>
+            <p class="blog-card-desc">{article.desc}</p>
+            <span class="read-link">Read Article →</span>
+          </div>
+        </a>
+      ))}
+    </div>
+    
+    <div style="text-align:center;margin-top:var(--space-4xl)">
+      <a href="/blog" class="btn-secondary">View all articles</a>
+    </div>
+  </div>
+</section>
+
+<style>
+.blog-header {
+  border-bottom: 2px solid var(--hairline);
+  padding-bottom: var(--space-xl);
+}
+
+.post-meta {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  margin-bottom: var(--space-md);
+}
+
+.meta-text {
+  font-size: 13px;
+  color: var(--mute);
+  font-weight: 500;
+}
+
+/* Featured Post */
+.featured-post {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap: var(--space-2xl);
+  background: var(--canvas-soft);
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+  border: 1px solid var(--hairline);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  text-decoration: none;
+  color: inherit;
+}
+
+.featured-post:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-3);
+}
+
+.featured-post:hover .featured-title {
+  color: var(--link);
+}
+
+.featured-image {
+  height: 100%;
+  min-height: 350px;
+}
+
+.featured-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.featured-content {
+  padding: var(--space-3xl) var(--space-2xl) var(--space-3xl) 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.featured-title {
+  margin-bottom: var(--space-sm);
+  transition: color 0.2s ease;
+}
+
+.featured-desc {
+  margin-bottom: var(--space-xl);
+}
+
+.read-btn {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--link);
+  margin-top: auto;
+}
+
+/* Standard Posts Grid */
+.blog-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-lg);
+}
+
+.blog-card {
+  display: flex;
+  flex-direction: column;
+  background: var(--canvas);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  border: 1px solid var(--hairline);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  text-decoration: none;
+  color: inherit;
+  height: 100%;
+}
+
+.blog-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-2);
+}
+
+.blog-card:hover .blog-card-title {
+  color: var(--link);
+}
+
+.blog-card-image {
+  height: 200px;
+  border-bottom: 1px solid var(--hairline);
+}
+
+.blog-card-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.blog-card-content {
+  padding: var(--space-lg);
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.blog-card-title {
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 1.4;
+  margin-bottom: var(--space-xs);
+  transition: color 0.2s ease;
+}
+
+.blog-card-desc {
+  font-size: 14px;
+  color: var(--body);
+  line-height: 1.6;
+  margin-bottom: var(--space-lg);
+  flex: 1;
+}
+
+.read-link {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--link);
+}
+
+@media (max-width: 960px) {
+  .featured-post {
+    grid-template-columns: 1fr;
+  }
+  .featured-content {
+    padding: var(--space-xl);
+  }
+  .blog-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 600px) {
+  .blog-grid {
+    grid-template-columns: 1fr;
+  }
+  .featured-image {
+    min-height: 200px;
+  }
+}
+</style>

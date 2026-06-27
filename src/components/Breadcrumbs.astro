@@ -1,0 +1,97 @@
+---
+// src/components/Breadcrumbs.astro
+export interface Props {
+  path?: { label: string; href: string }[];
+}
+
+const { path = [] } = Astro.props;
+
+// If no custom path is provided, build it automatically from the URL
+let breadcrumbItems = path;
+
+if (breadcrumbItems.length === 0) {
+  const currentPath = Astro.url.pathname;
+  if (currentPath !== '/') {
+    breadcrumbItems.push({ label: 'Home', href: '/' });
+    
+    // Convert path like /pregnancy-due-date-calculator to Pregnancy Due Date Calculator
+    const segments = currentPath.split('/').filter(Boolean);
+    let cumulativePath = '';
+    
+    segments.forEach((segment, index) => {
+      cumulativePath += `/${segment}`;
+      // Format text: replace dashes with spaces, capitalize each word
+      const formattedLabel = segment
+        .split('-')
+        .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+        .join(' ');
+        
+      breadcrumbItems.push({
+        label: formattedLabel,
+        href: index === segments.length - 1 ? '' : cumulativePath // Don't link the last item
+      });
+    });
+  }
+}
+---
+
+{breadcrumbItems.length > 0 && (
+  <nav aria-label="Breadcrumb" class="breadcrumbs">
+    <div class="container">
+      <ol class="breadcrumbs-list">
+        {breadcrumbItems.map((item, index) => (
+          <li class="breadcrumbs-item">
+            {item.href ? (
+              <a href={item.href} class="breadcrumbs-link">{item.label}</a>
+            ) : (
+              <span class="breadcrumbs-current" aria-current="page">{item.label}</span>
+            )}
+            {index < breadcrumbItems.length - 1 && (
+              <span class="breadcrumbs-separator">/</span>
+            )}
+          </li>
+        ))}
+      </ol>
+    </div>
+  </nav>
+)}
+
+<style>
+.breadcrumbs {
+  background: var(--canvas-soft);
+  border-bottom: 1px solid var(--hairline);
+  padding: var(--space-sm) 0;
+}
+.breadcrumbs-list {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--space-xs);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.breadcrumbs-item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs);
+  font-size: 13px;
+}
+.breadcrumbs-link {
+  color: var(--mute);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+.breadcrumbs-link:hover {
+  color: var(--ink);
+}
+.breadcrumbs-current {
+  color: var(--ink);
+  font-weight: 500;
+}
+.breadcrumbs-separator {
+  color: var(--hairline-strong);
+  font-size: 12px;
+  user-select: none;
+}
+</style>

@@ -1,0 +1,141 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Navbar from '../components/Navbar.astro';
+import Footer from '../components/Footer.astro';
+import ToolsGrid from '../components/ToolsGrid.astro';
+import RelatedArticles from '../components/RelatedArticles.astro';
+
+const title = "Calorie Burn Calculator | agecalconline.com";
+const description = "Calculate exactly how many calories you burn doing various activities, exercises, and sports based on your weight and duration.";
+const keywords = "calorie burn calculator, calories burned running, calories burned walking, calories burned lifting weights, exercise calories";
+const canonical = "https://agecalconline.com/calorie-burn-calculator";
+
+const schema = {
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Calorie Burn Calculator",
+  "applicationCategory": "HealthApplication",
+  "url": canonical,
+  "description": description,
+  "operatingSystem": "Any",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+};
+
+const faqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    { "@type": "Question", "name": "How is calorie burn calculated?", "acceptedAnswer": { "@type": "Answer", "text": "We calculate calorie burn using Metabolic Equivalent of Task (MET) values. The formula is: Calories Burned = (MET value * Weight in kg * Duration in hours)." } },
+    { "@type": "Question", "name": "Do heavier people burn more calories?", "acceptedAnswer": { "@type": "Answer", "text": "Yes, heavier individuals expend more energy to move their bodies, which results in a higher calorie burn for the exact same activity and duration compared to a lighter person." } }
+  ]
+};
+---
+<BaseLayout title={title} description={description} keywords={keywords} canonical={canonical}>
+  <script type="application/ld+json" set:html={JSON.stringify(schema)} slot="head" />
+  <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} slot="head" />
+  <Navbar slot="nav" />
+
+  <section class="section-hero band-white" style="position:relative;overflow:hidden;text-align:center">
+    <div style="position:absolute;inset:-40px;background:linear-gradient(135deg,#ff6b9d,#f9cb28);opacity:0.08;filter:blur(80px);pointer-events:none"></div>
+    <div class="container" style="position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;gap:var(--space-xl)">
+      <span class="caption-mono">Health & Fitness</span>
+      <h1 class="display-xl">Calorie Burn Calculator</h1>
+      <p class="body-lg text-body" style="max-width:520px">Find out exactly how many calories you burn doing various exercises, sports, and daily activities.</p>
+
+      <div class="card-lg" style="width:100%;max-width:500px;text-align:left">
+        <div class="form-group">
+          <label class="form-label" for="cb-weight">Your Weight (kg)</label>
+          <input type="number" id="cb-weight" class="form-input form-input-lg" min="30" max="300" value="70" />
+        </div>
+        
+        <div class="form-group" style="margin-top:var(--space-md)">
+          <label class="form-label" for="cb-activity">Activity / Exercise</label>
+          <select id="cb-activity" class="form-select form-input-lg">
+            <option value="3.3">Walking (Moderate, 3 mph)</option>
+            <option value="4.3">Walking (Fast, 4 mph)</option>
+            <option value="8.3">Running (Slow, 5 mph)</option>
+            <option value="9.8">Running (Moderate, 6 mph)</option>
+            <option value="11.8">Running (Fast, 7.5 mph)</option>
+            <option value="7.0">Cycling (Moderate, 12-14 mph)</option>
+            <option value="8.5">Cycling (Vigorous, 14-16 mph)</option>
+            <option value="3.5">Weight Lifting (Light/Moderate)</option>
+            <option value="6.0">Weight Lifting (Vigorous/Powerlifting)</option>
+            <option value="8.0">Swimming (Freestyle, Moderate)</option>
+            <option value="10.0">Swimming (Freestyle, Fast)</option>
+            <option value="7.0">Tennis (General)</option>
+            <option value="8.0">Basketball (Game)</option>
+            <option value="2.5">Yoga (Hatha)</option>
+            <option value="1.3">Sitting / Reading</option>
+            <option value="1.5">Desk Work</option>
+          </select>
+        </div>
+
+        <div class="form-group" style="margin-top:var(--space-md)">
+          <label class="form-label" for="cb-duration">Duration (minutes)</label>
+          <input type="number" id="cb-duration" class="form-input form-input-lg" min="1" max="1440" value="30" />
+        </div>
+
+        <button class="btn-primary" id="calc-btn" style="margin-top:var(--space-lg);width:100%;justify-content:center">Calculate Calories Burned</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="section band-light hidden" id="result-section">
+    <div class="container" style="max-width:720px;text-align:center">
+      <div class="card-lg">
+        <div style="font-size:48px;margin-bottom:var(--space-md)">🔥</div>
+        <div class="caption-mono" style="color:var(--mute);margin-bottom:var(--space-sm)">Total Calories Burned</div>
+        <div class="display-xl" style="color:#ff6b9d" id="result-cal">—</div>
+        <div class="body-lg text-body" style="margin-top:var(--space-xs)">kcal</div>
+        
+        <p class="body-md text-body" style="margin-top:var(--space-lg)" id="res-desc"></p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section band-white">
+    <div class="container" style="max-width:720px">
+      <h2 class="display-md" style="margin-bottom:var(--space-xl)">Frequently Asked Questions</h2>
+      {faqSchema.mainEntity.map(faq => (
+        <details class="faq-item">
+          <summary class="faq-question">{faq.name}</summary>
+          <p class="faq-answer">{faq.acceptedAnswer.text}</p>
+        </details>
+      ))}
+    </div>
+  </section>
+
+  <RelatedArticles category="health" />
+  <ToolsGrid />
+  <Footer slot="footer" />
+</BaseLayout>
+
+<script>
+  document.getElementById('calc-btn')?.addEventListener('click', () => {
+    const weightKg = parseFloat((document.getElementById('cb-weight') as HTMLInputElement).value);
+    const met = parseFloat((document.getElementById('cb-activity') as HTMLSelectElement).value);
+    const activityName = (document.getElementById('cb-activity') as HTMLSelectElement).options[(document.getElementById('cb-activity') as HTMLSelectElement).selectedIndex].text;
+    const durationMin = parseFloat((document.getElementById('cb-duration') as HTMLInputElement).value);
+
+    if (!weightKg || !durationMin) return alert("Please fill in weight and duration.");
+
+    // Formula: Calories = MET * Weight(kg) * (Duration(min) / 60)
+    const hours = durationMin / 60;
+    const caloriesBurned = met * weightKg * hours;
+
+    (document.getElementById('result-cal') as HTMLElement).textContent = Math.round(caloriesBurned).toLocaleString();
+    (document.getElementById('res-desc') as HTMLElement).textContent = `You burn approximately ${Math.round(caloriesBurned)} calories by doing '${activityName}' for ${durationMin} minutes.`;
+
+    document.getElementById('result-section')!.classList.remove('hidden');
+    document.getElementById('result-section')!.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
+</script>
+
+<style is:global>
+.faq-item { border-top:1px solid var(--hairline); }
+.faq-item:last-child { border-bottom:1px solid var(--hairline); }
+.faq-question { font-size:16px;font-weight:500;color:var(--ink);cursor:pointer;padding:var(--space-lg) 0;list-style:none;display:flex;justify-content:space-between;align-items:center;letter-spacing:-0.4px; }
+.faq-question::after { content:'+';font-size:20px;font-weight:300;color:var(--mute); }
+details[open] .faq-question::after { content:'−'; }
+.faq-answer { font-size:15px;color:var(--body);line-height:1.7;padding-bottom:var(--space-lg); }
+</style>

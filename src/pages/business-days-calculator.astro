@@ -1,0 +1,169 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Navbar from '../components/Navbar.astro';
+import Footer from '../components/Footer.astro';
+import ToolsGrid from '../components/ToolsGrid.astro';
+import RelatedArticles from '../components/RelatedArticles.astro';
+
+const title = "Business Days Calculator | agecalconline.com";
+const description = "Calculate exactly how many business days (working days) exist between two dates, excluding weekends.";
+const keywords = "business days calculator, working days calculator, count business days, days excluding weekends";
+const canonical = "https://agecalconline.com/business-days-calculator";
+
+const schema = {
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Business Days Calculator",
+  "applicationCategory": "UtilitiesApplication",
+  "url": canonical,
+  "description": description,
+  "operatingSystem": "Any",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+};
+
+const faqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    { "@type": "Question", "name": "What is considered a business day?", "acceptedAnswer": { "@type": "Answer", "text": "A business day is typically considered any day from Monday through Friday. Saturdays and Sundays are excluded from the count." } },
+    { "@type": "Question", "name": "Does this tool exclude public holidays?", "acceptedAnswer": { "@type": "Answer", "text": "This calculator purely excludes weekends (Saturdays and Sundays). Since public holidays vary vastly by country, state, and company, they are not automatically excluded." } }
+  ]
+};
+---
+<BaseLayout title={title} description={description} keywords={keywords} canonical={canonical}>
+  <script type="application/ld+json" set:html={JSON.stringify(schema)} slot="head" />
+  <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} slot="head" />
+  <Navbar slot="nav" />
+
+  <section class="section-hero band-white" style="position:relative;overflow:hidden;text-align:center">
+    <div style="position:absolute;inset:-40px;background:linear-gradient(135deg,#50e3c2,#007cf0);opacity:0.08;filter:blur(80px);pointer-events:none"></div>
+    <div class="container" style="position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;gap:var(--space-xl)">
+      <span class="caption-mono">Date & Time Utilities</span>
+      <h1 class="display-xl">Business Days Calculator</h1>
+      <p class="body-lg text-body" style="max-width:520px">Find out exactly how many working days exist between two dates by excluding weekends.</p>
+
+      <div class="card-lg" style="width:100%;max-width:600px;text-align:left">
+        <div class="grid-2" style="gap:var(--space-md)">
+          <div class="form-group">
+            <label class="form-label" for="start-date">Start Date</label>
+            <input type="date" id="start-date" class="form-input form-input-lg" />
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="end-date">End Date</label>
+            <input type="date" id="end-date" class="form-input form-input-lg" />
+          </div>
+        </div>
+
+        <div style="margin-top:var(--space-md);display:flex;align-items:center;gap:8px">
+          <input type="checkbox" id="include-end" style="width:18px;height:18px;cursor:pointer" />
+          <label for="include-end" class="body-sm text-body" style="cursor:pointer;user-select:none">Include the end date in the calculation</label>
+        </div>
+
+        <button class="btn-primary" id="calc-btn" style="margin-top:var(--space-lg);width:100%;justify-content:center">Calculate Business Days</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="section band-light hidden" id="result-section">
+    <div class="container" style="max-width:720px;text-align:center">
+      <div class="card-lg">
+        <div class="caption-mono" style="color:var(--mute);margin-bottom:var(--space-sm)">Result</div>
+        <div class="display-xl" style="color:var(--ink)" id="result-business">—</div>
+        <div class="body-lg text-body" style="margin-top:var(--space-xs)">business days</div>
+        
+        <div class="grid-2" style="margin-top:var(--space-2xl);text-align:left;gap:var(--space-md)">
+          <div class="card-soft">
+            <div class="caption-mono" style="color:var(--mute);margin-bottom:8px">Total Calendar Days</div>
+            <div class="display-sm" id="res-total-days">—</div>
+          </div>
+          <div class="card-soft">
+            <div class="caption-mono" style="color:var(--mute);margin-bottom:8px">Weekends Excluded</div>
+            <div class="display-sm" id="res-weekends">—</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section band-white">
+    <div class="container" style="max-width:720px">
+      <h2 class="display-md" style="margin-bottom:var(--space-xl)">Frequently Asked Questions</h2>
+      {faqSchema.mainEntity.map(faq => (
+        <details class="faq-item">
+          <summary class="faq-question">{faq.name}</summary>
+          <p class="faq-answer">{faq.acceptedAnswer.text}</p>
+        </details>
+      ))}
+    </div>
+  </section>
+
+  <RelatedArticles category="general" />
+  <ToolsGrid />
+  <Footer slot="footer" />
+</BaseLayout>
+
+<script>
+  document.getElementById('calc-btn')?.addEventListener('click', () => {
+    const startStr = (document.getElementById('start-date') as HTMLInputElement).value;
+    const endStr = (document.getElementById('end-date') as HTMLInputElement).value;
+    const includeEnd = (document.getElementById('include-end') as HTMLInputElement).checked;
+
+    if (!startStr || !endStr) return alert("Please select both dates.");
+
+    let start = new Date(startStr);
+    let end = new Date(endStr);
+    
+    if (start > end) {
+      const temp = start;
+      start = end;
+      end = temp;
+    }
+
+    const utcStart = Date.UTC(start.getFullYear(), start.getMonth(), start.getDate());
+    const utcEnd = Date.UTC(end.getFullYear(), end.getMonth(), end.getDate());
+    
+    let totalDays = Math.floor((utcEnd - utcStart) / (1000 * 60 * 60 * 24));
+    if (includeEnd) totalDays += 1;
+
+    let businessDays = 0;
+    let weekends = 0;
+    
+    // Create a new date object for iteration
+    let current = new Date(utcStart);
+    
+    for (let i = 0; i < totalDays; i++) {
+      const dayOfWeek = current.getUTCDay();
+      if (dayOfWeek === 0 || dayOfWeek === 6) { // Sunday = 0, Saturday = 6
+        weekends++;
+      } else {
+        businessDays++;
+      }
+      current.setUTCDate(current.getUTCDate() + 1);
+    }
+
+    (document.getElementById('result-business') as HTMLElement).textContent = businessDays.toLocaleString();
+    (document.getElementById('res-total-days') as HTMLElement).textContent = totalDays.toLocaleString();
+    (document.getElementById('res-weekends') as HTMLElement).textContent = weekends.toLocaleString();
+
+    document.getElementById('result-section')!.classList.remove('hidden');
+    document.getElementById('result-section')!.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
+
+  // Set default dates
+  const today = new Date();
+  const nextDates = new Date(today);
+  nextDates.setDate(today.getDate() + 14); // 2 weeks ahead
+  
+  const formatDate = (d: Date) => d.toISOString().split('T')[0];
+  (document.getElementById('start-date') as HTMLInputElement).value = formatDate(today);
+  (document.getElementById('end-date') as HTMLInputElement).value = formatDate(nextDates);
+</script>
+
+<style is:global>
+.faq-item { border-top:1px solid var(--hairline); }
+.faq-item:last-child { border-bottom:1px solid var(--hairline); }
+.faq-question { font-size:16px;font-weight:500;color:var(--ink);cursor:pointer;padding:var(--space-lg) 0;list-style:none;display:flex;justify-content:space-between;align-items:center;letter-spacing:-0.4px; }
+.faq-question::after { content:'+';font-size:20px;font-weight:300;color:var(--mute); }
+details[open] .faq-question::after { content:'−'; }
+.faq-answer { font-size:15px;color:var(--body);line-height:1.7;padding-bottom:var(--space-lg); }
+</style>

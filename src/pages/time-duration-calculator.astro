@@ -1,0 +1,150 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Navbar from '../components/Navbar.astro';
+import Footer from '../components/Footer.astro';
+import ToolsGrid from '../components/ToolsGrid.astro';
+import RelatedArticles from '../components/RelatedArticles.astro';
+
+const title = "Time Duration Calculator | agecalconline.com";
+const description = "Calculate the exact duration between two times. Find out how many hours, minutes, and seconds are between a start and end time.";
+const keywords = "time duration calculator, hours between times, minutes between times, time difference calculator, elapsed time calculator";
+const canonical = "https://agecalconline.com/time-duration-calculator";
+
+const schema = {
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Time Duration Calculator",
+  "applicationCategory": "UtilitiesApplication",
+  "url": canonical,
+  "description": description,
+  "operatingSystem": "Any",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+};
+
+const faqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    { "@type": "Question", "name": "How do you calculate time duration?", "acceptedAnswer": { "@type": "Answer", "text": "Time duration is calculated by subtracting the start time from the end time. If the end time is earlier than the start time, it is assumed the end time is on the following day." } },
+    { "@type": "Question", "name": "Does it support 12-hour and 24-hour formats?", "acceptedAnswer": { "@type": "Answer", "text": "Yes, standard time inputs automatically adjust to your local browser format, but the underlying calculation uses standard 24-hour mathematical differences." } }
+  ]
+};
+---
+<BaseLayout title={title} description={description} keywords={keywords} canonical={canonical}>
+  <script type="application/ld+json" set:html={JSON.stringify(schema)} slot="head" />
+  <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} slot="head" />
+  <Navbar slot="nav" />
+
+  <section class="section-hero band-white" style="position:relative;overflow:hidden;text-align:center">
+    <div style="position:absolute;inset:-40px;background:linear-gradient(135deg,#ff8fab,#ffafcc);opacity:0.1;filter:blur(80px);pointer-events:none"></div>
+    <div class="container" style="position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;gap:var(--space-xl)">
+      <span class="caption-mono">Date & Time Utilities</span>
+      <h1 class="display-xl">Time Duration Calculator</h1>
+      <p class="body-lg text-body" style="max-width:520px">Calculate the exact elapsed time between a start time and an end time in hours and minutes.</p>
+
+      <div class="card-lg" style="width:100%;max-width:600px;text-align:left">
+        <div class="grid-2" style="gap:var(--space-md)">
+          <div class="form-group">
+            <label class="form-label" for="start-time">Start Time</label>
+            <input type="time" id="start-time" class="form-input form-input-lg" required />
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="end-time">End Time</label>
+            <input type="time" id="end-time" class="form-input form-input-lg" required />
+          </div>
+        </div>
+        
+        <p class="body-sm text-body" style="margin-top:var(--space-sm)">If End Time is earlier than Start Time, it assumes the End Time is on the next day.</p>
+
+        <button class="btn-primary" id="calc-btn" style="margin-top:var(--space-lg);width:100%;justify-content:center">Calculate Duration</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="section band-light hidden" id="result-section">
+    <div class="container" style="max-width:720px;text-align:center">
+      <div class="card-lg">
+        <div class="caption-mono" style="color:var(--mute);margin-bottom:var(--space-sm)">Time Elapsed</div>
+        <div class="display-xl" style="color:var(--ink)" id="result-duration">—</div>
+        
+        <div class="grid-2" style="margin-top:var(--space-2xl);text-align:left;gap:var(--space-md)">
+          <div class="card-soft">
+            <div class="caption-mono" style="color:var(--mute);margin-bottom:8px">Total Hours (Decimal)</div>
+            <div class="display-sm" id="res-hours">—</div>
+          </div>
+          <div class="card-soft">
+            <div class="caption-mono" style="color:var(--mute);margin-bottom:8px">Total Minutes</div>
+            <div class="display-sm" id="res-minutes">—</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section band-white">
+    <div class="container" style="max-width:720px">
+      <h2 class="display-md" style="margin-bottom:var(--space-xl)">Frequently Asked Questions</h2>
+      {faqSchema.mainEntity.map(faq => (
+        <details class="faq-item">
+          <summary class="faq-question">{faq.name}</summary>
+          <p class="faq-answer">{faq.acceptedAnswer.text}</p>
+        </details>
+      ))}
+    </div>
+  </section>
+
+  <RelatedArticles category="general" />
+  <ToolsGrid />
+  <Footer slot="footer" />
+</BaseLayout>
+
+<script>
+  document.getElementById('calc-btn')?.addEventListener('click', () => {
+    const startStr = (document.getElementById('start-time') as HTMLInputElement).value;
+    const endStr = (document.getElementById('end-time') as HTMLInputElement).value;
+
+    if (!startStr || !endStr) return alert("Please enter both times.");
+
+    const parseTime = (t: string) => {
+      const parts = t.split(':');
+      return parseInt(parts[0], 10) * 60 + parseInt(parts[1], 10);
+    };
+
+    const startMins = parseTime(startStr);
+    let endMins = parseTime(endStr);
+
+    // If end is before start, assume it's the next day
+    if (endMins < startMins) {
+      endMins += 24 * 60;
+    }
+
+    const totalMinutes = endMins - startMins;
+    const hours = Math.floor(totalMinutes / 60);
+    const mins = totalMinutes % 60;
+    
+    let exactStr = '';
+    if (hours > 0) exactStr += `${hours} hour${hours !== 1 ? 's' : ''}`;
+    if (hours > 0 && mins > 0) exactStr += ' and ';
+    if (mins > 0 || hours === 0) exactStr += `${mins} minute${mins !== 1 ? 's' : ''}`;
+
+    (document.getElementById('result-duration') as HTMLElement).textContent = exactStr;
+    (document.getElementById('res-hours') as HTMLElement).textContent = (totalMinutes / 60).toFixed(2);
+    (document.getElementById('res-minutes') as HTMLElement).textContent = totalMinutes.toString();
+
+    document.getElementById('result-section')!.classList.remove('hidden');
+    document.getElementById('result-section')!.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
+
+  // Set default times
+  (document.getElementById('start-time') as HTMLInputElement).value = "09:00";
+  (document.getElementById('end-time') as HTMLInputElement).value = "17:30";
+</script>
+
+<style is:global>
+.faq-item { border-top:1px solid var(--hairline); }
+.faq-item:last-child { border-bottom:1px solid var(--hairline); }
+.faq-question { font-size:16px;font-weight:500;color:var(--ink);cursor:pointer;padding:var(--space-lg) 0;list-style:none;display:flex;justify-content:space-between;align-items:center;letter-spacing:-0.4px; }
+.faq-question::after { content:'+';font-size:20px;font-weight:300;color:var(--mute); }
+details[open] .faq-question::after { content:'−'; }
+.faq-answer { font-size:15px;color:var(--body);line-height:1.7;padding-bottom:var(--space-lg); }
+</style>

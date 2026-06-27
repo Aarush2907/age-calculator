@@ -1,0 +1,139 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Navbar from '../components/Navbar.astro';
+import Footer from '../components/Footer.astro';
+import ToolsGrid from '../components/ToolsGrid.astro';
+import RelatedArticles from '../components/RelatedArticles.astro';
+
+const title = "Protein Intake Calculator | agecalconline.com";
+const description = "Calculate exactly how much protein you need per day based on your weight, goals, and activity level to build muscle or lose fat.";
+const keywords = "protein intake calculator, how much protein a day, protein needs, calculate protein for muscle gain, daily protein target";
+const canonical = "https://agecalconline.com/protein-intake-calculator";
+
+const schema = {
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Protein Intake Calculator",
+  "applicationCategory": "HealthApplication",
+  "url": canonical,
+  "description": description,
+  "operatingSystem": "Any",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+};
+
+const faqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    { "@type": "Question", "name": "How much protein do I actually need?", "acceptedAnswer": { "@type": "Answer", "text": "The RDA for protein is 0.8 grams per kilogram of body weight, but this is a minimum for survival. For optimal health, muscle growth, and fat loss, most experts recommend between 1.6 to 2.2 grams per kilogram of body weight." } },
+    { "@type": "Question", "name": "Will eating too much protein harm my kidneys?", "acceptedAnswer": { "@type": "Answer", "text": "In healthy individuals with no pre-existing kidney conditions, high protein intake (even up to 3g/kg) has been shown to be safe and does not damage kidney function." } }
+  ]
+};
+---
+<BaseLayout title={title} description={description} keywords={keywords} canonical={canonical}>
+  <script type="application/ld+json" set:html={JSON.stringify(schema)} slot="head" />
+  <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} slot="head" />
+  <Navbar slot="nav" />
+
+  <section class="section-hero band-white" style="position:relative;overflow:hidden;text-align:center">
+    <div style="position:absolute;inset:-40px;background:linear-gradient(135deg,#f9cb28,#ff6b9d);opacity:0.08;filter:blur(80px);pointer-events:none"></div>
+    <div class="container" style="position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;gap:var(--space-xl)">
+      <span class="caption-mono">Health & Fitness</span>
+      <h1 class="display-xl">Protein Intake Calculator</h1>
+      <p class="body-lg text-body" style="max-width:520px">Find your optimal daily protein target to maximize muscle growth, preserve lean mass, or maintain general health.</p>
+
+      <div class="card-lg" style="width:100%;max-width:500px;text-align:left">
+        <div class="form-group">
+          <label class="form-label" for="prot-weight">Weight (kg)</label>
+          <input type="number" id="prot-weight" class="form-input form-input-lg" min="30" max="300" value="70" />
+        </div>
+        
+        <div class="form-group" style="margin-top:var(--space-md)">
+          <label class="form-label" for="prot-goal">Primary Goal</label>
+          <select id="prot-goal" class="form-select form-input-lg">
+            <option value="sedentary">General Health (Sedentary)</option>
+            <option value="maintain">Maintain Muscle (Moderate Activity)</option>
+            <option value="build">Build Muscle (Strength Training)</option>
+            <option value="cut">Fat Loss (Preserve Muscle)</option>
+          </select>
+        </div>
+
+        <button class="btn-primary" id="calc-btn" style="margin-top:var(--space-lg);width:100%;justify-content:center">Calculate Protein</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="section band-light hidden" id="result-section">
+    <div class="container" style="max-width:720px;text-align:center">
+      <div class="card-lg">
+        <div style="font-size:48px;margin-bottom:var(--space-md)">🥩</div>
+        <div class="caption-mono" style="color:var(--mute);margin-bottom:var(--space-sm)">Optimal Daily Protein Target</div>
+        <div class="display-xl" style="color:var(--ink)" id="result-prot">—</div>
+        <div class="body-lg text-body" style="margin-top:var(--space-xs)">grams per day</div>
+        
+        <div class="grid-2" style="margin-top:var(--space-2xl);text-align:left;gap:var(--space-md)">
+          <div class="card-soft">
+            <div class="caption-mono" style="color:var(--mute);margin-bottom:8px">FDA Minimum (Survival)</div>
+            <div class="display-sm" id="res-min" style="color:#ff6b9d">—</div>
+          </div>
+          <div class="card-soft">
+            <div class="caption-mono" style="color:var(--mute);margin-bottom:8px">Maximum (Athletes)</div>
+            <div class="display-sm" id="res-max" style="color:#50e3c2">—</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section band-white">
+    <div class="container" style="max-width:720px">
+      <h2 class="display-md" style="margin-bottom:var(--space-xl)">Frequently Asked Questions</h2>
+      {faqSchema.mainEntity.map(faq => (
+        <details class="faq-item">
+          <summary class="faq-question">{faq.name}</summary>
+          <p class="faq-answer">{faq.acceptedAnswer.text}</p>
+        </details>
+      ))}
+    </div>
+  </section>
+
+  <RelatedArticles category="health" />
+  <ToolsGrid />
+  <Footer slot="footer" />
+</BaseLayout>
+
+<script>
+  document.getElementById('calc-btn')?.addEventListener('click', () => {
+    const weightKg = parseFloat((document.getElementById('prot-weight') as HTMLInputElement).value);
+    const goal = (document.getElementById('prot-goal') as HTMLSelectElement).value;
+
+    if (!weightKg) return alert("Please enter your weight.");
+
+    let targetGrams = 0;
+    
+    // Multipliers based on kg of body weight
+    if (goal === 'sedentary') targetGrams = weightKg * 1.0;
+    else if (goal === 'maintain') targetGrams = weightKg * 1.4;
+    else if (goal === 'build') targetGrams = weightKg * 1.8;
+    else if (goal === 'cut') targetGrams = weightKg * 2.2; // Higher protein in a deficit to preserve mass
+
+    const minGrams = weightKg * 0.8;
+    const maxGrams = weightKg * 2.4;
+
+    (document.getElementById('result-prot') as HTMLElement).textContent = Math.round(targetGrams).toString();
+    (document.getElementById('res-min') as HTMLElement).textContent = Math.round(minGrams) + ' g';
+    (document.getElementById('res-max') as HTMLElement).textContent = Math.round(maxGrams) + ' g';
+
+    document.getElementById('result-section')!.classList.remove('hidden');
+    document.getElementById('result-section')!.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
+</script>
+
+<style is:global>
+.faq-item { border-top:1px solid var(--hairline); }
+.faq-item:last-child { border-bottom:1px solid var(--hairline); }
+.faq-question { font-size:16px;font-weight:500;color:var(--ink);cursor:pointer;padding:var(--space-lg) 0;list-style:none;display:flex;justify-content:space-between;align-items:center;letter-spacing:-0.4px; }
+.faq-question::after { content:'+';font-size:20px;font-weight:300;color:var(--mute); }
+details[open] .faq-question::after { content:'−'; }
+.faq-answer { font-size:15px;color:var(--body);line-height:1.7;padding-bottom:var(--space-lg); }
+</style>

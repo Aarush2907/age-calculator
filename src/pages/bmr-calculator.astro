@@ -1,0 +1,136 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Navbar from '../components/Navbar.astro';
+import Footer from '../components/Footer.astro';
+import ToolsGrid from '../components/ToolsGrid.astro';
+import RelatedArticles from '../components/RelatedArticles.astro';
+
+const title = "BMR Calculator — Basal Metabolic Rate | agecalconline.com";
+const description = "Calculate your Basal Metabolic Rate (BMR) to find out exactly how many calories your body burns at rest. Free, accurate, and easy to use.";
+const keywords = "BMR calculator, basal metabolic rate, calories burned at rest, resting metabolic rate, bmr formula";
+const canonical = "https://agecalconline.com/bmr-calculator";
+
+const schema = {
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "BMR Calculator",
+  "applicationCategory": "HealthApplication",
+  "url": canonical,
+  "description": description,
+  "operatingSystem": "Any",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+};
+
+const faqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    { "@type": "Question", "name": "What is BMR?", "acceptedAnswer": { "@type": "Answer", "text": "Basal Metabolic Rate (BMR) is the total number of calories that your body needs to perform basic, life-sustaining functions (like breathing and keeping your heart beating) while at rest." } },
+    { "@type": "Question", "name": "How is BMR calculated?", "acceptedAnswer": { "@type": "Answer", "text": "Our calculator uses the widely accepted Mifflin-St Jeor equation, which is considered the most accurate formula for estimating BMR based on gender, age, height, and weight." } }
+  ]
+};
+---
+<BaseLayout title={title} description={description} keywords={keywords} canonical={canonical}>
+  <script type="application/ld+json" set:html={JSON.stringify(schema)} slot="head" />
+  <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} slot="head" />
+  <Navbar slot="nav" />
+
+  <section class="section-hero band-white" style="position:relative;overflow:hidden;text-align:center">
+    <div style="position:absolute;inset:-40px;background:linear-gradient(135deg,#ff6b9d,#ffafcc);opacity:0.08;filter:blur(80px);pointer-events:none"></div>
+    <div class="container" style="position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;gap:var(--space-xl)">
+      <span class="caption-mono">Health & Fitness</span>
+      <h1 class="display-xl">BMR Calculator</h1>
+      <p class="body-lg text-body" style="max-width:520px">Calculate your Basal Metabolic Rate (BMR) to discover how many calories your body naturally burns at rest.</p>
+
+      <div class="card-lg" style="width:100%;max-width:600px;text-align:left">
+        <div class="grid-2" style="gap:var(--space-md)">
+          <div class="form-group">
+            <label class="form-label" for="bmr-gender">Gender</label>
+            <select id="bmr-gender" class="form-select form-input-lg">
+              <option value="male">Male</option>
+              <option value="female">Female</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="bmr-age">Age (years)</label>
+            <input type="number" id="bmr-age" class="form-input form-input-lg" min="15" max="100" value="30" />
+          </div>
+        </div>
+
+        <div class="grid-2" style="gap:var(--space-md);margin-top:var(--space-md)">
+          <div class="form-group">
+            <label class="form-label" for="bmr-height">Height (cm)</label>
+            <input type="number" id="bmr-height" class="form-input form-input-lg" min="100" max="250" value="170" />
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="bmr-weight">Weight (kg)</label>
+            <input type="number" id="bmr-weight" class="form-input form-input-lg" min="30" max="300" value="70" />
+          </div>
+        </div>
+
+        <button class="btn-primary" id="calc-btn" style="margin-top:var(--space-lg);width:100%;justify-content:center">Calculate BMR</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="section band-light hidden" id="result-section">
+    <div class="container" style="max-width:720px;text-align:center">
+      <div class="card-lg">
+        <div class="caption-mono" style="color:var(--mute);margin-bottom:var(--space-sm)">Your Basal Metabolic Rate</div>
+        <div class="display-xl" style="color:var(--ink)" id="result-bmr">—</div>
+        <div class="body-lg text-body" style="margin-top:var(--space-xs)">calories / day</div>
+        
+        <p class="body-md text-body" style="margin-top:var(--space-lg)">This is the amount of energy your body needs just to stay alive while resting. To find out how much you burn including daily activity, try our TDEE Calculator.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section band-white">
+    <div class="container" style="max-width:720px">
+      <h2 class="display-md" style="margin-bottom:var(--space-xl)">Frequently Asked Questions</h2>
+      {faqSchema.mainEntity.map(faq => (
+        <details class="faq-item">
+          <summary class="faq-question">{faq.name}</summary>
+          <p class="faq-answer">{faq.acceptedAnswer.text}</p>
+        </details>
+      ))}
+    </div>
+  </section>
+
+  <RelatedArticles category="bmi" />
+  <ToolsGrid />
+  <Footer slot="footer" />
+</BaseLayout>
+
+<script>
+  document.getElementById('calc-btn')?.addEventListener('click', () => {
+    const gender = (document.getElementById('bmr-gender') as HTMLSelectElement).value;
+    const age = parseFloat((document.getElementById('bmr-age') as HTMLInputElement).value);
+    const height = parseFloat((document.getElementById('bmr-height') as HTMLInputElement).value);
+    const weight = parseFloat((document.getElementById('bmr-weight') as HTMLInputElement).value);
+
+    if (!age || !height || !weight) return alert("Please fill in all fields.");
+
+    // Mifflin-St Jeor Equation
+    let bmr = (10 * weight) + (6.25 * height) - (5 * age);
+    if (gender === 'male') {
+      bmr += 5;
+    } else {
+      bmr -= 161;
+    }
+
+    (document.getElementById('result-bmr') as HTMLElement).textContent = Math.round(bmr).toLocaleString();
+
+    document.getElementById('result-section')!.classList.remove('hidden');
+    document.getElementById('result-section')!.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
+</script>
+
+<style is:global>
+.faq-item { border-top:1px solid var(--hairline); }
+.faq-item:last-child { border-bottom:1px solid var(--hairline); }
+.faq-question { font-size:16px;font-weight:500;color:var(--ink);cursor:pointer;padding:var(--space-lg) 0;list-style:none;display:flex;justify-content:space-between;align-items:center;letter-spacing:-0.4px; }
+.faq-question::after { content:'+';font-size:20px;font-weight:300;color:var(--mute); }
+details[open] .faq-question::after { content:'−'; }
+.faq-answer { font-size:15px;color:var(--body);line-height:1.7;padding-bottom:var(--space-lg); }
+</style>

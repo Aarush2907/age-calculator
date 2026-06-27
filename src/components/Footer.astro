@@ -35,6 +35,62 @@ const blogLinks = [
 ];
 ---
 <footer class="footer">
+  {Astro.url.pathname === '/' && (
+    <div class="footer-seo container">
+      <h2>The Ultimate Online Age Calculator</h2>
+      <p>Welcome to AgeCalc Online, a powerful and accurate age calculator designed to help you determine your exact age instantly. Whether you want to know how old you are today, calculate your age on a specific date, or find out how many days, weeks, months, and years you have lived, our tool delivers precise results in seconds.</p>
+
+      <h3>How to Calculate Your Exact Age</h3>
+      <p>Calculating your age is simple. Just enter your date of birth, and our age calculator will instantly determine your exact age based on today's date. Using an age calculator by date of birth is the most reliable way to find your true age. The age calculator formula is mathematically straightforward—it subtracts your birth date from the current date while properly accounting for leap years and months of varying lengths. You can also calculate your age on any past or future date, making the tool useful for anniversaries, eligibility requirements, retirement planning, and milestone tracking.</p>
+
+      <h3>Features of Our Age Calculator</h3>
+      <p>Our free online age calculator offers much more than a basic age calculation. With a single input, you can:</p>
+      <ul>
+        <li>Calculate your exact age from your date of birth.</li>
+        <li>Find your age on any past or future date.</li>
+        <li>See the total number of days, weeks, months, and hours you have lived.</li>
+        <li>Determine the time remaining until your next birthday.</li>
+        <li>Calculate age differences between two people.</li>
+        <li>Track important life milestones and anniversaries.</li>
+        <li>Access specialized tools for birthdays, retirement planning, life expectancy, and more.</li>
+      </ul>
+
+      <h3>Specialized Age Calculators</h3>
+      <p>AgeCalc Online includes a collection of tools designed for different purposes. Beyond standard human age, our suite offers specialized tools for every life stage.</p>
+
+      <h4>Birthday Calculator</h4>
+      <p>Discover how many days remain until your next birthday and find the weekday on which your birthday falls. If you are planning a celebration, use this feature to find out the day of the week your next milestone falls on, or exactly how long it has been since your very first birthday.</p>
+
+      <h4>Age Difference Calculator</h4>
+      <p>Compare the ages of two individuals and calculate the exact difference in years, months, and days. This is essential for parents tracking sibling age gaps, couples, or professional eligibility comparisons.</p>
+
+      <h4>Pet Age Calculator</h4>
+      <p>Convert your dog's or cat's age into equivalent human years using breed and maturity factors. For pet owners, the dog age calculator converts your furry friend's lifespan into equivalent human years, considering breed size and maturity rates.</p>
+
+      <h4>Retirement Calculator</h4>
+      <p>Estimate how long you have until retirement and plan your future with confidence. The platform functions beautifully as a retirement age calculator to help you plan the exact days remaining until you leave the workforce.</p>
+
+      <h4>Life Expectancy Calculator</h4>
+      <p>Life expectancy estimates are based on statistical averages and demographic information. Our tool helps users understand average lifespans based on birth year, gender, and region.</p>
+
+      <h4>Biological Age Calculator</h4>
+      <p>Measure how your lifestyle habits may influence your body's biological age compared to your chronological age. Biological age calculators assess your fitness, resting heart rate, and lifestyle habits to determine if your body functions younger or older than your actual chronological age.</p>
+
+      <h3>Can Age Be Calculated From a Photo?</h3>
+      <p>Many AI tools attempt to estimate age from facial features. While these systems can provide entertaining predictions, they cannot determine a person's true age accurately. With the rise of AI, many users search for an age calculator by photo to guess a person's age based on facial features — but for legal, medical, and professional purposes, the most reliable method is calculating age directly from a date of birth. Our chronological age calculator uses exact calendar mathematics to provide precise and trustworthy results every time.</p>
+
+      <h3>Why Choose AgeCalc Online?</h3>
+      <ul>
+        <li>Fast and accurate calculations.</li>
+        <li>Accounts for leap years automatically.</li>
+        <li>Supports past and future date calculations.</li>
+        <li>Provides detailed age breakdowns.</li>
+        <li>Completely free to use.</li>
+        <li>Privacy-friendly with no storage of personal information.</li>
+      </ul>
+      <p>Whether you are checking your exact age today, planning an upcoming milestone, or exploring life statistics, AgeCalc Online makes age calculations simple, accurate, and effortless.</p>
+    </div>
+  )}
   <div class="divider"></div>
   <div class="footer-inner container">
     <div class="footer-brand">
@@ -93,7 +149,7 @@ const blogLinks = [
           <a href="/privacy-policy" class="footer-bottom-link">Privacy</a>
           <a href="/terms-and-conditions" class="footer-bottom-link">Terms</a>
           <a href="/contact-us" class="footer-bottom-link">Contact</a>
-          <a href="/sitemap.xml" class="footer-bottom-link">Sitemap</a>
+          <a href="/sitemap-index.xml" class="footer-bottom-link">Sitemap</a>
         </div>
       </div>
     </div>
@@ -101,6 +157,14 @@ const blogLinks = [
 </footer>
 
 <style>
+.footer-seo { padding: var(--space-4xl) 0; color: var(--body); }
+.footer-seo h2 { font-size: 24px; color: var(--ink); margin-bottom: var(--space-md); letter-spacing: -0.5px; }
+.footer-seo h3 { font-size: 18px; color: var(--ink); margin-top: var(--space-xl); margin-bottom: var(--space-sm); font-weight: 600; }
+.footer-seo h4 { font-size: 16px; color: var(--ink); margin-top: var(--space-lg); margin-bottom: var(--space-xs); font-weight: 500; }
+.footer-seo p { font-size: 15px; line-height: 1.7; margin-bottom: var(--space-md); }
+.footer-seo ul { list-style-type: disc; padding-left: var(--space-xl); margin-bottom: var(--space-lg); }
+.footer-seo li { font-size: 15px; line-height: 1.6; margin-bottom: var(--space-xs); }
+
 .footer { background: var(--canvas); border-top: 1px solid var(--hairline); margin-top: var(--space-5xl); }
 .footer-inner {
   display: grid;

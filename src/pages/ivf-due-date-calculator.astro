@@ -1,0 +1,155 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Navbar from '../components/Navbar.astro';
+import Footer from '../components/Footer.astro';
+import ToolsGrid from '../components/ToolsGrid.astro';
+import RelatedArticles from '../components/RelatedArticles.astro';
+
+const title = "IVF Due Date Calculator | agecalconline.com";
+const description = "Calculate your exact IVF due date based on your transfer date and the age of the embryo (3-day or 5-day transfer).";
+const keywords = "ivf due date calculator, embryo transfer due date, ivf calculator, 5 day transfer due date, 3 day transfer due date";
+const canonical = "https://agecalconline.com/ivf-due-date-calculator";
+
+const schema = {
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "IVF Due Date Calculator",
+  "applicationCategory": "HealthApplication",
+  "url": canonical,
+  "description": description,
+  "operatingSystem": "Any",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+};
+
+const faqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    { "@type": "Question", "name": "How is an IVF due date calculated?", "acceptedAnswer": { "@type": "Answer", "text": "Unlike standard due date calculators that rely on the last menstrual period, an IVF due date is calculated using the exact date of embryo transfer and the age of the embryo (typically 3 days or 5 days old at transfer) for maximum accuracy." } },
+    { "@type": "Question", "name": "What is the difference between a 3-day and 5-day transfer?", "acceptedAnswer": { "@type": "Answer", "text": "A 3-day transfer means the embryo was transferred to the uterus 3 days after fertilization. A 5-day transfer (blastocyst) means the embryo grew for 5 days in the lab before transfer. The calculator subtracts this age from the standard 266-day gestation period." } }
+  ]
+};
+---
+<BaseLayout title={title} description={description} keywords={keywords} canonical={canonical}>
+  <script type="application/ld+json" set:html={JSON.stringify(schema)} slot="head" />
+  <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} slot="head" />
+  <Navbar slot="nav" />
+
+  <section class="section-hero band-white" style="position:relative;overflow:hidden;text-align:center">
+    <div style="position:absolute;inset:-40px;background:linear-gradient(135deg,#cba6f7,#f9a8d4);opacity:0.08;filter:blur(80px);pointer-events:none"></div>
+    <div class="container" style="position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;gap:var(--space-xl)">
+      <span class="caption-mono">Pregnancy & Family</span>
+      <h1 class="display-xl">IVF Due Date Calculator</h1>
+      <p class="body-lg text-body" style="max-width:520px">Calculate your exact pregnancy due date based on your embryo transfer date and embryo age.</p>
+
+      <div class="card-lg" style="width:100%;max-width:500px;text-align:left">
+        <div class="form-group">
+          <label class="form-label" for="transfer-date">Embryo Transfer Date</label>
+          <input type="date" id="transfer-date" class="form-input form-input-lg" required />
+        </div>
+        
+        <div class="form-group" style="margin-top:var(--space-md)">
+          <label class="form-label" for="embryo-type">Embryo Transfer Type</label>
+          <select id="embryo-type" class="form-select form-input-lg">
+            <option value="5">5-Day Transfer (Blastocyst)</option>
+            <option value="3">3-Day Transfer (Cleavage)</option>
+            <option value="0">Egg Retrieval / IUI Date</option>
+          </select>
+        </div>
+
+        <button class="btn-primary" id="calc-btn" style="margin-top:var(--space-lg);width:100%;justify-content:center">Calculate Due Date</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="section band-light hidden" id="result-section">
+    <div class="container" style="max-width:720px;text-align:center">
+      <div class="card-lg">
+        <div style="font-size:48px;margin-bottom:var(--space-md)">👶</div>
+        <div class="caption-mono" style="color:var(--mute);margin-bottom:var(--space-sm)">Estimated IVF Due Date</div>
+        <div class="display-lg" style="color:var(--ink)" id="result-due-date">—</div>
+        
+        <div class="grid-2" style="margin-top:var(--space-2xl);text-align:left;gap:var(--space-md)">
+          <div class="card-soft">
+            <div class="caption-mono" style="color:var(--mute);margin-bottom:8px">1st Trimester Ends</div>
+            <div class="display-sm" id="res-tri-1">—</div>
+          </div>
+          <div class="card-soft">
+            <div class="caption-mono" style="color:var(--mute);margin-bottom:8px">2nd Trimester Ends</div>
+            <div class="display-sm" id="res-tri-2">—</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section band-white">
+    <div class="container" style="max-width:720px">
+      <h2 class="display-md" style="margin-bottom:var(--space-xl)">Frequently Asked Questions</h2>
+      {faqSchema.mainEntity.map(faq => (
+        <details class="faq-item">
+          <summary class="faq-question">{faq.name}</summary>
+          <p class="faq-answer">{faq.acceptedAnswer.text}</p>
+        </details>
+      ))}
+    </div>
+  </section>
+
+  <RelatedArticles category="pregnancy" />
+  <ToolsGrid />
+  <Footer slot="footer" />
+</BaseLayout>
+
+<script>
+  // Set default transfer date to today
+  (document.getElementById('transfer-date') as HTMLInputElement).value = new Date().toISOString().split('T')[0];
+
+  document.getElementById('calc-btn')?.addEventListener('click', () => {
+    const dateStr = (document.getElementById('transfer-date') as HTMLInputElement).value;
+    const type = parseInt((document.getElementById('embryo-type') as HTMLSelectElement).value);
+
+    if (!dateStr) return alert("Please select the transfer date.");
+
+    // The standard human gestation from conception is 266 days.
+    // IVF Conception = Transfer Date - Embryo Age
+    // Due Date = IVF Conception + 266 days
+    // So, Due Date = Transfer Date + 266 - Embryo Age
+
+    const transferDate = new Date(dateStr);
+    const dueDate = new Date(transferDate);
+    dueDate.setDate(dueDate.getDate() + 266 - type);
+
+    // Trimesters: 1st ends at 13 weeks (91 days after assumed LMP)
+    // Assumed LMP = Conception - 14 days
+    const conceptionDate = new Date(transferDate);
+    conceptionDate.setDate(conceptionDate.getDate() - type);
+    
+    const assumedLmp = new Date(conceptionDate);
+    assumedLmp.setDate(assumedLmp.getDate() - 14);
+
+    const tri1 = new Date(assumedLmp);
+    tri1.setDate(tri1.getDate() + 91); // 13 weeks
+
+    const tri2 = new Date(assumedLmp);
+    tri2.setDate(tri2.getDate() + 189); // 27 weeks
+
+    const optionsFull: Intl.DateTimeFormatOptions = { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' };
+    const optionsShort: Intl.DateTimeFormatOptions = { month: 'short', day: 'numeric', year: 'numeric' };
+
+    (document.getElementById('result-due-date') as HTMLElement).textContent = dueDate.toLocaleDateString(undefined, optionsFull);
+    (document.getElementById('res-tri-1') as HTMLElement).textContent = tri1.toLocaleDateString(undefined, optionsShort);
+    (document.getElementById('res-tri-2') as HTMLElement).textContent = tri2.toLocaleDateString(undefined, optionsShort);
+
+    document.getElementById('result-section')!.classList.remove('hidden');
+    document.getElementById('result-section')!.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
+</script>
+
+<style is:global>
+.faq-item { border-top:1px solid var(--hairline); }
+.faq-item:last-child { border-bottom:1px solid var(--hairline); }
+.faq-question { font-size:16px;font-weight:500;color:var(--ink);cursor:pointer;padding:var(--space-lg) 0;list-style:none;display:flex;justify-content:space-between;align-items:center;letter-spacing:-0.4px; }
+.faq-question::after { content:'+';font-size:20px;font-weight:300;color:var(--mute); }
+details[open] .faq-question::after { content:'−'; }
+.faq-answer { font-size:15px;color:var(--body);line-height:1.7;padding-bottom:var(--space-lg); }
+</style>

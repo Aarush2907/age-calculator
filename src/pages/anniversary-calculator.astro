@@ -1,0 +1,157 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Navbar from '../components/Navbar.astro';
+import Footer from '../components/Footer.astro';
+import ToolsGrid from '../components/ToolsGrid.astro';
+import RelatedArticles from '../components/RelatedArticles.astro';
+
+const title = "Anniversary Calculator | agecalconline.com";
+const description = "Calculate how long you have been together or married. Find out your exact relationship length in years, months, days, and total days.";
+const keywords = "anniversary calculator, relationship calculator, how long have we been together, wedding anniversary calculator, days together calculator";
+const canonical = "https://agecalconline.com/anniversary-calculator";
+
+const schema = {
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Anniversary Calculator",
+  "applicationCategory": "UtilitiesApplication",
+  "url": canonical,
+  "description": description,
+  "operatingSystem": "Any",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+};
+
+const faqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    { "@type": "Question", "name": "How is the relationship length calculated?", "acceptedAnswer": { "@type": "Answer", "text": "The calculator takes your start date (wedding, first date, etc.) and compares it to today's date, breaking it down into exact years, months, and days using standard calendar math." } },
+    { "@type": "Question", "name": "Does this tool work for future anniversaries?", "acceptedAnswer": { "@type": "Answer", "text": "This specific tool calculates time elapsed since a past date. If you want to count down to a future anniversary, use our Countdown Calculator." } }
+  ]
+};
+---
+<BaseLayout title={title} description={description} keywords={keywords} canonical={canonical}>
+  <script type="application/ld+json" set:html={JSON.stringify(schema)} slot="head" />
+  <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} slot="head" />
+  <Navbar slot="nav" />
+
+  <section class="section-hero band-white" style="position:relative;overflow:hidden;text-align:center">
+    <div style="position:absolute;inset:-40px;background:linear-gradient(135deg,#ff4d4d,#ff8fab);opacity:0.08;filter:blur(80px);pointer-events:none"></div>
+    <div class="container" style="position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;gap:var(--space-xl)">
+      <span class="caption-mono">Date & Time Utilities</span>
+      <h1 class="display-xl">Anniversary Calculator</h1>
+      <p class="body-lg text-body" style="max-width:520px">Find out exactly how long you've been together, married, or employed since your special date.</p>
+
+      <div class="card-lg" style="width:100%;max-width:500px;text-align:left">
+        <div class="form-group">
+          <label class="form-label" for="anniversary-date">Your Special Date</label>
+          <input type="date" id="anniversary-date" class="form-input form-input-lg" required />
+        </div>
+
+        <button class="btn-primary" id="calc-btn" style="margin-top:var(--space-lg);width:100%;justify-content:center">Calculate Time Together</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="section band-light hidden" id="result-section">
+    <div class="container" style="max-width:720px;text-align:center">
+      <div class="card-lg">
+        <div style="font-size:48px;margin-bottom:var(--space-md)">❤️</div>
+        <div class="caption-mono" style="color:var(--mute);margin-bottom:var(--space-sm)">You have been together for</div>
+        <div class="display-lg" style="color:var(--ink)" id="result-exact">—</div>
+        
+        <div class="grid-3" style="margin-top:var(--space-2xl);text-align:left;gap:var(--space-md)">
+          <div class="card-soft">
+            <div class="caption-mono" style="color:var(--mute);margin-bottom:8px">Total Months</div>
+            <div class="display-sm" id="res-months">—</div>
+          </div>
+          <div class="card-soft">
+            <div class="caption-mono" style="color:var(--mute);margin-bottom:8px">Total Weeks</div>
+            <div class="display-sm" id="res-weeks">—</div>
+          </div>
+          <div class="card-soft">
+            <div class="caption-mono" style="color:var(--mute);margin-bottom:8px">Total Days</div>
+            <div class="display-sm" id="res-days">—</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section band-white">
+    <div class="container" style="max-width:720px">
+      <h2 class="display-md" style="margin-bottom:var(--space-xl)">Frequently Asked Questions</h2>
+      {faqSchema.mainEntity.map(faq => (
+        <details class="faq-item">
+          <summary class="faq-question">{faq.name}</summary>
+          <p class="faq-answer">{faq.acceptedAnswer.text}</p>
+        </details>
+      ))}
+    </div>
+  </section>
+
+  <RelatedArticles category="general" />
+  <ToolsGrid />
+  <Footer slot="footer" />
+</BaseLayout>
+
+<script>
+  document.getElementById('calc-btn')?.addEventListener('click', () => {
+    const dateStr = (document.getElementById('anniversary-date') as HTMLInputElement).value;
+    if (!dateStr) return alert("Please select your anniversary date.");
+
+    const start = new Date(dateStr);
+    const now = new Date();
+    
+    if (start > now) return alert("Please select a date in the past. To calculate time until a future date, use the Countdown Calculator.");
+
+    let years = now.getFullYear() - start.getFullYear();
+    let months = now.getMonth() - start.getMonth();
+    let days = now.getDate() - start.getDate();
+
+    if (days < 0) {
+      months -= 1;
+      const prevMonth = new Date(now.getFullYear(), now.getMonth(), 0);
+      days += prevMonth.getDate();
+    }
+    
+    if (months < 0) {
+      years -= 1;
+      months += 12;
+    }
+
+    let exactStr = '';
+    if (years > 0) exactStr += `${years} year${years !== 1 ? 's' : ''}, `;
+    if (months > 0 || years > 0) exactStr += `${months} month${months !== 1 ? 's' : ''}, `;
+    exactStr += `${days} day${days !== 1 ? 's' : ''}`;
+
+    const utcStart = Date.UTC(start.getFullYear(), start.getMonth(), start.getDate());
+    const utcNow = Date.UTC(now.getFullYear(), now.getMonth(), now.getDate());
+    const totalDays = Math.floor((utcNow - utcStart) / (1000 * 60 * 60 * 24));
+    
+    const totalMonths = (years * 12) + months + (days / 30.44);
+    const totalWeeks = totalDays / 7;
+
+    (document.getElementById('result-exact') as HTMLElement).textContent = exactStr;
+    (document.getElementById('res-months') as HTMLElement).textContent = totalMonths.toFixed(1);
+    (document.getElementById('res-weeks') as HTMLElement).textContent = totalWeeks.toFixed(1);
+    (document.getElementById('res-days') as HTMLElement).textContent = totalDays.toLocaleString();
+
+    document.getElementById('result-section')!.classList.remove('hidden');
+    document.getElementById('result-section')!.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
+
+  // Default to 1 year ago
+  const d = new Date();
+  d.setFullYear(d.getFullYear() - 1);
+  (document.getElementById('anniversary-date') as HTMLInputElement).value = d.toISOString().split('T')[0];
+</script>
+
+<style is:global>
+.faq-item { border-top:1px solid var(--hairline); }
+.faq-item:last-child { border-bottom:1px solid var(--hairline); }
+.faq-question { font-size:16px;font-weight:500;color:var(--ink);cursor:pointer;padding:var(--space-lg) 0;list-style:none;display:flex;justify-content:space-between;align-items:center;letter-spacing:-0.4px; }
+.faq-question::after { content:'+';font-size:20px;font-weight:300;color:var(--mute); }
+details[open] .faq-question::after { content:'−'; }
+.faq-answer { font-size:15px;color:var(--body);line-height:1.7;padding-bottom:var(--space-lg); }
+</style>

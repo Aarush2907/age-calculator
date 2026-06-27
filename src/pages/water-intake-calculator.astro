@@ -1,0 +1,130 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Navbar from '../components/Navbar.astro';
+import Footer from '../components/Footer.astro';
+import ToolsGrid from '../components/ToolsGrid.astro';
+import RelatedArticles from '../components/RelatedArticles.astro';
+
+const title = "Water Intake Calculator | agecalconline.com";
+const description = "Calculate exactly how much water you should drink daily based on your weight and activity level to stay perfectly hydrated.";
+const keywords = "water intake calculator, daily water needs, how much water to drink, hydration calculator";
+const canonical = "https://agecalconline.com/water-intake-calculator";
+
+const schema = {
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Water Intake Calculator",
+  "applicationCategory": "HealthApplication",
+  "url": canonical,
+  "description": description,
+  "operatingSystem": "Any",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+};
+
+const faqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    { "@type": "Question", "name": "How much water should I drink a day?", "acceptedAnswer": { "@type": "Answer", "text": "A general rule of thumb is to drink between half an ounce and an ounce of water for each pound you weigh, every day. Our calculator adjusts this based on your exercise level." } },
+    { "@type": "Question", "name": "Does coffee or tea count towards my water intake?", "acceptedAnswer": { "@type": "Answer", "text": "Yes, while caffeinated beverages act as mild diuretics, they still contribute to your total daily hydration. However, pure water is always the best primary source." } }
+  ]
+};
+---
+<BaseLayout title={title} description={description} keywords={keywords} canonical={canonical}>
+  <script type="application/ld+json" set:html={JSON.stringify(schema)} slot="head" />
+  <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} slot="head" />
+  <Navbar slot="nav" />
+
+  <section class="section-hero band-white" style="position:relative;overflow:hidden;text-align:center">
+    <div style="position:absolute;inset:-40px;background:linear-gradient(135deg,#00dfd8,#007cf0);opacity:0.08;filter:blur(80px);pointer-events:none"></div>
+    <div class="container" style="position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;gap:var(--space-xl)">
+      <span class="caption-mono">Health & Fitness</span>
+      <h1 class="display-xl">Water Intake Calculator</h1>
+      <p class="body-lg text-body" style="max-width:520px">Find out exactly how much water you need to drink daily to stay perfectly hydrated based on your body weight and activity level.</p>
+
+      <div class="card-lg" style="width:100%;max-width:500px;text-align:left">
+        <div class="form-group">
+          <label class="form-label" for="water-weight">Weight (kg)</label>
+          <input type="number" id="water-weight" class="form-input form-input-lg" min="20" max="300" value="70" />
+        </div>
+        
+        <div class="form-group" style="margin-top:var(--space-md)">
+          <label class="form-label" for="water-exercise">Daily Exercise (minutes)</label>
+          <input type="number" id="water-exercise" class="form-input form-input-lg" min="0" max="300" value="30" />
+        </div>
+
+        <button class="btn-primary" id="calc-btn" style="margin-top:var(--space-lg);width:100%;justify-content:center">Calculate Hydration</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="section band-light hidden" id="result-section">
+    <div class="container" style="max-width:720px;text-align:center">
+      <div class="card-lg">
+        <div style="font-size:48px;margin-bottom:var(--space-md)">💧</div>
+        <div class="caption-mono" style="color:var(--mute);margin-bottom:var(--space-sm)">Daily Water Requirement</div>
+        <div class="display-xl" style="color:var(--ink)" id="result-water">—</div>
+        <div class="body-lg text-body" style="margin-top:var(--space-xs)">Liters per day</div>
+        
+        <div class="grid-2" style="margin-top:var(--space-2xl);text-align:left;gap:var(--space-md)">
+          <div class="card-soft">
+            <div class="caption-mono" style="color:var(--mute);margin-bottom:8px">In Milliliters (ml)</div>
+            <div class="display-sm" id="res-ml">—</div>
+          </div>
+          <div class="card-soft">
+            <div class="caption-mono" style="color:var(--mute);margin-bottom:8px">In Cups (250ml)</div>
+            <div class="display-sm" id="res-cups">—</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section band-white">
+    <div class="container" style="max-width:720px">
+      <h2 class="display-md" style="margin-bottom:var(--space-xl)">Frequently Asked Questions</h2>
+      {faqSchema.mainEntity.map(faq => (
+        <details class="faq-item">
+          <summary class="faq-question">{faq.name}</summary>
+          <p class="faq-answer">{faq.acceptedAnswer.text}</p>
+        </details>
+      ))}
+    </div>
+  </section>
+
+  <RelatedArticles category="health" />
+  <ToolsGrid />
+  <Footer slot="footer" />
+</BaseLayout>
+
+<script>
+  document.getElementById('calc-btn')?.addEventListener('click', () => {
+    const weightKg = parseFloat((document.getElementById('water-weight') as HTMLInputElement).value);
+    const exerciseMinutes = parseFloat((document.getElementById('water-exercise') as HTMLInputElement).value) || 0;
+
+    if (!weightKg) return alert("Please enter your weight.");
+
+    // General formula: 33ml per kg of body weight
+    // Plus 350ml for every 30 mins of exercise
+    let baseMl = weightKg * 33;
+    let exerciseMl = (exerciseMinutes / 30) * 350;
+    
+    let totalMl = baseMl + exerciseMl;
+
+    (document.getElementById('result-water') as HTMLElement).textContent = (totalMl / 1000).toFixed(2);
+    (document.getElementById('res-ml') as HTMLElement).textContent = Math.round(totalMl).toLocaleString() + ' ml';
+    (document.getElementById('res-cups') as HTMLElement).textContent = Math.round(totalMl / 250).toString() + ' cups';
+
+    document.getElementById('result-section')!.classList.remove('hidden');
+    document.getElementById('result-section')!.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
+</script>
+
+<style is:global>
+.faq-item { border-top:1px solid var(--hairline); }
+.faq-item:last-child { border-bottom:1px solid var(--hairline); }
+.faq-question { font-size:16px;font-weight:500;color:var(--ink);cursor:pointer;padding:var(--space-lg) 0;list-style:none;display:flex;justify-content:space-between;align-items:center;letter-spacing:-0.4px; }
+.faq-question::after { content:'+';font-size:20px;font-weight:300;color:var(--mute); }
+details[open] .faq-question::after { content:'−'; }
+.faq-answer { font-size:15px;color:var(--body);line-height:1.7;padding-bottom:var(--space-lg); }
+</style>
